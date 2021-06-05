@@ -12,7 +12,7 @@ kotlin {
             kotlinOptions.jvmTarget = "1.8"
         }
     }
-    js(LEGACY) {
+    js(IR) {
         nodejs {
         }
     }
