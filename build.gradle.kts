@@ -12,7 +12,9 @@ kotlin {
             kotlinOptions.jvmTarget = "1.8"
         }
     }
+    
     js(IR) {
+        binaries.executable()
         nodejs {
         }
     }
