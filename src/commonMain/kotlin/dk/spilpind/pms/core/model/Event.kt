@@ -1,4 +1,4 @@
-package dk.spilpind.pms.model
+package dk.spilpind.pms.core.model
 
 /**
  * Type ids are grouped as follows:

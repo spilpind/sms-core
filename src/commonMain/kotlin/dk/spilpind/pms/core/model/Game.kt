@@ -1,4 +1,4 @@
-package dk.spilpind.pms.model
+package dk.spilpind.pms.core.model
 
 data class Game(
     val gameId: Int?,
