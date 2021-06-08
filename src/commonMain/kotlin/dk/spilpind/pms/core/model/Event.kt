@@ -1,189 +1,89 @@
 package dk.spilpind.pms.core.model
 
+import kotlinx.datetime.LocalDateTime
+
 /**
  * Type ids are grouped as follows:
  * - 10+: overall stuff
- * - 20+: match time
- * - 30+: fault
- * - 40+: switch
+ * - 20+: [Timing]
+ * - 30+: [Fault]
+ * - 40+: [Switch]
  */
 sealed interface Event {
-    val eventId: Int?
-    val game: Game
-    val team: Team
-    val typeId: Int
-    val time: Int
-    val referee: User
 
-    data class Points(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User,
-        val pointId: Int,
-        val pointCount: Int,
-    ) : Event {
-        override val typeId: Int = 11
+    enum class Type(val typeId: Int) {
+        Points(11),
+        Dead(12),
+        GameStart(21),
+        GameEnd(22),
+        PauseStart(25),
+        PauseEnd(26),
+        FaultClick(31),
+        FaultBacklift(32),
+        FaultRoll(33),
+        FaultOut(34),
+        FaultCatch(35),
+        FaultWicketDirect(36),
+        FaultWicketShin(37),
+        FaultHitCatch(38),
+        SwitchForce(41),
+        SwitchTime(42),
+        SwitchDead(43),
     }
 
-    data class Dead(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 12
+    data class BaseInfo(
+        val eventId: Int?,
+        val gameId: Int,
+        val teamId: Int?,
+        val time: Int,
+        val refereeId: Int,
+        val created: LocalDateTime
+    )
+
+    val type: Type
+    val baseInfo: BaseInfo
+
+    data class Points(override val baseInfo: BaseInfo, val points: Int) : Event {
+        override val type: Type = Type.Points
     }
 
-    data class GameStart(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 21
+    data class Dead(override val baseInfo: BaseInfo) : Event {
+        override val type: Type = Type.Dead
     }
 
-    data class GameEnd(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 22
+    data class Timing(override val baseInfo: BaseInfo, val timingType: TimingType) : Event {
+        override val type: Type = timingType.type
+
+        enum class TimingType(val type: Type) {
+            GameStart(Type.GameStart),
+            GameEnd(Type.GameEnd),
+            PauseStart(Type.PauseStart),
+            PauseEnd(Type.PauseEnd),
+        }
     }
 
-    data class PauseStart(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 25
+    data class Fault(override val baseInfo: BaseInfo, val faultType: FaultType) : Event {
+        override val type: Event.Type = faultType.type
+
+        enum class FaultType(val type: Type) {
+            Click(Type.FaultClick),
+            Backlift(Type.FaultBacklift),
+            Roll(Type.FaultRoll),
+            Out(Type.FaultOut),
+            Catch(Type.FaultCatch),
+            WicketDirect(Type.FaultWicketDirect),
+            WicketShin(Type.FaultWicketShin),
+            HitCatch(Type.FaultHitCatch),
+        }
     }
 
-    data class PauseEnd(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 26
-    }
+    data class Switch(override val baseInfo: BaseInfo, val switchType: SwitchType) : Event {
+        override val type: Type = switchType.type
 
-    data class FaultClick(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 31
-    }
-
-    data class FaultBacklift(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 32
-    }
-
-    data class FaultRoll(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 33
-    }
-
-    data class FaultOut(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 34
-    }
-
-    data class FaultCatch(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 35
-    }
-
-    data class FaultWicketDirect(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 36
-    }
-
-    data class FaultWicketShin(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 37
-    }
-
-    data class FaultHitCatch(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 38
-    }
-
-    data class SwitchForce(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 41
-    }
-
-    data class SwitchTime(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 42
-    }
-
-    data class SwitchDead(
-        override val eventId: Int?,
-        override val game: Game,
-        override val team: Team,
-        override val time: Int,
-        override val referee: User
-    ) : Event {
-        override val typeId: Int = 43
+        enum class SwitchType(val type: Type) {
+            Force(Type.SwitchForce),
+            Time(Type.SwitchTime),
+            Dead(Type.SwitchDead),
+        }
     }
 }
