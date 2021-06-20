@@ -3,7 +3,7 @@ package dk.spilpind.pms.core
 import dk.spilpind.pms.core.TimingHelper.secondsUntilNow
 import dk.spilpind.pms.core.model.Event
 
-object EventHelper {
+object GameHelper {
 
     val List<Event>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
