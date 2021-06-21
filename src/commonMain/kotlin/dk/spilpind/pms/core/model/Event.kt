@@ -14,6 +14,7 @@ sealed interface Event {
     enum class Type(val typeId: Int) {
         Points(11),
         Dead(12),
+        LiftSuccess(14),
         GameStart(21),
         GameEnd(22),
         PauseStart(25),
@@ -48,6 +49,10 @@ sealed interface Event {
     }
 
     data class Dead(override val baseInfo: BaseInfo) : Event {
+        override val type: Type = Type.Dead
+    }
+
+    data class LiftSuccess(override val baseInfo: BaseInfo) : Event {
         override val type: Type = Type.Dead
     }
 

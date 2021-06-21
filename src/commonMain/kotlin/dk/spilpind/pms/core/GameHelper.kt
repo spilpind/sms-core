@@ -41,6 +41,7 @@ object GameHelper {
             when (event) {
                 is Event.Dead -> 0
                 is Event.Fault -> 0
+                is Event.LiftSuccess -> 0
                 is Event.Points -> if (event.baseInfo.teamId == teamId) {
                     event.points
                 } else {
@@ -56,6 +57,7 @@ object GameHelper {
         get() = when (val event = firstOrNull()) {
             is Event.Dead -> GameState.STARTED
             is Event.Fault -> GameState.STARTED
+            is Event.LiftSuccess -> GameState.STARTED
             is Event.Points -> GameState.STARTED
             is Event.Switch -> GameState.STARTED
             is Event.Timing -> when (event.timingType) {
@@ -72,16 +74,17 @@ object GameHelper {
             var count = 0
 
             forEach { event ->
-                when (event) {
+                count += when (event) {
                     is Event.Dead -> return count
-                    is Event.Fault -> ++count
+                    is Event.Fault -> 1
+                    is Event.LiftSuccess -> 0
                     is Event.Points -> return count
                     is Event.Switch -> return count
                     is Event.Timing -> when (event.timingType) {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
-                        Event.Timing.TimingType.PauseStart -> return@forEach
-                        Event.Timing.TimingType.PauseEnd -> return@forEach
+                        Event.Timing.TimingType.PauseStart -> 0
+                        Event.Timing.TimingType.PauseEnd -> 0
                     }
                 }
             }
@@ -94,16 +97,17 @@ object GameHelper {
             var count = 0
 
             forEach { event ->
-                when (event) {
-                    is Event.Dead -> ++count
-                    is Event.Fault -> return@forEach
-                    is Event.Points -> return@forEach
+                count += when (event) {
+                    is Event.Dead -> 1
+                    is Event.Fault -> 0
+                    is Event.LiftSuccess -> 0
+                    is Event.Points -> 0
                     is Event.Switch -> return count
                     is Event.Timing -> when (event.timingType) {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
-                        Event.Timing.TimingType.PauseStart -> return@forEach
-                        Event.Timing.TimingType.PauseEnd -> return@forEach
+                        Event.Timing.TimingType.PauseStart -> 0
+                        Event.Timing.TimingType.PauseEnd -> 0
                     }
                 }
             }
@@ -111,11 +115,29 @@ object GameHelper {
             return count
         }
 
+    val List<Event>.isLiftSuccessFull: Boolean
+        get() = firstNotNullOfOrNull { event ->
+            when (event) {
+                is Event.Dead -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> true
+                is Event.Points -> false
+                is Event.Switch -> false
+                is Event.Timing -> when (event.timingType) {
+                    Event.Timing.TimingType.GameStart -> false
+                    Event.Timing.TimingType.GameEnd -> false
+                    Event.Timing.TimingType.PauseStart -> null
+                    Event.Timing.TimingType.PauseEnd -> null
+                }
+            }
+        } ?: false
+
     val List<Event>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> null
                 is Event.Fault -> null
+                is Event.LiftSuccess -> null
                 is Event.Points -> null
                 is Event.Switch -> null
                 is Event.Timing -> {
@@ -138,6 +160,7 @@ object GameHelper {
                 when (event) {
                     is Event.Dead -> null
                     is Event.Fault -> null
+                    is Event.LiftSuccess -> null
                     is Event.Points -> null
                     is Event.Switch -> event.baseInfo.time
                     is Event.Timing -> null
@@ -156,6 +179,7 @@ object GameHelper {
             when (event) {
                 is Event.Dead -> null
                 is Event.Fault -> null
+                is Event.LiftSuccess -> null
                 is Event.Points -> null
                 is Event.Switch -> event.baseInfo.teamId
                 is Event.Timing -> when (event.timingType) {
