@@ -5,12 +5,24 @@ import dk.spilpind.pms.core.model.Event
 import dk.spilpind.pms.core.model.Game
 import dk.spilpind.pms.core.model.Team
 
+/**
+ * Various utility functionality useful when dealing with overall game logic
+ */
 object GameHelper {
 
+    /**
+     * Represents available states of a game. [NOT_STARTED] is expected if the game hasn't started and [FINISHED] is to
+     * be used in case the game is done. [STARTED] is when the game is active and [PAUSED] represents when the game (and
+     * time) has temporarily been stopped. This means [NOT_STARTED], [STARTED] and [FINISHED] are always expected at
+     * some point during a game (and in that order) and [PAUSED] should only exist between two [STARTED] states
+     */
     enum class GameState {
         NOT_STARTED, STARTED, PAUSED, FINISHED
     }
 
+    /**
+     * Finds the in team of the game based on the provided [events]
+     */
     fun Game.findInTeam(events: List<Event>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
@@ -22,6 +34,9 @@ object GameHelper {
         }
     }
 
+    /**
+     * Finds the out team of the game based on the provided [events]
+     */
     fun Game.findOutTeam(events: List<Event>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
@@ -33,6 +48,9 @@ object GameHelper {
         }
     }
 
+    /**
+     * Calculates the points for the team based on the provided [events]
+     */
     fun Team.calculatePoints(events: List<Event>): Int {
         return events.sumOf { event ->
             when (event) {
@@ -50,6 +68,9 @@ object GameHelper {
         }
     }
 
+    /**
+     * Returns the game state based on the list of events
+     */
     val List<Event>.gameState: GameState
         get() = when (val event = firstOrNull()) {
             is Event.Dead -> GameState.STARTED
@@ -66,6 +87,9 @@ object GameHelper {
             null -> GameState.NOT_STARTED
         }
 
+    /**
+     * Returns the fault count for the in team based on the list of events
+     */
     val List<Event>.faultCount: Int
         get() {
             var count = 0
@@ -89,6 +113,9 @@ object GameHelper {
             return count
         }
 
+    /**
+     * Returns the dead count for the in team based on the list of events
+     */
     val List<Event>.deadCount: Int
         get() {
             var count = 0
@@ -112,6 +139,11 @@ object GameHelper {
             return count
         }
 
+    /**
+     * Indicates if the game is in a state where the in team has had a lift without faults or deaths but the defence
+     * hasn't completed yet, based on the list of events. This is useful e.g. to be able to show less buttons in a
+     * referee view, as there's less possible actions. The state is independent of pauses which are ignored
+     */
     val List<Event>.isLiftSuccessFull: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
@@ -129,6 +161,9 @@ object GameHelper {
             }
         } ?: false
 
+    /**
+     * Returns the total game time in seconds, excluding pauses
+     */
     val List<Event>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
@@ -149,6 +184,9 @@ object GameHelper {
             }
         } ?: 0
 
+    /**
+     * Calculates the turn time in seconds. This is the time since last switch or start of game, excluding pauses
+     */
     val List<Event>.turnTime: Int
         get() {
             val switchTime = firstNotNullOfOrNull { event ->
