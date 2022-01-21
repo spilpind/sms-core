@@ -8,10 +8,7 @@ import dk.spilpind.pms.core.model.Team
 object GameHelper {
 
     enum class GameState {
-        NOT_STARTED,
-        STARTED,
-        PAUSED,
-        FINISHED
+        NOT_STARTED, STARTED, PAUSED, FINISHED
     }
 
     fun Game.findInTeam(events: List<Event>): Team? {
@@ -143,12 +140,10 @@ object GameHelper {
                 is Event.Timing -> {
                     val eventTime = event.baseInfo.time
                     when (event.timingType) {
-                        Event.Timing.TimingType.GameStart ->
-                            eventTime + event.baseInfo.created.secondsUntilNow()
+                        Event.Timing.TimingType.GameStart -> eventTime + event.baseInfo.created.secondsUntilNow()
                         Event.Timing.TimingType.GameEnd -> eventTime
                         Event.Timing.TimingType.PauseStart -> eventTime
-                        Event.Timing.TimingType.PauseEnd ->
-                            eventTime + event.baseInfo.created.secondsUntilNow()
+                        Event.Timing.TimingType.PauseEnd -> eventTime + event.baseInfo.created.secondsUntilNow()
                     }
                 }
             }
