@@ -148,7 +148,7 @@ object GameHelper {
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> false
-                is Event.Fault -> false
+                is Event.Fault -> null // In theory there could be a fault after successful lift (if the rules allow it)
                 is Event.LiftSuccess -> true
                 is Event.Points -> false
                 is Event.Switch -> false
