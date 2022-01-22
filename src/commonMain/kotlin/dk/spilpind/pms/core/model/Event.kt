@@ -74,7 +74,7 @@ sealed interface Event {
      * Represents a lift without any dead or faults by [BaseInfo.teamId]
      */
     data class LiftSuccess(override val baseInfo: BaseInfo) : Event {
-        override val type: Type = Type.Dead
+        override val type: Type = Type.LiftSuccess
     }
 
     /**
