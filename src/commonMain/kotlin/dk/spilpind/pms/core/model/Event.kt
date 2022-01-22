@@ -29,7 +29,7 @@ sealed interface Event {
         PauseStart(25),
         PauseEnd(26),
         FaultClick(31),
-        FaultBacklift(32),
+        FaultBackLift(32),
         FaultRoll(33),
         FaultOut(34),
         FaultCatch(35),
@@ -108,7 +108,7 @@ sealed interface Event {
          */
         enum class FaultType(val type: Type) {
             Click(Type.FaultClick),
-            Backlift(Type.FaultBacklift),
+            BackLift(Type.FaultBackLift),
             Roll(Type.FaultRoll),
             Out(Type.FaultOut),
             Catch(Type.FaultCatch),
