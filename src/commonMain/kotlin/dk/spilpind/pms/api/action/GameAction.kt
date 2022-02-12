@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Game]
  */
-sealed interface GameAction : ContextAction {
+sealed class GameAction : ContextAction {
+    override val context: Context = Context.Game
 
     /**
      * Adds a new game. [teamAId] and [teamBId] cannot represent the same team. A successful response to this would be
@@ -20,7 +21,7 @@ sealed interface GameAction : ContextAction {
         val teamBId: Int?,
         val description: String,
         val focused: Boolean
-    ) : GameAction {
+    ) : GameAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2
     }
@@ -30,7 +31,7 @@ sealed interface GameAction : ContextAction {
      * [GameReaction.Removed]
      */
     @Serializable
-    data class Remove(val gameId: Int) : GameAction {
+    data class Remove(val gameId: Int) : GameAction() {
         override val action: Action = Action.Remove
         override val minimumAccessLevel: Int = 2
     }
@@ -40,7 +41,7 @@ sealed interface GameAction : ContextAction {
      * [GameReaction.Fetched]
      */
     @Serializable
-    data class Fetch(val gameId: Int? = null) : GameAction {
+    data class Fetch(val gameId: Int? = null) : GameAction() {
         override val action: Action = Action.Fetch
         override val minimumAccessLevel: Int? = null
     }

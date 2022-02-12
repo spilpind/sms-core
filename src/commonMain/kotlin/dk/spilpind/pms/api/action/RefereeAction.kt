@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Referee]
  */
-sealed interface RefereeAction : ContextAction {
+sealed class RefereeAction : ContextAction {
+    override val context: Context = Context.Referee
 
     /**
      * Adds an event to the game identified by [gameId]. [lastEventId] ensures the client has the newest event locally
@@ -21,7 +22,7 @@ sealed interface RefereeAction : ContextAction {
         val lastEventId: Int?,
         val startingInTeam: Int? = null,
         val points: Int? = null
-    ) : RefereeAction {
+    ) : RefereeAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2
     }
@@ -31,7 +32,7 @@ sealed interface RefereeAction : ContextAction {
      * this would be [RefereeReaction.Updated]
      */
     @Serializable
-    data class Remove(val eventId: Int) : RefereeAction {
+    data class Remove(val eventId: Int) : RefereeAction() {
         override val action: Action = Action.Remove
         override val minimumAccessLevel: Int = 2
     }
@@ -43,7 +44,7 @@ sealed interface RefereeAction : ContextAction {
      * response to this would be [RefereeReaction.Subscribed]
      */
     @Serializable
-    data class Subscribe(val gameId: Int) : RefereeAction {
+    data class Subscribe(val gameId: Int) : RefereeAction() {
         override val action: Action = Action.Subscribe
         override val minimumAccessLevel: Int? = null
     }
@@ -53,7 +54,7 @@ sealed interface RefereeAction : ContextAction {
      * response to this would be [RefereeReaction.Unsubscribed]
      */
     @Serializable
-    data class Unsubscribe(val gameId: Int) : RefereeAction {
+    data class Unsubscribe(val gameId: Int) : RefereeAction() {
         override val action: Action = Action.Unsubscribe
         override val minimumAccessLevel: Int? = null
     }

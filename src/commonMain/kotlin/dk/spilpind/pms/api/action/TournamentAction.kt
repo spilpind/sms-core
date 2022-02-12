@@ -7,13 +7,14 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Tournament]
  */
-sealed interface TournamentAction : ContextAction {
+sealed class TournamentAction : ContextAction {
+    override val context: Context = Context.Tournament
 
     /**
      * Adds a new tournament. A successful response to this would be [TournamentReaction.Added]
      */
     @Serializable
-    data class Add(val name: String) : TournamentAction {
+    data class Add(val name: String) : TournamentAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2
     }
@@ -23,7 +24,7 @@ sealed interface TournamentAction : ContextAction {
      * alike. A successful response to this would be [TournamentReaction.Removed]
      */
     @Serializable
-    data class Remove(val tournamentId: Int) : TournamentAction {
+    data class Remove(val tournamentId: Int) : TournamentAction() {
         override val action: Action = Action.Remove
         override val minimumAccessLevel: Int = 2
     }
@@ -33,7 +34,7 @@ sealed interface TournamentAction : ContextAction {
      * would be [TournamentReaction.Fetched]
      */
     @Serializable
-    data class Fetch(val tournamentId: Int? = null) : TournamentAction {
+    data class Fetch(val tournamentId: Int? = null) : TournamentAction() {
         override val action: Action = Action.Fetch
         override val minimumAccessLevel: Int? = null
     }
