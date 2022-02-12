@@ -20,6 +20,9 @@ kotlin {
         }
     }
 
+    iosX64()
+    iosArm64()
+
     sourceSets {
 
         @Suppress("UNUSED_VARIABLE")
