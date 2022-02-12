@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Tournament]
  */
-sealed class TournamentAction : ContextAction {
+@Serializable
+sealed class TournamentAction : ContextAction() {
     override val context: Context = Context.Tournament
 
     /**

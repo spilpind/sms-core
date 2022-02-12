@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.User]
  */
-sealed class UserAction : ContextAction {
+@Serializable
+sealed class UserAction : ContextAction() {
     override val context: Context = Context.User
 
     /**

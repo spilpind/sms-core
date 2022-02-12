@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Game]
  */
-sealed class GameAction : ContextAction {
+@Serializable
+sealed class GameAction : ContextAction() {
     override val context: Context = Context.Game
 
     /**

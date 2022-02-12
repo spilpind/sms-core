@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Authentication]
  */
-sealed class AuthenticationAction : ContextAction {
+@Serializable
+sealed class AuthenticationAction : ContextAction() {
     override val context: Context = Context.Authentication
 
     /**

@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * All possible actions that can be made in relation to [Context.Referee]
  */
-sealed class RefereeAction : ContextAction {
+@Serializable
+sealed class RefereeAction : ContextAction() {
     override val context: Context = Context.Referee
 
     /**
