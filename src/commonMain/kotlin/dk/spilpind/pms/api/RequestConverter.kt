@@ -134,6 +134,7 @@ object RequestConverter {
      * Creates a [Response] based on this [Request] and the provided parameters
      */
     fun Request.createResponse(reaction: Reaction, data: JsonObject) = Response(
+        context = context,
         reaction = reaction.reactionKey,
         actionId = actionId,
         data = data

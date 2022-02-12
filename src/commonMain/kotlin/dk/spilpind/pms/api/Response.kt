@@ -7,4 +7,9 @@ import kotlinx.serialization.json.JsonObject
  * Data needed in order to make a response from the api
  */
 @Serializable
-data class Response(val reaction: String, val actionId: String?, val data: JsonObject)
+data class Response(
+    val context: String?,
+    val reaction: String,
+    val actionId: String?,
+    val data: JsonObject
+)
