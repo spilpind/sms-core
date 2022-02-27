@@ -1,7 +1,7 @@
 package dk.spilpind.pms.api
 
+import dk.spilpind.pms.api.action.ReactionData
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
 
 /**
  * Data needed in order to make a response from the api
@@ -11,5 +11,5 @@ data class Response(
     val context: String?,
     val reaction: String,
     val actionId: String?,
-    val data: JsonObject
+    val data: ReactionData
 )

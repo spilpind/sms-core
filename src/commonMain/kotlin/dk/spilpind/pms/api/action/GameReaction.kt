@@ -8,13 +8,17 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Game]
  */
-sealed interface GameReaction : ContextReaction {
+sealed class GameReaction : ContextReaction() {
 
     /**
      * Response to [GameAction.Add]
      */
     @Serializable
-    data class Added(val gameId: Int, val description: String, val focused: Boolean) : GameReaction {
+    data class Added(
+        val gameId: Int,
+        val description: String,
+        val focused: Boolean
+    ) : GameReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -22,7 +26,7 @@ sealed interface GameReaction : ContextReaction {
      * Response to [GameAction.Remove]
      */
     @Serializable
-    data class Removed(val gameId: Int) : GameReaction {
+    data class Removed(val gameId: Int) : GameReaction() {
         override val reaction: Reaction = Reaction.Removed
     }
 
@@ -31,7 +35,7 @@ sealed interface GameReaction : ContextReaction {
      * the only item
      */
     @Serializable
-    data class Fetched(override val items: List<Game>) : GameReaction, FetchedData<Game> {
+    data class Fetched(override val items: List<Game>) : GameReaction(), FetchedData<Game> {
         override val reaction: Reaction = Reaction.Fetched
     }
 

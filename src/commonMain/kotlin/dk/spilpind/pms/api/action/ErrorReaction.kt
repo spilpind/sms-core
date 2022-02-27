@@ -1,4 +1,4 @@
-package dk.spilpind.pms.api.data
+package dk.spilpind.pms.api.action
 
 import kotlinx.serialization.Serializable
 
@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
  * Error class used as reaction to e.g. invalid actions
  */
 @Serializable
-data class ErrorData(val action: String?, val message: String?)
+data class ErrorReaction(val action: String?, val message: String?) : ReactionData()

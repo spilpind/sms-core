@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Referee]
  */
-sealed interface RefereeReaction : ContextReaction {
+sealed class RefereeReaction : ContextReaction() {
 
     /**
      * Response to changes in the game, e.g. [RefereeAction.Add] and [RefereeAction.Remove]. Depending on [gameState]
@@ -29,7 +29,7 @@ sealed interface RefereeReaction : ContextReaction {
         val turnTime: Int,
         val liftSucceeded: Boolean,
         val recentEvents: Collection<Event>
-    ) : RefereeReaction {
+    ) : RefereeReaction() {
         override val reaction: Reaction = Reaction.Updated
     }
 
@@ -37,7 +37,7 @@ sealed interface RefereeReaction : ContextReaction {
      * Response to [RefereeAction.Subscribe]
      */
     @Serializable
-    object Subscribed : RefereeReaction {
+    object Subscribed : RefereeReaction() {
         override val reaction: Reaction = Reaction.Subscribed
     }
 
@@ -45,7 +45,7 @@ sealed interface RefereeReaction : ContextReaction {
      * Response to [RefereeAction.Unsubscribe]
      */
     @Serializable
-    object Unsubscribed : RefereeReaction {
+    object Unsubscribed : RefereeReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
     }
 

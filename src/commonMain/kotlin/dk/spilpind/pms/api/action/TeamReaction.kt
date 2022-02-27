@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Team]
  */
-sealed interface TeamReaction : ContextReaction {
+sealed class TeamReaction : ContextReaction() {
 
     /**
      * Response to [TeamAction.Add]
@@ -19,7 +19,7 @@ sealed interface TeamReaction : ContextReaction {
         val name: String,
         val shortName: String,
         val tournament: Tournament
-    ) : TeamReaction {
+    ) : TeamReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -27,7 +27,7 @@ sealed interface TeamReaction : ContextReaction {
      * Response to [TeamAction.Remove]
      */
     @Serializable
-    data class Removed(val teamId: Int) : TeamReaction {
+    data class Removed(val teamId: Int) : TeamReaction() {
         override val reaction: Reaction = Reaction.Removed
     }
 
@@ -36,7 +36,7 @@ sealed interface TeamReaction : ContextReaction {
      * the only item
      */
     @Serializable
-    data class Fetched(override val items: List<Team>) : TeamReaction, FetchedData<Team> {
+    data class Fetched(override val items: List<Team>) : TeamReaction(), FetchedData<Team> {
         override val reaction: Reaction = Reaction.Fetched
     }
 
@@ -44,7 +44,12 @@ sealed interface TeamReaction : ContextReaction {
      * Represents a single game
      */
     @Serializable
-    data class Team(val teamId: Int, val name: String, val shortName: String, val tournament: Tournament)
+    data class Team(
+        val teamId: Int,
+        val name: String,
+        val shortName: String,
+        val tournament: Tournament
+    )
 
     /**
      * Represents a single tournament

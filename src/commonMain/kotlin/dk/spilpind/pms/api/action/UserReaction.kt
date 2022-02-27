@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.User]
  */
-sealed interface UserReaction : ContextReaction {
+sealed class UserReaction : ContextReaction() {
 
     /**
      * Response to [UserAction.Add]
@@ -20,7 +20,7 @@ sealed interface UserReaction : ContextReaction {
         val username: String,
         val email: String,
         val accessLevel: Int
-    ) : UserReaction {
+    ) : UserReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -28,7 +28,7 @@ sealed interface UserReaction : ContextReaction {
      * Response to [UserAction.Remove]
      */
     @Serializable
-    data class Removed(val userId: Int) : UserReaction {
+    data class Removed(val userId: Int) : UserReaction() {
         override val reaction: Reaction = Reaction.Removed
     }
 
@@ -37,7 +37,7 @@ sealed interface UserReaction : ContextReaction {
      * the only item
      */
     @Serializable
-    data class Fetched(override val items: List<User>) : UserReaction, FetchedData<User> {
+    data class Fetched(override val items: List<User>) : UserReaction(), FetchedData<User> {
         override val reaction: Reaction = Reaction.Fetched
     }
 
@@ -45,5 +45,11 @@ sealed interface UserReaction : ContextReaction {
      * Represents a single user
      */
     @Serializable
-    data class User(val userId: Int, val name: String, val username: String, val email: String, val accessLevel: Int)
+    data class User(
+        val userId: Int,
+        val name: String,
+        val username: String,
+        val email: String,
+        val accessLevel: Int
+    )
 }

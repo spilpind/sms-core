@@ -4,7 +4,7 @@ import dk.spilpind.pms.api.action.*
 import dk.spilpind.pms.api.common.Action
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.ErrorData
+import dk.spilpind.pms.api.action.ErrorReaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*
@@ -121,14 +121,11 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 context = context,
                 reaction = Reaction.ContextNotFound.reactionKey,
                 actionId = actionId,
-                data = Json.encodeToJsonElement(
-                    ErrorData(
-                        action = action,
-                        message = "Available contexts: $availableContexts"
-                    )
-                ).jsonObject,
-
-                )
+                data = ErrorReaction(
+                    action = action,
+                    message = "Available contexts: $availableContexts"
+                ),
+            )
 
             throw ConversionException(response = response)
         }
@@ -141,12 +138,10 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 context = context,
                 reaction = Reaction.ActionNotFound.reactionKey,
                 actionId = actionId,
-                data = Json.encodeToJsonElement(
-                    ErrorData(
-                        action = action,
-                        message = "Available for context is: $availableActions"
-                    )
-                ).jsonObject
+                data = ErrorReaction(
+                    action = action,
+                    message = "Available for context is: $availableActions"
+                )
             )
 
             throw ConversionException(response = response)

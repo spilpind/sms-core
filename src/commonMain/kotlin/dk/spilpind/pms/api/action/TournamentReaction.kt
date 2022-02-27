@@ -8,13 +8,13 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Tournament]
  */
-sealed interface TournamentReaction : ContextReaction {
+sealed class TournamentReaction : ContextReaction() {
 
     /**
      * Response to [TournamentAction.Add]
      */
     @Serializable
-    data class Added(val tournamentId: Int, val name: String) : TournamentReaction {
+    data class Added(val tournamentId: Int, val name: String) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -22,7 +22,7 @@ sealed interface TournamentReaction : ContextReaction {
      * Response to [TournamentAction.Remove]
      */
     @Serializable
-    data class Removed(val tournamentId: Int) : TournamentReaction {
+    data class Removed(val tournamentId: Int) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Removed
     }
 
@@ -31,7 +31,9 @@ sealed interface TournamentReaction : ContextReaction {
      * that tournament as the only item
      */
     @Serializable
-    data class Fetched(override val items: List<Tournament>) : TournamentReaction, FetchedData<Tournament> {
+    data class Fetched(
+        override val items: List<Tournament>
+    ) : TournamentReaction(), FetchedData<Tournament> {
         override val reaction: Reaction = Reaction.Fetched
     }
 

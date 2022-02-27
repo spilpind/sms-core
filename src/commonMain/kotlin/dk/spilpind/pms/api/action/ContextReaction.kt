@@ -5,6 +5,6 @@ import dk.spilpind.pms.api.common.Reaction
 /**
  * Interface for all reactions for specific contexts
  */
-sealed interface ContextReaction {
-    val reaction: Reaction
+sealed class ContextReaction : ReactionData() {
+    abstract val reaction: Reaction
 }

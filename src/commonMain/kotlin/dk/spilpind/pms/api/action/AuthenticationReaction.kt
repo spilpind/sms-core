@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Authentication]
  */
-sealed interface AuthenticationReaction : ContextReaction {
+sealed class AuthenticationReaction : ContextReaction() {
 
     /**
      * Response to [AuthenticationAction.Inform]. Send the user to [googleLoginUrl] in order to authenticate
      */
     @Serializable
-    data class Informed(val googleLoginUrl: String) : AuthenticationReaction {
+    data class Informed(val googleLoginUrl: String) : AuthenticationReaction() {
         override val reaction: Reaction = Reaction.Informed
     }
 
@@ -21,7 +21,7 @@ sealed interface AuthenticationReaction : ContextReaction {
      * Response to [AuthenticationAction.Fetch]. [jsonWebToken] should be used for any requests requiring authentication
      */
     @Serializable
-    data class Fetched(val jsonWebToken: String) : AuthenticationReaction {
+    data class Fetched(val jsonWebToken: String) : AuthenticationReaction() {
         override val reaction: Reaction = Reaction.Fetched
     }
 }
