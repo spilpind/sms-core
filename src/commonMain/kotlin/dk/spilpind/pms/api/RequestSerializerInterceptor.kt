@@ -121,7 +121,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 context = context,
                 reaction = Reaction.ContextNotFound.reactionKey,
                 actionId = actionId,
-                data = ErrorReaction(
+                data = ErrorReaction.ContextNotFound(
                     action = action,
                     message = "Available contexts: $availableContexts"
                 ),
@@ -138,7 +138,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 context = context,
                 reaction = Reaction.ActionNotFound.reactionKey,
                 actionId = actionId,
-                data = ErrorReaction(
+                data = ErrorReaction.ActionNotFound(
                     action = action,
                     message = "Available for context is: $availableActions"
                 )

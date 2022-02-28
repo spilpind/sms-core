@@ -121,16 +121,26 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Referee -> RefereeReaction.Unsubscribed.serializer()
                 }
             }
-            Reaction.ServerError -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.EncodingError -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.ContextNotFound -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.ActionNotFound -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.DataStructureError -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.DataValueError -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.UnsafeOperation -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.InvalidJsonWebToken -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.MissingPermission -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
-            Reaction.ItemNotFound -> ReactionClassMap.ContextLess(ErrorReaction.serializer())
+            Reaction.ServerError ->
+                ReactionClassMap.ContextLess(ErrorReaction.ServerError.serializer())
+            Reaction.EncodingError ->
+                ReactionClassMap.ContextLess(ErrorReaction.EncodingError.serializer())
+            Reaction.ContextNotFound ->
+                ReactionClassMap.ContextLess(ErrorReaction.ContextNotFound.serializer())
+            Reaction.ActionNotFound ->
+                ReactionClassMap.ContextLess(ErrorReaction.ActionNotFound.serializer())
+            Reaction.DataStructureError ->
+                ReactionClassMap.ContextLess(ErrorReaction.DataStructureError.serializer())
+            Reaction.DataValueError ->
+                ReactionClassMap.ContextLess(ErrorReaction.DataValueError.serializer())
+            Reaction.UnsafeOperation ->
+                ReactionClassMap.ContextLess(ErrorReaction.UnsafeOperation.serializer())
+            Reaction.InvalidJsonWebToken ->
+                ReactionClassMap.ContextLess(ErrorReaction.InvalidJsonWebToken.serializer())
+            Reaction.MissingPermission ->
+                ReactionClassMap.ContextLess(ErrorReaction.MissingPermission.serializer())
+            Reaction.ItemNotFound ->
+                ReactionClassMap.ContextLess(ErrorReaction.ItemNotFound.serializer())
         }
     }
 

@@ -1,9 +1,132 @@
 package dk.spilpind.pms.api.action
 
+import dk.spilpind.pms.api.common.Reaction
 import kotlinx.serialization.Serializable
 
 /**
- * Error class used as reaction to e.g. invalid actions
+ * Error class used as reaction to all non-successful responses, as defined by the subclasses
  */
 @Serializable
-data class ErrorReaction(val action: String?, val message: String?) : ReactionData()
+sealed class ErrorReaction : ReactionData() {
+    abstract val action: String?
+    abstract val message: String?
+
+    /**
+     * Generic error in case an unknown error
+     */
+    @Serializable
+    data class ServerError(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.ServerError
+    }
+
+    /**
+     * The structure of the request was malformed and could not be deserialized. This could e.g. be
+     * a missing property or actual malformed structure
+     */
+    @Serializable
+    data class EncodingError(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.EncodingError
+    }
+
+    /**
+     * The specified context was not found
+     */
+    @Serializable
+    data class ContextNotFound(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.ContextNotFound
+    }
+
+    /**
+     * The specified action was not found for the specified context
+     */
+    @Serializable
+    data class ActionNotFound(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.ActionNotFound
+    }
+
+    /**
+     * There was an error in the structure of the data part of the request. This could e.g. be a
+     * missing property or actual malformed structure
+     */
+    @Serializable
+    data class DataStructureError(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.DataStructureError
+    }
+
+    /**
+     * The value(s) of the data was insufficient, wrong or invalid. This can e.g. be because a value
+     * isn't within a valid range
+     */
+    @Serializable
+    data class DataValueError(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.DataValueError
+    }
+
+    /**
+     * The request would result in an undefined state. This can happen e.g. if some data is
+     * requested to be deleted by referred to by some other data - in that case the other data
+     * should be deleted first
+     */
+    @Serializable
+    data class UnsafeOperation(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.UnsafeOperation
+    }
+
+    /**
+     * The provided JWT was invalid, most likely because it expired. Fetch a new token a retry the
+     * request again
+     */
+    @Serializable
+    data class InvalidJsonWebToken(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.InvalidJsonWebToken
+    }
+
+    /**
+     * The logged in user does not have permissions to perform the action. This can both be because
+     * the user does not have permission to it at all or because the user doesn't have permission to
+     * alter or view the specific data
+     */
+    @Serializable
+    data class MissingPermission(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.MissingPermission
+    }
+
+    /**
+     * The requested item was not found in the system. E.g. for authorization this means the user
+     * wasn't found in the database
+     */
+    @Serializable
+    data class ItemNotFound(
+        override val action: String?,
+        override val message: String?
+    ) : ErrorReaction() {
+        override val reaction: Reaction = Reaction.ItemNotFound
+    }
+}
