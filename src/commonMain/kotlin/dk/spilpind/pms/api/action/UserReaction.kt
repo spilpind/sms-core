@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.User]
  */
+@Serializable
 sealed class UserReaction : ContextReaction() {
 
     /**

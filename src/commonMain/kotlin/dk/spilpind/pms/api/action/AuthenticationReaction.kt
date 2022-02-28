@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 /**
  * All possible reactions that can be made in relation to [Context.Authentication]
  */
+@Serializable
 sealed class AuthenticationReaction : ContextReaction() {
 
     /**
