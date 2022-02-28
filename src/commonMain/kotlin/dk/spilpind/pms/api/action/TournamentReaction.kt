@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class TournamentReaction : ContextReaction() {
+    override val context: Context = Context.Tournament
 
     /**
      * Response to [TournamentAction.Add]

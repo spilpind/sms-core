@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class TeamReaction : ContextReaction() {
+    override val context: Context = Context.Team
 
     /**
      * Response to [TeamAction.Add]

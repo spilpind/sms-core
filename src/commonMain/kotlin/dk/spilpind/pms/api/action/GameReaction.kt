@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class GameReaction : ContextReaction() {
+    override val context: Context = Context.Game
 
     /**
      * Response to [GameAction.Add]

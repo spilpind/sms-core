@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class RefereeReaction : ContextReaction() {
+    override val context: Context = Context.Referee
 
     /**
      * Response to changes in the game, e.g. [RefereeAction.Add] and [RefereeAction.Remove]. Depending on [gameState]

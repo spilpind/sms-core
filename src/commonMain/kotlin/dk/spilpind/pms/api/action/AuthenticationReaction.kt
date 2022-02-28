@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class AuthenticationReaction : ContextReaction() {
+    override val context: Context = Context.Authentication
 
     /**
      * Response to [AuthenticationAction.Inform]. Send the user to [googleLoginUrl] in order to authenticate

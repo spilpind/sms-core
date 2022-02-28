@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class UserReaction : ContextReaction() {
+    override val context: Context = Context.User
 
     /**
      * Response to [UserAction.Add]
