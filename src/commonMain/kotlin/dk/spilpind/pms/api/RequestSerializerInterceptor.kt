@@ -1,5 +1,7 @@
 package dk.spilpind.pms.api
 
+import dk.spilpind.pms.api.SerializationUtil.alterData
+import dk.spilpind.pms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.pms.api.action.*
 import dk.spilpind.pms.api.common.Action
 import dk.spilpind.pms.api.common.Context
@@ -14,6 +16,10 @@ import kotlinx.serialization.json.*
  * the conversion could not be performed, [ConversionException] will be thrown. This might be
  * possible to handle in another way in the future:
  * https://github.com/Kotlin/kotlinx.serialization/issues/793
+ *
+ * This also intercepts serialization, but that's mainly to avoid the type being outputted as
+ * well. The same idea is done with [JsonContentPolymorphicSerializer], but it doesn't seem like we
+ * can use just exactly that as we need to access the request's context and action
  */
 object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Request.serializer()) {
 
@@ -95,16 +101,16 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         val action = element.jsonObject["action"]?.asStringOrNull()
         val actionClass = findActionClass(actionId = actionId, context = context, action = action)
 
-        val data = element.jsonObject["data"]?.jsonObject?.toMutableMap()?.apply {
+        return element.alterData {
             put("type", JsonPrimitive(actionClass))
         }
+    }
 
-        return if (data == null) {
-            element
-        } else {
-            JsonObject(element.jsonObject.toMutableMap().apply {
-                put("data", JsonObject(data))
-            })
+    override fun transformSerialize(element: JsonElement): JsonElement {
+        return element.alterData {
+            // We don't want to expose internal types as they're not needed (context + action should
+            // do the trick)
+            remove("type")
         }
     }
 
@@ -148,13 +154,5 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         }
 
         return actionClass
-    }
-
-    private fun JsonElement.asStringOrNull(): String? {
-        return if (jsonPrimitive.isString) {
-            jsonPrimitive.content
-        } else {
-            null
-        }
     }
 }
