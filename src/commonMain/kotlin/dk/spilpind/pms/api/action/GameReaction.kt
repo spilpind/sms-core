@@ -45,5 +45,12 @@ sealed class GameReaction : ContextReaction() {
      * Represents a single game
      */
     @Serializable
-    data class Game(val gameId: Int, val description: String, val focused: Boolean)
+    data class Game(
+        val gameId: Int,
+        val tournamentId: Int,
+        val teamAId: Int?,
+        val teamBId: Int?,
+        val description: String,
+        val focused: Boolean
+    )
 }
