@@ -45,7 +45,7 @@ sealed interface Event {
      * Base information that's used for all events
      */
     data class BaseInfo(
-        val eventId: Int?,
+        val eventId: Int,
         val gameId: Int,
         val teamId: Int?,
         val time: Int,
