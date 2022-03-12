@@ -20,7 +20,7 @@ sealed class TeamReaction : ContextReaction() {
         val teamId: Int,
         val name: String,
         val shortName: String,
-        val tournament: Tournament
+        val tournamentId: Int
     ) : TeamReaction() {
         override val reaction: Reaction = Reaction.Added
     }
@@ -50,12 +50,6 @@ sealed class TeamReaction : ContextReaction() {
         val teamId: Int,
         val name: String,
         val shortName: String,
-        val tournament: Tournament
+        val tournamentId: Int
     )
-
-    /**
-     * Represents a single tournament
-     */
-    @Serializable
-    data class Tournament(val tournamentId: Int, val name: String)
 }
