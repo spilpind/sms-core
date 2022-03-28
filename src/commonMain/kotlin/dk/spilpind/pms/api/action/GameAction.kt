@@ -21,7 +21,7 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val focused: Boolean
+        val isFocused: Boolean
     ) : GameAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2

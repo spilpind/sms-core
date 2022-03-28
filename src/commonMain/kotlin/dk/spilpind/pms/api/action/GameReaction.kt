@@ -18,8 +18,11 @@ sealed class GameReaction : ContextReaction() {
     @Serializable
     data class Added(
         val gameId: Int,
+        val tournamentId: Int,
+        val teamAId: Int?,
+        val teamBId: Int?,
         val description: String,
-        val focused: Boolean
+        val isFocused: Boolean
     ) : GameReaction() {
         override val reaction: Reaction = Reaction.Added
     }
@@ -51,6 +54,6 @@ sealed class GameReaction : ContextReaction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val focused: Boolean
+        val isFocused: Boolean
     )
 }
