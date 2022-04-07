@@ -15,7 +15,12 @@ sealed class TeamAction : ContextAction() {
      * Adds a new team. A successful response to this would be [TeamReaction.Added]
      */
     @Serializable
-    data class Add(val name: String, val shortName: String, val tournamentId: Int) : TeamAction() {
+    data class Add(
+        val name: String,
+        val shortName: String,
+        val tournamentId: Int,
+        val addAsCaptain: Boolean = false
+    ) : TeamAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2
     }
