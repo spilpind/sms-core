@@ -1,6 +1,6 @@
 package dk.spilpind.pms.core
 
-import dk.spilpind.pms.core.TimingHelper.secondsUntilNow
+import dk.spilpind.pms.core.TimeHelper.secondsUntilNow
 import dk.spilpind.pms.core.model.Event
 import dk.spilpind.pms.core.model.Game
 import dk.spilpind.pms.core.model.Team
