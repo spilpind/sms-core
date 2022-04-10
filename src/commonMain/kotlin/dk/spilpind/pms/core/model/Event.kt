@@ -11,6 +11,13 @@ import kotlinx.datetime.LocalDateTime
  * in a dead or just a fault
  */
 sealed interface Event {
+    val eventId: Int
+    val gameId: Int
+    val teamId: Int?
+    val typeId: Int
+    val time: Int
+    val refereeId: Int
+    val created: LocalDateTime
 
     /**
      * All type of events, most important part of this are their unique ids which is useful for e.g. storing the events.
@@ -41,48 +48,60 @@ sealed interface Event {
         SwitchDead(43),
     }
 
-    /**
-     * Base information that's used for all events
-     */
-    data class BaseInfo(
-        val eventId: Int,
-        val gameId: Int,
-        val teamId: Int?,
-        val time: Int,
-        val refereeId: Int,
-        val created: LocalDateTime
-    )
+    data class Raw(
+        override val eventId: Int,
+        override val gameId: Int,
+        override val teamId: Int?,
+        override val typeId: Int,
+        override val time: Int,
+        override val refereeId: Int,
+        override val created: LocalDateTime
+    ) : Event
 
-    val type: Type
-    val baseInfo: BaseInfo
+    sealed class Detailed(val type: Type, baseInfo: BaseInfo) : Event {
+        override val eventId: Int = baseInfo.eventId
+        override val gameId: Int = baseInfo.gameId
+        override val teamId: Int? = baseInfo.teamId
+        override val typeId = type.typeId
+        override val time: Int = baseInfo.time
+        override val refereeId: Int = baseInfo.refereeId
+        override val created: LocalDateTime = baseInfo.created
 
-    /**
-     * Represents points given to [BaseInfo.teamId] after a successful lift
-     */
-    data class Points(override val baseInfo: BaseInfo, val points: Int) : Event {
-        override val type: Type = Type.Points
+        /**
+         * Base information that's used for all events
+         */
+        data class BaseInfo(
+            val eventId: Int,
+            val gameId: Int,
+            val teamId: Int?,
+            val time: Int,
+            val refereeId: Int,
+            val created: LocalDateTime
+        )
     }
 
     /**
-     * Represents a single dead given to [BaseInfo.teamId]
+     * Represents points given to [teamId] after a successful lift
      */
-    data class Dead(override val baseInfo: BaseInfo) : Event {
-        override val type: Type = Type.Dead
-    }
+    data class Points(private val baseInfo: BaseInfo, val points: Int) :
+        Detailed(type = Type.Points, baseInfo = baseInfo)
 
     /**
-     * Represents a lift without any dead or faults by [BaseInfo.teamId]
+     * Represents a single dead given to [teamId]
      */
-    data class LiftSuccess(override val baseInfo: BaseInfo) : Event {
-        override val type: Type = Type.LiftSuccess
-    }
+    data class Dead(private val baseInfo: BaseInfo) : Detailed(type = Type.Dead, baseInfo = baseInfo)
 
     /**
-     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a
-     * [BaseInfo.teamId] which should represent the team starting as in team
+     * Represents a lift without any dead or faults by [teamId]
      */
-    data class Timing(override val baseInfo: BaseInfo, val timingType: TimingType) : Event {
-        override val type: Type = timingType.type
+    data class LiftSuccess(private val baseInfo: BaseInfo) : Detailed(type = Type.LiftSuccess, baseInfo = baseInfo)
+
+    /**
+     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
+     * which should represent the team starting as in team
+     */
+    data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
+        Detailed(type = timingType.type, baseInfo = baseInfo) {
 
         /**
          * The various timing types.
@@ -96,11 +115,11 @@ sealed interface Event {
     }
 
     /**
-     * Represents a fault as defined by [faultType] given to [BaseInfo.teamId]. A few of the fault events might also
-     * result in a direct [Dead] event as well
+     * Represents a fault as defined by [faultType] given to [teamId]. A few of the fault events might also result in a
+     * direct [Dead] event as well
      */
-    data class Fault(override val baseInfo: BaseInfo, val faultType: FaultType) : Event {
-        override val type: Type = faultType.type
+    data class Fault(private val baseInfo: BaseInfo, val faultType: FaultType) :
+        Detailed(type = faultType.type, baseInfo = baseInfo) {
 
         /**
          * All types of faults. Note that some of them might not be part of the current rules but are just here for
@@ -119,11 +138,11 @@ sealed interface Event {
     }
 
     /**
-     * Represents a switch between in and out team, the reason is defined by [switchType]. [BaseInfo.teamId] should
-     * represent the new in team
+     * Represents a switch between in and out team, the reason is defined by [switchType]. [teamId] should represent the
+     * new in team
      */
-    data class Switch(override val baseInfo: BaseInfo, val switchType: SwitchType) : Event {
-        override val type: Type = switchType.type
+    data class Switch(private val baseInfo: BaseInfo, val switchType: SwitchType) :
+        Detailed(type = switchType.type, baseInfo = baseInfo) {
 
         /**
          * The reasons for a switch
