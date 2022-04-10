@@ -12,6 +12,7 @@ enum class Reaction(val reactionKey: String) {
     Removed("removed"),
     Updated("updated"),
     Fetched("fetched"),
+    Accepted("accepted"),
     Subscribed("subscribed"),
     Unsubscribed("unsubscribed"),
     ServerError("serverError"),

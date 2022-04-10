@@ -112,6 +112,17 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Referee -> null
                 }
             }
+            Reaction.Accepted -> createContextMap { context ->
+                when (context) {
+                    Context.Authentication -> null
+                    Context.User -> null
+                    Context.UserRole -> null
+                    Context.Tournament -> null
+                    Context.Game -> GameReaction.Accepted.serializer()
+                    Context.Team -> null
+                    Context.Referee -> null
+                }
+            }
             Reaction.Subscribed -> createContextMap { context ->
                 when (context) {
                     Context.Authentication -> null

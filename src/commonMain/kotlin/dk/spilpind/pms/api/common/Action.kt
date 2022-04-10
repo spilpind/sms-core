@@ -11,6 +11,7 @@ enum class Action(val actionKey: String) {
     Remove("remove"),
     Update("update"),
     Fetch("fetch"),
+    Accept("accept"),
     Subscribe("subscribe"),
     Unsubscribe("unsubscribe"),
 }

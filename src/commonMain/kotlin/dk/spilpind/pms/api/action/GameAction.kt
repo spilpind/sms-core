@@ -21,7 +21,8 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val isFocused: Boolean
+        val isFocused: Boolean,
+        val addJoinInvite: Boolean = false
     ) : GameAction() {
         override val action: Action = Action.Add
         override val minimumAccessLevel: Int = 2
@@ -44,6 +45,15 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Fetch(val gameId: Int? = null) : GameAction() {
         override val action: Action = Action.Fetch
+        override val minimumAccessLevel: Int? = null
+    }
+
+    /**
+     * Accepts an invite related to a game. A successful response to this would be [GameReaction.Accepted]
+     */
+    @Serializable
+    data class Accept(val inviteAction: String, val code: String, val teamId: Int? = null) : GameAction() {
+        override val action: Action = Action.Accept
         override val minimumAccessLevel: Int? = null
     }
 }

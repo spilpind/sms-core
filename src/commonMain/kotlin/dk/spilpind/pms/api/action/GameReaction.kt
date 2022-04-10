@@ -45,6 +45,14 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
+     * Response to [GameAction.Accept]. [gameId] will represent the game which the invite was related to
+     */
+    @Serializable
+    data class Accepted(val gameId: Int) : GameReaction() {
+        override val reaction: Reaction = Reaction.Accepted
+    }
+
+    /**
      * Represents a single game
      */
     @Serializable
