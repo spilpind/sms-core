@@ -23,7 +23,7 @@ object GameHelper {
     /**
      * Finds the in team of the game based on the provided [events]
      */
-    fun Game.findInTeam(events: List<Event>): Team? {
+    fun Game.Detailed.findInTeam(events: List<Event>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamA
@@ -37,7 +37,7 @@ object GameHelper {
     /**
      * Finds the out team of the game based on the provided [events]
      */
-    fun Game.findOutTeam(events: List<Event>): Team? {
+    fun Game.Detailed.findOutTeam(events: List<Event>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamB
