@@ -55,7 +55,8 @@ sealed interface Event {
         override val typeId: Int,
         override val time: Int,
         override val refereeId: Int,
-        override val created: LocalDateTime
+        override val created: LocalDateTime,
+        val points: Int?
     ) : Event
 
     sealed class Detailed(val type: Type, baseInfo: BaseInfo) : Event {
