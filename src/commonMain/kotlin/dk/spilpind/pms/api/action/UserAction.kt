@@ -36,7 +36,7 @@ sealed class UserAction : ContextAction() {
      * [UserReaction.Fetched]
      */
     @Serializable
-    data class Fetch(val userId: Int? = null, val email: String? = null) : UserAction() {
+    data class Fetch(val userId: Int? = null) : UserAction() {
         override val action: Action = Action.Fetch
         override val minimumAccessLevel: Int? = null
     }
