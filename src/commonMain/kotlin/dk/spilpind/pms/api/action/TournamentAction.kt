@@ -39,4 +39,26 @@ sealed class TournamentAction : ContextAction() {
         override val action: Action = Action.Fetch
         override val minimumAccessLevel: Int? = null
     }
+
+    /**
+     * Subscribes the socket to all tournaments available for the current user. The subscription will be kept alive
+     * until the socket disconnects or [Unsubscribe] is called. Changes to the list will be sent to the socket, via
+     * [TournamentReaction.Updated]. A successful response to this would be [TournamentReaction.Subscribed] followed by
+     * [TournamentReaction.Updated]
+     */
+    @Serializable
+    object Subscribe : TournamentAction() {
+        override val action: Action = Action.Subscribe
+        override val minimumAccessLevel: Int? = null
+    }
+
+    /**
+     * Unsubscribes the socket from updates to the list of tournaments, previously subscribed by [Subscribe]. A
+     * successful response to this would be [TournamentReaction.Unsubscribed]
+     */
+    @Serializable
+    object Unsubscribe : TournamentAction() {
+        override val action: Action = Action.Unsubscribe
+        override val minimumAccessLevel: Int? = null
+    }
 }

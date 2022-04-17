@@ -40,6 +40,32 @@ sealed class TournamentReaction : ContextReaction() {
     }
 
     /**
+     * Response to changes in one or more of the tournaments, e.g. after a call to [TournamentAction.Add]
+     */
+    @Serializable
+    data class Updated(
+        val items: List<Tournament>
+    ) : TournamentReaction() {
+        override val reaction: Reaction = Reaction.Updated
+    }
+
+    /**
+     * Response to [TournamentAction.Subscribe]
+     */
+    @Serializable
+    object Subscribed : TournamentReaction() {
+        override val reaction: Reaction = Reaction.Subscribed
+    }
+
+    /**
+     * Response to [TournamentAction.Unsubscribe]
+     */
+    @Serializable
+    object Unsubscribed : TournamentReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
+    /**
      * Represents a single tournament
      */
     @Serializable
