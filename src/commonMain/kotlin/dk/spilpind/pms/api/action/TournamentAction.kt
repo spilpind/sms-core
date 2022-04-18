@@ -47,7 +47,7 @@ sealed class TournamentAction : ContextAction() {
      * [TournamentReaction.Updated]
      */
     @Serializable
-    object Subscribe : TournamentAction() {
+    class Subscribe : TournamentAction() {
         override val action: Action = Action.Subscribe
         override val minimumAccessLevel: Int? = null
     }
@@ -57,7 +57,7 @@ sealed class TournamentAction : ContextAction() {
      * successful response to this would be [TournamentReaction.Unsubscribed]
      */
     @Serializable
-    object Unsubscribe : TournamentAction() {
+    class Unsubscribe : TournamentAction() {
         override val action: Action = Action.Unsubscribe
         override val minimumAccessLevel: Int? = null
     }

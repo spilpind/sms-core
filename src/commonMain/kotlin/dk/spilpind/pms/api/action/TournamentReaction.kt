@@ -53,7 +53,7 @@ sealed class TournamentReaction : ContextReaction() {
      * Response to [TournamentAction.Subscribe]
      */
     @Serializable
-    object Subscribed : TournamentReaction() {
+    class Subscribed : TournamentReaction() {
         override val reaction: Reaction = Reaction.Subscribed
     }
 
@@ -61,7 +61,7 @@ sealed class TournamentReaction : ContextReaction() {
      * Response to [TournamentAction.Unsubscribe]
      */
     @Serializable
-    object Unsubscribed : TournamentReaction() {
+    class Unsubscribed : TournamentReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
     }
 
