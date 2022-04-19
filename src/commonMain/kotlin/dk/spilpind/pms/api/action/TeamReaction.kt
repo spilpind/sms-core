@@ -34,6 +34,17 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
+     * Response to changes in one or more of the teams
+     */
+    @Serializable
+    data class Updated(
+        val allItems: Boolean,
+        val items: List<Team>
+    ) : TeamReaction() {
+        override val reaction: Reaction = Reaction.Updated
+    }
+
+    /**
      * Response to [TeamAction.Fetch]. If the request specified a specific team id, [items] will contain that team as
      * the only item
      */
@@ -43,7 +54,23 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
-     * Represents a single game
+     * Response to [TeamAction.Subscribe]
+     */
+    @Serializable
+    class Subscribed : TeamReaction() {
+        override val reaction: Reaction = Reaction.Subscribed
+    }
+
+    /**
+     * Response to [TeamAction.Unsubscribe]
+     */
+    @Serializable
+    class Unsubscribed : TeamReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
+    /**
+     * Represents a single team
      */
     @Serializable
     data class Team(

@@ -44,4 +44,26 @@ sealed class TeamAction : ContextAction() {
         override val action: Action = Action.Fetch
         override val minimumAccessLevel: Int? = null
     }
+
+    /**
+     * Subscribes the socket to all teams available for the current user and associated with the tournament identified
+     * by [tournamentId]. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called.
+     * Changes to the list will be sent to the socket, via relevant [TeamReaction]s. A successful response to this would
+     * be [TeamReaction.Subscribed] followed by [TeamReaction.Updated]
+     */
+    @Serializable
+    data class Subscribe(val tournamentId: Int) : TeamAction() {
+        override val action: Action = Action.Subscribe
+        override val minimumAccessLevel: Int? = null
+    }
+
+    /**
+     * Unsubscribes the socket from updates to the list of teams, previously subscribed by [Subscribe]. A successful
+     * response to this would be [TeamReaction.Unsubscribed]
+     */
+    @Serializable
+    data class Unsubscribe(val tournamentId: Int) : TeamAction() {
+        override val action: Action = Action.Unsubscribe
+        override val minimumAccessLevel: Int? = null
+    }
 }

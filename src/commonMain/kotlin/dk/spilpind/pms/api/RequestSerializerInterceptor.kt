@@ -89,8 +89,8 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Update -> null
                     Action.Fetch -> TeamAction.Fetch.serializer()
                     Action.Accept -> null
-                    Action.Subscribe -> null
-                    Action.Unsubscribe -> null
+                    Action.Subscribe -> TeamAction.Subscribe.serializer()
+                    Action.Unsubscribe -> TeamAction.Unsubscribe.serializer()
                 }
                 Context.Referee -> when (action) {
                     Action.Inform -> null
