@@ -44,6 +44,7 @@ sealed class TournamentReaction : ContextReaction() {
      */
     @Serializable
     data class Updated(
+        val allItems: Boolean,
         val items: List<Tournament>
     ) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Updated
