@@ -40,7 +40,7 @@ sealed class TournamentReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the tournaments, e.g. after a call to [TournamentAction.Add]
+     * Response to changes in one or more of the tournaments
      */
     @Serializable
     data class Updated(
