@@ -79,8 +79,8 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Update -> null
                     Action.Fetch -> GameAction.Fetch.serializer()
                     Action.Accept -> GameAction.Accept.serializer()
-                    Action.Subscribe -> null
-                    Action.Unsubscribe -> null
+                    Action.Subscribe -> GameAction.Subscribe.serializer()
+                    Action.Unsubscribe -> GameAction.Unsubscribe.serializer()
                 }
                 Context.Team -> when (action) {
                     Action.Inform -> null

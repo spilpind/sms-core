@@ -36,6 +36,17 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
+     * Response to changes in one or more of the games
+     */
+    @Serializable
+    data class Updated(
+        val allItems: Boolean,
+        val items: List<Game>
+    ) : GameReaction() {
+        override val reaction: Reaction = Reaction.Updated
+    }
+
+    /**
      * Response to [GameAction.Fetch]. If the request specified a specific game id, [items] will contain that game as
      * the only item
      */
@@ -50,6 +61,22 @@ sealed class GameReaction : ContextReaction() {
     @Serializable
     data class Accepted(val gameId: Int) : GameReaction() {
         override val reaction: Reaction = Reaction.Accepted
+    }
+
+    /**
+     * Response to [GameAction.Subscribe]
+     */
+    @Serializable
+    class Subscribed : GameReaction() {
+        override val reaction: Reaction = Reaction.Subscribed
+    }
+
+    /**
+     * Response to [GameAction.Unsubscribe]
+     */
+    @Serializable
+    class Unsubscribed : GameReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
     }
 
     /**
