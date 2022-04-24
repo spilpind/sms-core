@@ -94,7 +94,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                 when (context) {
                     Context.Authentication -> null
                     Context.User -> null
-                    Context.UserRole -> null
+                    Context.UserRole -> UserRoleReaction.Updated.serializer()
                     Context.Tournament -> TournamentReaction.Updated.serializer()
                     Context.Game -> GameReaction.Updated.serializer()
                     Context.Team -> TeamReaction.Updated.serializer()
@@ -127,7 +127,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                 when (context) {
                     Context.Authentication -> null
                     Context.User -> null
-                    Context.UserRole -> null
+                    Context.UserRole -> UserRoleReaction.Subscribed.serializer()
                     Context.Tournament -> TournamentReaction.Subscribed.serializer()
                     Context.Game -> GameReaction.Subscribed.serializer()
                     Context.Team -> TeamReaction.Subscribed.serializer()
@@ -138,7 +138,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                 when (context) {
                     Context.Authentication -> null
                     Context.User -> null
-                    Context.UserRole -> null
+                    Context.UserRole -> UserRoleReaction.Unsubscribed.serializer()
                     Context.Tournament -> TournamentReaction.Unsubscribed.serializer()
                     Context.Game -> GameReaction.Unsubscribed.serializer()
                     Context.Team -> TeamReaction.Unsubscribed.serializer()

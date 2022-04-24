@@ -25,4 +25,43 @@ sealed class UserRoleReaction : ContextReaction() {
     ) : UserRoleReaction() {
         override val reaction: Reaction = Reaction.Added
     }
+
+    /**
+     * Response to changes in one or more of the user roles
+     */
+    @Serializable
+    data class Updated(
+        val allItems: Boolean,
+        val items: List<UserRole>
+    ) : UserRoleReaction() {
+        override val reaction: Reaction = Reaction.Updated
+    }
+
+    /**
+     * Response to [UserRoleAction.Subscribe]
+     */
+    @Serializable
+    class Subscribed : UserRoleReaction() {
+        override val reaction: Reaction = Reaction.Subscribed
+    }
+
+    /**
+     * Response to [UserRoleAction.Unsubscribe]
+     */
+    @Serializable
+    class Unsubscribed : UserRoleReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
+    /**
+     * Represents a single user role
+     */
+    @Serializable
+    data class UserRole(
+        val userId: Int,
+        val roleContext: String,
+        val contextId: Int,
+        val role: String,
+        val isPublic: Boolean
+    )
 }
