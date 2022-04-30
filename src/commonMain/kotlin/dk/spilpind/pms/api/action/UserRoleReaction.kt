@@ -2,7 +2,6 @@ package dk.spilpind.pms.api.action
 
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,6 +16,7 @@ sealed class UserRoleReaction : ContextReaction() {
      */
     @Serializable
     data class Added(
+        val userRoleId: Int,
         val userId: Int,
         val roleContext: String,
         val contextId: Int,
@@ -58,6 +58,7 @@ sealed class UserRoleReaction : ContextReaction() {
      */
     @Serializable
     data class UserRole(
+        val userRoleId: Int,
         val userId: Int,
         val roleContext: String,
         val contextId: Int,
