@@ -16,7 +16,12 @@ sealed class TournamentReaction : ContextReaction() {
      * Response to [TournamentAction.Add]
      */
     @Serializable
-    data class Added(val tournamentId: Int, val name: String, val tags: List<String>) : TournamentReaction() {
+    data class Added(
+        val tournamentId: Int,
+        val name: String,
+        val isPublic: Boolean,
+        val tags: List<String>
+    ) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -70,5 +75,5 @@ sealed class TournamentReaction : ContextReaction() {
      * Represents a single tournament
      */
     @Serializable
-    data class Tournament(val tournamentId: Int, val name: String, val tags: List<String>)
+    data class Tournament(val tournamentId: Int, val name: String, val isPublic: Boolean, val tags: List<String>)
 }
