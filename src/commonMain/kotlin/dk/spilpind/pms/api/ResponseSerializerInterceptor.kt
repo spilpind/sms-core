@@ -159,8 +159,6 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                 ReactionClassMap.ContextLess(ErrorReaction.DataValueError.serializer())
             Reaction.UnsafeOperation ->
                 ReactionClassMap.ContextLess(ErrorReaction.UnsafeOperation.serializer())
-            Reaction.InvalidJsonWebToken ->
-                ReactionClassMap.ContextLess(ErrorReaction.InvalidJsonWebToken.serializer())
             Reaction.MissingPermission ->
                 ReactionClassMap.ContextLess(ErrorReaction.MissingPermission.serializer())
             Reaction.ItemNotFound ->

@@ -22,7 +22,6 @@ enum class Reaction(val reactionKey: String) {
     DataStructureError("dataStructureError"),
     DataValueError("dataValueError"),
     UnsafeOperation("unsafeOperation"),
-    InvalidJsonWebToken("invalidJsonWebToken"),
     MissingPermission("missingPermission"),
     ItemNotFound("itemNotFound"),
 }

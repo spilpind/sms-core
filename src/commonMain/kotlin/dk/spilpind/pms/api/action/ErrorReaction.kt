@@ -94,21 +94,9 @@ sealed class ErrorReaction : ReactionData() {
     }
 
     /**
-     * The provided JWT was invalid, most likely because it expired. Fetch a new token a retry the
-     * request again
-     */
-    @Serializable
-    data class InvalidJsonWebToken(
-        override val action: String?,
-        override val message: String?
-    ) : ErrorReaction() {
-        override val reaction: Reaction = Reaction.InvalidJsonWebToken
-    }
-
-    /**
-     * The logged in user does not have permissions to perform the action. This can both be because
-     * the user does not have permission to it at all or because the user doesn't have permission to
-     * alter or view the specific data
+     * The logged-in user (or lack of) does not have permissions to perform the action. This can be as simple as the
+     * user needs to log in, but can also be because the user does not have permission to the action at all or because
+     * the user doesn't have permission to alter or view the specific data
      */
     @Serializable
     data class MissingPermission(
