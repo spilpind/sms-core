@@ -22,17 +22,19 @@ sealed class AuthenticationAction : ContextAction() {
     }
 
     /**
-     * Request to authenticate the user. It is required to pass in either [googleToken] or both [googleCode] and
-     * [redirectUrl], where [redirectUrl] should be the same as for [Inform]. A successful response to this would be
-     * [AuthenticationReaction.Fetched]
+     * Request to authenticate the user (i.e. add it to the current connection). It is required to pass in either
+     * [googleToken] or [googleCode], where [GoogleCode.redirectUrl] should be the same as for [Inform]. A successful
+     * response to this would be [AuthenticationReaction.Added]
      */
     @Serializable
-    data class Fetch(
+    data class Add(
         val googleToken: String? = null,
-        val googleCode: String? = null,
-        val redirectUrl: String? = null
+        val googleCode: GoogleCode? = null
     ) : AuthenticationAction() {
-        override val action: Action = Action.Fetch
+        override val action: Action = Action.Add
         override val minimumAccessLevel: Int? = null
+
+        @Serializable
+        data class GoogleCode(val code: String, val redirectUrl: String)
     }
 }

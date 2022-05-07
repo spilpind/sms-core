@@ -34,10 +34,10 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
             val actionClass: KSerializer<out ContextAction>? = when (context) {
                 Context.Authentication -> when (action) {
                     Action.Inform -> AuthenticationAction.Inform.serializer()
-                    Action.Add -> null
+                    Action.Add -> AuthenticationAction.Add.serializer()
                     Action.Remove -> null
                     Action.Update -> null
-                    Action.Fetch -> AuthenticationAction.Fetch.serializer()
+                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> null
                     Action.Unsubscribe -> null

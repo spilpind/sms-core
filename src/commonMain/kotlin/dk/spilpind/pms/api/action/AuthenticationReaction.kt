@@ -20,11 +20,11 @@ sealed class AuthenticationReaction : ContextReaction() {
     }
 
     /**
-     * Response to [AuthenticationAction.Fetch]. [jsonWebToken] should be used for any requests requiring authentication
+     * Response to [AuthenticationAction.Add]
      */
     @Serializable
-    data class Fetched(val jsonWebToken: String) : AuthenticationReaction() {
-        override val reaction: Reaction = Reaction.Fetched
+    data class Added(val userId: Int) : AuthenticationReaction() {
+        override val reaction: Reaction = Reaction.Added
     }
 }
 
