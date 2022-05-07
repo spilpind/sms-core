@@ -22,7 +22,8 @@ sealed class GameReaction : ContextReaction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val isFocused: Boolean
+        val isFocused: Boolean,
+        val joinInviteCode: String? = null
     ) : GameReaction() {
         override val reaction: Reaction = Reaction.Added
     }
@@ -89,6 +90,7 @@ sealed class GameReaction : ContextReaction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val isFocused: Boolean
+        val isFocused: Boolean,
+        val joinInviteCode: String? = null
     )
 }
