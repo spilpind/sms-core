@@ -20,6 +20,16 @@ sealed interface Game {
         override val isFocused: Boolean
     ) : Game
 
+    data class Single(
+        override val gameId: Int,
+        override val tournamentId: Int,
+        override val teamAId: Int?,
+        override val teamBId: Int?,
+        override val description: String,
+        override val isFocused: Boolean,
+        val joinInviteCode: String?
+    ) : Game
+
     data class Detailed(
         override val gameId: Int,
         val tournament: Tournament,
