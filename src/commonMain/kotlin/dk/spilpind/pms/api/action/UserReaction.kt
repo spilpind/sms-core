@@ -13,20 +13,6 @@ sealed class UserReaction : ContextReaction() {
     override val context: Context = Context.User
 
     /**
-     * Response to [UserAction.Add]
-     */
-    @Serializable
-    data class Added(
-        val userId: Int,
-        val name: String,
-        val username: String,
-        val email: String,
-        val accessLevel: Int
-    ) : UserReaction() {
-        override val reaction: Reaction = Reaction.Added
-    }
-
-    /**
      * Response to [UserAction.Remove]
      */
     @Serializable

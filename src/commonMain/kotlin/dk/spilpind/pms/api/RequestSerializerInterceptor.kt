@@ -44,7 +44,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 }
                 Context.User -> when (action) {
                     Action.Inform -> null
-                    Action.Add -> UserAction.Add.serializer()
+                    Action.Add -> null
                     Action.Remove -> UserAction.Remove.serializer()
                     Action.Update -> null
                     Action.Fetch -> UserAction.Fetch.serializer()
