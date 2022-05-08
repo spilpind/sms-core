@@ -22,7 +22,7 @@ sealed class TeamAction : ContextAction() {
         val addAsCaptain: Boolean = false
     ) : TeamAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int = 2
+        override val minimumAccessLevel: Int? = null
     }
 
     /**

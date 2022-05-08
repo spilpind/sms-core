@@ -25,7 +25,7 @@ sealed class GameAction : ContextAction() {
         val addJoinInvite: Boolean = false
     ) : GameAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int = 2
+        override val minimumAccessLevel: Int? = null
     }
 
     /**
