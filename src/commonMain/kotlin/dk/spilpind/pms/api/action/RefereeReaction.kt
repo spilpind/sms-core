@@ -20,11 +20,11 @@ sealed class RefereeReaction : ContextReaction() {
     @Serializable
     data class Updated(
         val gameId: Int,
-        val tournamentName: String,
-        val description: String,
         val gameState: String,
-        val inTeam: Team?,
-        val outTeam: Team?,
+        val inTeamId: Int?,
+        val outTeamId: Int?,
+        val inTeamPoints: Int,
+        val outTeamPoints: Int,
         val faults: Int,
         val dead: Int,
         val gameTime: Int,
@@ -50,12 +50,6 @@ sealed class RefereeReaction : ContextReaction() {
     object Unsubscribed : RefereeReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
     }
-
-    /**
-     * Represents a single team
-     */
-    @Serializable
-    data class Team(val name: String, val shortName: String, val points: Int)
 
     /**
      * Represents a single event
