@@ -21,13 +21,32 @@ sealed class UserReaction : ContextReaction() {
     }
 
     /**
-     * Response to [UserAction.Fetch]. If the request specified a specific user id, [users] will contain that user as
-     * the only item
+     * Response to changes in one or more of the users
      */
     @Serializable
-    data class Fetched(val users: List<User>) : UserReaction() {
-        override val reaction: Reaction = Reaction.Fetched
+    data class Updated(
+        val allItems: Boolean,
+        val users: List<User>
+    ) : UserReaction() {
+        override val reaction: Reaction = Reaction.Updated
     }
+
+    /**
+     * Response to [UserAction.Subscribe]
+     */
+    @Serializable
+    class Subscribed : UserReaction() {
+        override val reaction: Reaction = Reaction.Subscribed
+    }
+
+    /**
+     * Response to [UserAction.Unsubscribe]
+     */
+    @Serializable
+    class Unsubscribed : UserReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
 
     /**
      * Represents a single user

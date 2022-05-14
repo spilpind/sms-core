@@ -1,11 +1,11 @@
 package dk.spilpind.pms.api
 
+import dk.spilpind.pms.api.ResponseSerializerInterceptor.ConversionException
 import dk.spilpind.pms.api.SerializationUtil.alterData
 import dk.spilpind.pms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.pms.api.action.*
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.action.ErrorReaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*
@@ -93,23 +93,12 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             Reaction.Updated -> createContextMap { context ->
                 when (context) {
                     Context.Authentication -> null
-                    Context.User -> null
+                    Context.User -> UserReaction.Updated.serializer()
                     Context.UserRole -> UserRoleReaction.Updated.serializer()
                     Context.Tournament -> TournamentReaction.Updated.serializer()
                     Context.Game -> GameReaction.Updated.serializer()
                     Context.Team -> TeamReaction.Updated.serializer()
                     Context.Referee -> RefereeReaction.Updated.serializer()
-                }
-            }
-            Reaction.Fetched -> createContextMap { context ->
-                when (context) {
-                    Context.Authentication -> null
-                    Context.User -> UserReaction.Fetched.serializer()
-                    Context.UserRole -> null
-                    Context.Tournament -> null
-                    Context.Game -> null
-                    Context.Team -> null
-                    Context.Referee -> null
                 }
             }
             Reaction.Accepted -> createContextMap { context ->
@@ -126,7 +115,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             Reaction.Subscribed -> createContextMap { context ->
                 when (context) {
                     Context.Authentication -> null
-                    Context.User -> null
+                    Context.User -> UserReaction.Subscribed.serializer()
                     Context.UserRole -> UserRoleReaction.Subscribed.serializer()
                     Context.Tournament -> TournamentReaction.Subscribed.serializer()
                     Context.Game -> GameReaction.Subscribed.serializer()
@@ -137,7 +126,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             Reaction.Unsubscribed -> createContextMap { context ->
                 when (context) {
                     Context.Authentication -> null
-                    Context.User -> null
+                    Context.User -> UserReaction.Unsubscribed.serializer()
                     Context.UserRole -> UserRoleReaction.Unsubscribed.serializer()
                     Context.Tournament -> TournamentReaction.Unsubscribed.serializer()
                     Context.Game -> GameReaction.Unsubscribed.serializer()

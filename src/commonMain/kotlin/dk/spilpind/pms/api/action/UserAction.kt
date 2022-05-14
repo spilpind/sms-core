@@ -22,12 +22,24 @@ sealed class UserAction : ContextAction() {
     }
 
     /**
-     * Fetches the user with id [userId] or all users if it's null. A successful response to this would be
-     * [UserReaction.Fetched]
+     * Subscribes the socket to all users (or a single user) available for the current logged-in user and associated
+     * with the given parameters. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is
+     * called. Changes to the list will be sent to the socket, via relevant [UserReaction]s. A successful response to
+     * this would be [UserReaction.Subscribed] followed by [UserReaction.Updated]
      */
     @Serializable
-    data class Fetch(val userId: Int? = null) : UserAction() {
-        override val action: Action = Action.Fetch
+    data class Subscribe(val userId: Int?) : UserAction() {
+        override val action: Action = Action.Subscribe
+        override val minimumAccessLevel: Int? = null
+    }
+
+    /**
+     * Unsubscribes the socket from updates to the list of users, previously subscribed by [Subscribe]. A successful
+     * response to this would be [UserReaction.Unsubscribed]
+     */
+    @Serializable
+    data class Unsubscribe(val userId: Int?) : UserAction() {
+        override val action: Action = Action.Unsubscribe
         override val minimumAccessLevel: Int? = null
     }
 }

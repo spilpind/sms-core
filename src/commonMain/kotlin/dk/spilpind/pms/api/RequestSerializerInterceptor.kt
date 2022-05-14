@@ -37,7 +37,6 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> AuthenticationAction.Add.serializer()
                     Action.Remove -> AuthenticationAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> null
                     Action.Unsubscribe -> null
@@ -47,17 +46,15 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> null
                     Action.Remove -> UserAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> UserAction.Fetch.serializer()
                     Action.Accept -> null
-                    Action.Subscribe -> null
-                    Action.Unsubscribe -> null
+                    Action.Subscribe -> UserAction.Subscribe.serializer()
+                    Action.Unsubscribe -> UserAction.Unsubscribe.serializer()
                 }
                 Context.UserRole -> when (action) {
                     Action.Inform -> null
                     Action.Add -> UserRoleAction.Add.serializer()
                     Action.Remove -> null
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> UserRoleAction.Subscribe.serializer()
                     Action.Unsubscribe -> UserRoleAction.Unsubscribe.serializer()
@@ -67,7 +64,6 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> TournamentAction.Add.serializer()
                     Action.Remove -> TournamentAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> TournamentAction.Subscribe.serializer()
                     Action.Unsubscribe -> TournamentAction.Unsubscribe.serializer()
@@ -77,7 +73,6 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> GameAction.Add.serializer()
                     Action.Remove -> GameAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> GameAction.Accept.serializer()
                     Action.Subscribe -> GameAction.Subscribe.serializer()
                     Action.Unsubscribe -> GameAction.Unsubscribe.serializer()
@@ -87,7 +82,6 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> TeamAction.Add.serializer()
                     Action.Remove -> TeamAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> TeamAction.Subscribe.serializer()
                     Action.Unsubscribe -> TeamAction.Unsubscribe.serializer()
@@ -97,7 +91,6 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Add -> RefereeAction.Add.serializer()
                     Action.Remove -> RefereeAction.Remove.serializer()
                     Action.Update -> null
-                    Action.Fetch -> null
                     Action.Accept -> null
                     Action.Subscribe -> RefereeAction.Subscribe.serializer()
                     Action.Unsubscribe -> RefereeAction.Unsubscribe.serializer()
