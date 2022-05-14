@@ -6,7 +6,8 @@ import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
- * All possible reactions that can be made in relation to [Context.User]
+ * All possible reactions that can be made in relation to [Context.User]. Note that there isn't an add action as it's
+ * done via [AuthenticationAction.Add]
  */
 @Serializable
 sealed class UserReaction : ContextReaction() {

@@ -23,8 +23,9 @@ sealed class AuthenticationAction : ContextAction() {
 
     /**
      * Request to authenticate the user (i.e. add it to the current connection). It is required to pass in either
-     * [googleToken] or [googleCode], where [GoogleCode.redirectUrl] should be the same as for [Inform]. A successful
-     * response to this would be [AuthenticationReaction.Added]
+     * [googleToken] or [googleCode], where [GoogleCode.redirectUrl] should be the same as for [Inform]. If a valid
+     * token cannot be associated with a user, a new user will be created. A successful response to this would be
+     * [AuthenticationReaction.Added]
      */
     @Serializable
     data class Add(
