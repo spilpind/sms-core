@@ -15,14 +15,7 @@ sealed class UserRoleReaction : ContextReaction() {
      * Response to [UserRoleAction.Add]
      */
     @Serializable
-    data class Added(
-        val userRoleId: Int,
-        val userId: Int,
-        val roleContext: String,
-        val contextId: Int,
-        val role: String,
-        val isPublic: Boolean
-    ) : UserRoleReaction() {
+    data class Added(val userRole: UserRole) : UserRoleReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 

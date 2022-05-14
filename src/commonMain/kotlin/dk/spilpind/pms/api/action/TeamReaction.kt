@@ -16,12 +16,7 @@ sealed class TeamReaction : ContextReaction() {
      * Response to [TeamAction.Add]
      */
     @Serializable
-    data class Added(
-        val teamId: Int,
-        val name: String,
-        val shortName: String,
-        val tournamentId: Int
-    ) : TeamReaction() {
+    data class Added(val team: Team) : TeamReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 

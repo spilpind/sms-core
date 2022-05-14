@@ -16,15 +16,7 @@ sealed class GameReaction : ContextReaction() {
      * Response to [GameAction.Add]
      */
     @Serializable
-    data class Added(
-        val gameId: Int,
-        val tournamentId: Int,
-        val teamAId: Int?,
-        val teamBId: Int?,
-        val description: String,
-        val isFocused: Boolean,
-        val joinInviteCode: String? = null
-    ) : GameReaction() {
+    data class Added(val game: Game) : GameReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 
@@ -57,10 +49,10 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
-     * Response to [GameAction.Accept]. [gameId] will represent the game which the invite was related to
+     * Response to [GameAction.Accept]. [game] will represent the game which the invite was related to
      */
     @Serializable
-    data class Accepted(val gameId: Int) : GameReaction() {
+    data class Accepted(val game: Game) : GameReaction() {
         override val reaction: Reaction = Reaction.Accepted
     }
 
