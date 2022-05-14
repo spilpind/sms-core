@@ -36,16 +36,6 @@ sealed class TeamAction : ContextAction() {
     }
 
     /**
-     * Fetches the team with id [teamId] or all teams if it's null. A successful response to this would be
-     * [TeamReaction.Fetched]
-     */
-    @Serializable
-    data class Fetch(val teamId: Int? = null) : TeamAction() {
-        override val action: Action = Action.Fetch
-        override val minimumAccessLevel: Int? = null
-    }
-
-    /**
      * Subscribes the socket to all teams available for the current user and associated with the tournament identified
      * by [tournamentId]. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called.
      * Changes to the list will be sent to the socket, via relevant [TeamReaction]s. A successful response to this would

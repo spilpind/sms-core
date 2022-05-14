@@ -39,16 +39,6 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Fetches the game with id [gameId] or all games if it's null. A successful response to this would be
-     * [GameReaction.Fetched]
-     */
-    @Serializable
-    data class Fetch(val gameId: Int? = null) : GameAction() {
-        override val action: Action = Action.Fetch
-        override val minimumAccessLevel: Int? = null
-    }
-
-    /**
      * Accepts an invite related to a game. A successful response to this would be [GameReaction.Accepted]
      */
     @Serializable

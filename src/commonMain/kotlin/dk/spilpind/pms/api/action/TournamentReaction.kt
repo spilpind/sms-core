@@ -2,7 +2,6 @@ package dk.spilpind.pms.api.action
 
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
@@ -26,17 +25,6 @@ sealed class TournamentReaction : ContextReaction() {
     @Serializable
     data class Removed(val tournamentId: Int) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Removed
-    }
-
-    /**
-     * Response to [TournamentAction.Fetch]. If the request specified a specific tournament id, [items] will contain
-     * that tournament as the only item
-     */
-    @Serializable
-    data class Fetched(
-        override val items: List<Tournament>
-    ) : TournamentReaction(), FetchedData<Tournament> {
-        override val reaction: Reaction = Reaction.Fetched
     }
 
     /**

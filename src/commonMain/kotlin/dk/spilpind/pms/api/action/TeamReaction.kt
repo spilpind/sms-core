@@ -2,7 +2,6 @@ package dk.spilpind.pms.api.action
 
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
@@ -37,15 +36,6 @@ sealed class TeamReaction : ContextReaction() {
         val items: List<Team>
     ) : TeamReaction() {
         override val reaction: Reaction = Reaction.Updated
-    }
-
-    /**
-     * Response to [TeamAction.Fetch]. If the request specified a specific team id, [items] will contain that team as
-     * the only item
-     */
-    @Serializable
-    data class Fetched(override val items: List<Team>) : TeamReaction(), FetchedData<Team> {
-        override val reaction: Reaction = Reaction.Fetched
     }
 
     /**

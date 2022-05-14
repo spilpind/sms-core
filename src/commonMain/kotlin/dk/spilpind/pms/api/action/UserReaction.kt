@@ -2,7 +2,6 @@ package dk.spilpind.pms.api.action
 
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
@@ -22,11 +21,11 @@ sealed class UserReaction : ContextReaction() {
     }
 
     /**
-     * Response to [UserAction.Fetch]. If the request specified a specific user id, [items] will contain that user as
+     * Response to [UserAction.Fetch]. If the request specified a specific user id, [users] will contain that user as
      * the only item
      */
     @Serializable
-    data class Fetched(override val items: List<User>) : UserReaction(), FetchedData<User> {
+    data class Fetched(val users: List<User>) : UserReaction() {
         override val reaction: Reaction = Reaction.Fetched
     }
 

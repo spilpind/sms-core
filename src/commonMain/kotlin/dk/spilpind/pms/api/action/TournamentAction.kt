@@ -31,16 +31,6 @@ sealed class TournamentAction : ContextAction() {
     }
 
     /**
-     * Fetches the tournament with id [tournamentId] or all tournaments if it's null. A successful response to this
-     * would be [TournamentReaction.Fetched]
-     */
-    @Serializable
-    data class Fetch(val tournamentId: Int? = null) : TournamentAction() {
-        override val action: Action = Action.Fetch
-        override val minimumAccessLevel: Int? = null
-    }
-
-    /**
      * Subscribes the socket to all tournaments available for the current user. The subscription will be kept alive
      * until the socket disconnects or [Unsubscribe] is called. Changes to the list will be sent to the socket, via
      * relevant [TournamentReaction]s. A successful response to this would be [TournamentReaction.Subscribed] followed

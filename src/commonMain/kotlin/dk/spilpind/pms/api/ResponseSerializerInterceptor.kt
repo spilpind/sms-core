@@ -106,9 +106,9 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Authentication -> null
                     Context.User -> UserReaction.Fetched.serializer()
                     Context.UserRole -> null
-                    Context.Tournament -> TournamentReaction.Fetched.serializer()
-                    Context.Game -> GameReaction.Fetched.serializer()
-                    Context.Team -> TeamReaction.Fetched.serializer()
+                    Context.Tournament -> null
+                    Context.Game -> null
+                    Context.Team -> null
                     Context.Referee -> null
                 }
             }

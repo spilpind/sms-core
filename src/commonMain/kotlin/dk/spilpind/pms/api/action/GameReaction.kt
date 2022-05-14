@@ -2,7 +2,6 @@ package dk.spilpind.pms.api.action
 
 import dk.spilpind.pms.api.common.Context
 import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.data.FetchedData
 import kotlinx.serialization.Serializable
 
 /**
@@ -37,15 +36,6 @@ sealed class GameReaction : ContextReaction() {
         val items: List<Game>
     ) : GameReaction() {
         override val reaction: Reaction = Reaction.Updated
-    }
-
-    /**
-     * Response to [GameAction.Fetch]. If the request specified a specific game id, [items] will contain that game as
-     * the only item
-     */
-    @Serializable
-    data class Fetched(override val items: List<Game>) : GameReaction(), FetchedData<Game> {
-        override val reaction: Reaction = Reaction.Fetched
     }
 
     /**
