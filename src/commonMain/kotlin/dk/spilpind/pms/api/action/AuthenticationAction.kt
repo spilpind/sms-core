@@ -37,4 +37,14 @@ sealed class AuthenticationAction : ContextAction() {
         @Serializable
         data class GoogleCode(val code: String, val redirectUrl: String)
     }
+
+    /**
+     * Request to log out the user (i.e. remove it from the current connection). A successful response to this would be
+     * [AuthenticationReaction.Removed]
+     */
+    @Serializable
+    class Remove : AuthenticationAction() {
+        override val action: Action = Action.Remove
+        override val minimumAccessLevel: Int? = null
+    }
 }

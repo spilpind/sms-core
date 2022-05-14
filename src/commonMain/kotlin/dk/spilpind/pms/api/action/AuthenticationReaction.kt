@@ -26,6 +26,14 @@ sealed class AuthenticationReaction : ContextReaction() {
     data class Added(val userId: Int) : AuthenticationReaction() {
         override val reaction: Reaction = Reaction.Added
     }
+
+    /**
+     * Response to [AuthenticationAction.Remove]
+     */
+    @Serializable
+    class Removed : AuthenticationReaction() {
+        override val reaction: Reaction = Reaction.Removed
+    }
 }
 
 

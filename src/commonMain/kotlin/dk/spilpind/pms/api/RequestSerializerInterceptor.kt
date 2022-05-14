@@ -35,7 +35,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 Context.Authentication -> when (action) {
                     Action.Inform -> AuthenticationAction.Inform.serializer()
                     Action.Add -> AuthenticationAction.Add.serializer()
-                    Action.Remove -> null
+                    Action.Remove -> AuthenticationAction.Remove.serializer()
                     Action.Update -> null
                     Action.Fetch -> null
                     Action.Accept -> null
