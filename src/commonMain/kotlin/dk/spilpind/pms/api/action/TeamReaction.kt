@@ -28,12 +28,13 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the teams
+     * Response to changes in one or more of the teams. If [allTeams] is false, only the listed teams should be updated
+     * - if it's true, the entire list should be replaced
      */
     @Serializable
     data class Updated(
-        val allItems: Boolean,
-        val items: List<Team>
+        val allTeams: Boolean,
+        val teams: List<Team>
     ) : TeamReaction() {
         override val reaction: Reaction = Reaction.Updated
     }

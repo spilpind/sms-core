@@ -20,12 +20,13 @@ sealed class UserRoleReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the user roles
+     * Response to changes in one or more of the user roles. If [allUserRoles] is false, only the listed user roles
+     * should be updated - if it's true, the entire list should be replaced
      */
     @Serializable
     data class Updated(
-        val allItems: Boolean,
-        val items: List<UserRole>
+        val allUserRoles: Boolean,
+        val userRoles: List<UserRole>
     ) : UserRoleReaction() {
         override val reaction: Reaction = Reaction.Updated
     }

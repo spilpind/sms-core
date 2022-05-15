@@ -21,11 +21,12 @@ sealed class UserReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the users
+     * Response to changes in one or more of the users. If [allUsers] is false, only the listed users should be updated
+     * - if it's true, the entire list should be replaced
      */
     @Serializable
     data class Updated(
-        val allItems: Boolean,
+        val allUsers: Boolean,
         val users: List<User>
     ) : UserReaction() {
         override val reaction: Reaction = Reaction.Updated

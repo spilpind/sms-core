@@ -28,12 +28,13 @@ sealed class TournamentReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the tournaments
+     * Response to changes in one or more of the tournaments. If [allTournaments] is false, only the listed tournaments
+     * should be updated - if it's true, the entire list should be replaced
      */
     @Serializable
     data class Updated(
-        val allItems: Boolean,
-        val items: List<Tournament>
+        val allTournaments: Boolean,
+        val tournaments: List<Tournament>
     ) : TournamentReaction() {
         override val reaction: Reaction = Reaction.Updated
     }

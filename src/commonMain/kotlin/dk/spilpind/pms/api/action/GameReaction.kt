@@ -28,12 +28,13 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
-     * Response to changes in one or more of the games
+     * Response to changes in one or more of the games. If [allGames] is false, only the listed games should be updated
+     * - if it's true, the entire list should be replaced
      */
     @Serializable
     data class Updated(
-        val allItems: Boolean,
-        val items: List<Game>
+        val allGames: Boolean,
+        val games: List<Game>
     ) : GameReaction() {
         override val reaction: Reaction = Reaction.Updated
     }
