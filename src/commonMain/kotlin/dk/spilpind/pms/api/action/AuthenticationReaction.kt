@@ -1,0 +1,39 @@
+package dk.spilpind.pms.api.action
+
+import dk.spilpind.pms.api.common.Context
+import dk.spilpind.pms.api.common.Reaction
+import kotlinx.serialization.Serializable
+
+/**
+ * All possible reactions that can be made in relation to [Context.Authentication]
+ */
+@Serializable
+sealed class AuthenticationReaction : ContextReaction() {
+    override val context: Context = Context.Authentication
+
+    /**
+     * Response to [AuthenticationAction.Inform]. Send the user to [googleLoginUrl] in order to authenticate
+     */
+    @Serializable
+    data class Informed(val googleLoginUrl: String) : AuthenticationReaction() {
+        override val reaction: Reaction = Reaction.Informed
+    }
+
+    /**
+     * Response to [AuthenticationAction.Add]
+     */
+    @Serializable
+    data class Added(val userId: Int) : AuthenticationReaction() {
+        override val reaction: Reaction = Reaction.Added
+    }
+
+    /**
+     * Response to [AuthenticationAction.Remove]
+     */
+    @Serializable
+    class Removed : AuthenticationReaction() {
+        override val reaction: Reaction = Reaction.Removed
+    }
+}
+
+
