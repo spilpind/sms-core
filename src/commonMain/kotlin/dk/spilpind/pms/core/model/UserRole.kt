@@ -11,19 +11,31 @@ sealed interface UserRole {
     val role: String
     val isPublic: Boolean
 
+    /**
+     * Defines all types of user roles that exists
+     */
     sealed class ContextRole(context: RawContext, role: RawRole) {
         val context = context.identifier
         val role = role.identifier
 
+        /**
+         * Defines all types of user roles that exists for a team
+         */
         sealed class Team(role: Roles) : ContextRole(context = RawContext.Team, role = role) {
             enum class Roles(override val identifier: String) : RawRole {
                 Captain("captain")
             }
 
+            /**
+             * A user role representing a captain of a team
+             */
             object Captain : Team(role = Roles.Captain)
         }
     }
 
+    /**
+     * Represents the raw user role
+     */
     data class Raw(
         override val userRoleId: Int,
         override val userId: Int,
@@ -33,6 +45,9 @@ sealed interface UserRole {
         override val isPublic: Boolean
     ) : UserRole
 
+    /**
+     * Like [Raw], but with a specified [contextRole]
+     */
     data class Simple(
         override val userRoleId: Int,
         override val userId: Int,
@@ -56,6 +71,9 @@ sealed interface UserRole {
             val identifier: String
         }
 
+        /**
+         * Finds a [ContextRole] based on the provided parameters or throw an [IllegalArgumentException] if not found
+         */
         fun findContext(contextIdentifier: String, roleIdentifier: String): ContextRole {
             val rawContext = RawContext.values().firstOrNull { context ->
                 context.identifier == contextIdentifier

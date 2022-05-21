@@ -15,19 +15,31 @@ sealed interface Invite {
     val expires: LocalDateTime
     val requesterId: Int
 
+    /**
+     * Defines all types of invites that exists
+     */
     sealed class ContextAction(context: RawContext, action: RawAction) {
         val context = context.identifier
         val action = action.identifier
 
+        /**
+         * Defines all types of invites that exists for a game
+         */
         sealed class Game(action: Actions) : ContextAction(context = RawContext.Game, action = action) {
             enum class Actions(override val identifier: String) : RawAction {
                 Join("join")
             }
 
+            /**
+             * An invite for a team to join the game
+             */
             object Join : Game(action = Actions.Join)
         }
     }
 
+    /**
+     * Represents the raw invite
+     */
     data class Raw(
         override val inviteId: Int,
         override val context: String,
@@ -38,6 +50,9 @@ sealed interface Invite {
         override val requesterId: Int
     ) : Invite
 
+    /**
+     * Like [Raw], but with a specified [contextAction]
+     */
     data class Simple(
         override val inviteId: Int,
         val contextAction: ContextAction,
@@ -63,6 +78,9 @@ sealed interface Invite {
             val identifier: String
         }
 
+        /**
+         * Finds a [ContextAction] based on the provided parameters or throw an [IllegalArgumentException] if not found
+         */
         fun findContextAction(contextIdentifier: String, actionIdentifier: String): ContextAction {
             val rawContext = RawContext.values().firstOrNull { context ->
                 context.identifier == contextIdentifier
