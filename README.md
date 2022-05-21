@@ -1,2 +1,2 @@
-# pms-core
-Core model and logic for Pind Manager System
+# SMS Core
+Core components and logic for Stick Manager System.

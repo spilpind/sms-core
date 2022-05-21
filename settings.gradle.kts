@@ -1,4 +1,4 @@
-rootProject.name = "pms-core"
+rootProject.name = "sms-core"
 
 pluginManagement {
     plugins {
