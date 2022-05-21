@@ -3,14 +3,14 @@ package dk.spilpind.pms.core.model
 import kotlinx.datetime.LocalDateTime
 
 /**
- * Represents an invite that needs to be accepted by one or more users. This can for instance be an invite to be added
- * as captain of a team or become the second team of a game
+ * Represents an invite (for a [request] in the given [context]) that needs to be accepted by one or more users. This
+ * can for instance be an invite to be added as captain of a team or become the second team of a game
  */
 sealed interface Invite {
     val inviteId: Int
     val context: String
     val contextId: Int
-    val action: String
+    val request: String
     val code: String
     val expires: LocalDateTime
     val requesterId: Int
@@ -18,22 +18,22 @@ sealed interface Invite {
     /**
      * Defines all types of invites that exists
      */
-    sealed class ContextAction(context: RawContext, action: RawAction) {
+    sealed class ContextRequest(context: RawContext, request: RawRequest) {
         val context = context.identifier
-        val action = action.identifier
+        val request = request.identifier
 
         /**
          * Defines all types of invites that exists for a game
          */
-        sealed class Game(action: Actions) : ContextAction(context = RawContext.Game, action = action) {
-            enum class Actions(override val identifier: String) : RawAction {
+        sealed class Game(request: Requests) : ContextRequest(context = RawContext.Game, request = request) {
+            enum class Requests(override val identifier: String) : RawRequest {
                 Join("join")
             }
 
             /**
              * An invite for a team to join the game
              */
-            object Join : Game(action = Actions.Join)
+            object Join : Game(request = Requests.Join)
         }
     }
 
@@ -44,27 +44,27 @@ sealed interface Invite {
         override val inviteId: Int,
         override val context: String,
         override val contextId: Int,
-        override val action: String,
+        override val request: String,
         override val code: String,
         override val expires: LocalDateTime,
         override val requesterId: Int
     ) : Invite
 
     /**
-     * Like [Raw], but with a specified [contextAction]
+     * Like [Raw], but with a specified [contextRequest]
      */
     data class Simple(
         override val inviteId: Int,
-        val contextAction: ContextAction,
+        val contextRequest: ContextRequest,
         override val contextId: Int,
         override val code: String,
         override val expires: LocalDateTime,
         override val requesterId: Int
     ) : Invite {
 
-        override val context: String = contextAction.context
+        override val context: String = contextRequest.context
 
-        override val action: String = contextAction.action
+        override val request: String = contextRequest.request
 
     }
 
@@ -74,25 +74,27 @@ sealed interface Invite {
             Game("game")
         }
 
-        internal interface RawAction {
+        internal interface RawRequest {
             val identifier: String
         }
 
         /**
-         * Finds a [ContextAction] based on the provided parameters or throw an [IllegalArgumentException] if not found
+         * Finds a [ContextRequest] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
-        fun findContextAction(contextIdentifier: String, actionIdentifier: String): ContextAction {
+        fun findContextRequest(contextIdentifier: String, requestIdentifier: String): ContextRequest {
             val rawContext = RawContext.values().firstOrNull { context ->
                 context.identifier == contextIdentifier
             }
 
             return when (rawContext) {
-                RawContext.Game -> when (findActionOrNull<ContextAction.Game.Actions>(identifier = actionIdentifier)) {
-                    ContextAction.Game.Actions.Join -> ContextAction.Game.Join
+                RawContext.Game -> when (
+                    findRequestOrNull<ContextRequest.Game.Requests>(identifier = requestIdentifier)
+                ) {
+                    ContextRequest.Game.Requests.Join -> ContextRequest.Game.Join
                     null -> throwArgumentException(
                         rawContext = rawContext,
-                        actionIdentifier = actionIdentifier,
-                        availableActions = ContextAction.Game.Actions.values()
+                        requestIdentifier = requestIdentifier,
+                        availableRequests = ContextRequest.Game.Requests.values()
                     )
                 }
                 null -> throw IllegalArgumentException(
@@ -102,16 +104,16 @@ sealed interface Invite {
             }
         }
 
-        private inline fun <reified T> findActionOrNull(identifier: String): T? where T : Enum<T>, T : RawAction {
-            return enumValues<T>().firstOrNull { action -> action.identifier == identifier }
+        private inline fun <reified T> findRequestOrNull(identifier: String): T? where T : Enum<T>, T : RawRequest {
+            return enumValues<T>().firstOrNull { request -> request.identifier == identifier }
         }
 
         private fun <T, R> throwArgumentException(
-            rawContext: RawContext, actionIdentifier: String, availableActions: Array<T>
-        ): R where T : Enum<T>, T : RawAction {
+            rawContext: RawContext, requestIdentifier: String, availableRequests: Array<T>
+        ): R where T : Enum<T>, T : RawRequest {
             throw IllegalArgumentException(
-                "Action \"$actionIdentifier\" not found en context \"${rawContext.identifier}\". Available actions: " +
-                        "${availableActions.map { availableAction -> availableAction.identifier }}"
+                "Request \"$requestIdentifier\" not found en context \"${rawContext.identifier}\". " +
+                        "Available requests: ${availableRequests.map { request -> request.identifier }}"
             )
         }
     }
