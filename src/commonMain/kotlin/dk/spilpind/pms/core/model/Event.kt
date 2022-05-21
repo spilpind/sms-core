@@ -8,7 +8,13 @@ import kotlinx.datetime.LocalDateTime
  * event is needed to represent a real life event. This is e.g. the case for events during the game that result in a
  * direct dead as they are all represented as a fault and thus also needs a [Dead] event right after. There's a few
  * reasons for this, one being that it's more generic and could be configured per game-basis if the event should result
- * in a dead or just a fault
+ * in a dead or just a fault.
+ *
+ * If specified [teamId] in most cases represents the in team. The few ambiguous cases are the events that changes or
+ * "sets" the in team e.g. timing and switch events - in those cases the [teamId] represents the new in team.
+ *
+ * [time] represents the relative seconds within the game the event happened - this is the time you would e.g. see in a
+ * score board
  */
 sealed interface Event {
     val eventId: Int
@@ -106,7 +112,7 @@ sealed interface Event {
 
     /**
      * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
-     * which should represent the team starting as in team
+     * which represents the team starting as in team
      */
     data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
         Simple(type = timingType.type, baseInfo = baseInfo) {
@@ -146,8 +152,8 @@ sealed interface Event {
     }
 
     /**
-     * Represents a switch between in and out team, the reason is defined by [switchType]. [teamId] should represent the
-     * new in team
+     * Represents a switch between in and out team, the reason is defined by [switchType]. [teamId] represents the new
+     * in team
      */
     data class Switch(private val baseInfo: BaseInfo, val switchType: SwitchType) :
         Simple(type = switchType.type, baseInfo = baseInfo) {
