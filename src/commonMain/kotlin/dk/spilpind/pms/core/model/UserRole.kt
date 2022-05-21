@@ -1,7 +1,8 @@
 package dk.spilpind.pms.core.model
 
 /**
- * Represents a user's role in a specific context, like a game, team or tournament
+ * Represents a user's role in a specific context, like a game, team or tournament. [contextId] represents the id in the
+ * context - for instance, if context is "game" it is expected to be the id of the game this invite relates to
  */
 sealed interface UserRole {
     val userRoleId: Int

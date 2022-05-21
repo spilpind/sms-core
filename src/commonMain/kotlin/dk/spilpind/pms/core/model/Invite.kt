@@ -4,7 +4,9 @@ import kotlinx.datetime.LocalDateTime
 
 /**
  * Represents an invite (for a [request] in the given [context]) that needs to be accepted by one or more users. This
- * can for instance be an invite to be added as captain of a team or become the second team of a game
+ * can for instance be an invite to be added as captain of a team or become the second team of a game. [contextId]
+ * represents the id in the context - for instance, if context is "tournament" it is expected to be the id of the
+ * tournament this invite relates to
  */
 sealed interface Invite {
     val inviteId: Int
