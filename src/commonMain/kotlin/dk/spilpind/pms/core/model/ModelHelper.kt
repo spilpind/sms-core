@@ -1,7 +1,13 @@
 package dk.spilpind.pms.core.model
 
+/**
+ * Various methods that's useful when dealing with the core models
+ */
 object ModelHelper {
 
+    /**
+     * Converts a raw event to a simple event
+     */
     fun Event.Raw.toDetailedEvent(): Event.Simple {
         val baseInfo = Event.Simple.BaseInfo(
             eventId = eventId,
