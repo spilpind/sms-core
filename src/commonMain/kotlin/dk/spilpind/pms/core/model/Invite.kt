@@ -87,8 +87,7 @@ sealed interface Invite {
             }
 
             return when (rawContext) {
-                RawContext.Game -> when (ContextAction.Game.Actions.values()
-                    .findActionOrNull(identifier = actionIdentifier)) {
+                RawContext.Game -> when (findActionOrNull<ContextAction.Game.Actions>(identifier = actionIdentifier)) {
                     ContextAction.Game.Actions.Join -> ContextAction.Game.Join
                     null -> throwArgumentException(
                         rawContext = rawContext,
@@ -103,8 +102,8 @@ sealed interface Invite {
             }
         }
 
-        private fun <T> Array<T>.findActionOrNull(identifier: String): T? where T : Enum<T>, T : RawAction {
-            return firstOrNull { action -> action.identifier == identifier }
+        private inline fun <reified T> findActionOrNull(identifier: String): T? where T : Enum<T>, T : RawAction {
+            return enumValues<T>().firstOrNull { action -> action.identifier == identifier }
         }
 
         private fun <T, R> throwArgumentException(

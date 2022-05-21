@@ -80,9 +80,7 @@ sealed interface UserRole {
             }
 
             return when (rawContext) {
-                RawContext.Team -> when (
-                    ContextRole.Team.Roles.values().findRoleOrNull(identifier = roleIdentifier)
-                ) {
+                RawContext.Team -> when (findRoleOrNull<ContextRole.Team.Roles>(identifier = roleIdentifier)) {
                     ContextRole.Team.Roles.Captain -> ContextRole.Team.Captain
                     null -> throwArgumentException(
                         rawContext = rawContext,
@@ -97,8 +95,8 @@ sealed interface UserRole {
             }
         }
 
-        private fun <T> Array<T>.findRoleOrNull(identifier: String): T? where T : Enum<T>, T : RawRole {
-            return firstOrNull { role -> role.identifier == identifier }
+        private inline fun <reified T> findRoleOrNull(identifier: String): T? where T : Enum<T>, T : RawRole {
+            return enumValues<T>().firstOrNull { role -> role.identifier == identifier }
         }
 
         private fun <T, R> throwArgumentException(
