@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core.model
+package dk.spilpind.sms.core.model
 
 /**
  * Represents a user's role in a specific context, like a game, team or tournament. [contextId] represents the id in the

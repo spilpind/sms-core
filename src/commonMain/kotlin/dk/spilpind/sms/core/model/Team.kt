@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core.model
+package dk.spilpind.sms.core.model
 
 /**
  * Represents data about a team

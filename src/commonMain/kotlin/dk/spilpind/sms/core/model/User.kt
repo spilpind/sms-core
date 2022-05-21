@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core.model
+package dk.spilpind.sms.core.model
 
 /**
  * Represents data about a user of the system. This can e.g. be an admin or a referee
