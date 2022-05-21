@@ -107,7 +107,7 @@ sealed interface UserRole {
             val availableRoles = enumValues<RoleType>()
 
             throw IllegalArgumentException(
-                "Role \"$roleIdentifier\" not found en context \"${rawContext.identifier}\". Available roles: "
+                "Role \"$roleIdentifier\" not found in context \"${rawContext.identifier}\". Available roles: "
                         + "${availableRoles.map { availableRole -> availableRole.identifier }}"
             )
         }

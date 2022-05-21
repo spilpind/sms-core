@@ -115,9 +115,9 @@ sealed interface Invite {
             requestIdentifier: String
         ): Nothing where RequestType : Enum<RequestType>, RequestType : RawRequest {
             val availableRequests = enumValues<RequestType>()
-            
+
             throw IllegalArgumentException(
-                "Request \"$requestIdentifier\" not found en context \"${rawContext.identifier}\". " +
+                "Request \"$requestIdentifier\" not found in context \"${rawContext.identifier}\". " +
                         "Available requests: ${availableRequests.map { request -> request.identifier }}"
             )
         }
