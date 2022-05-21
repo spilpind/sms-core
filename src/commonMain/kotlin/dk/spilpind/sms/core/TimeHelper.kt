@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core
+package dk.spilpind.sms.core
 
 import kotlinx.datetime.*
 

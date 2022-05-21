@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core.model
+package dk.spilpind.sms.core.model
 
 /**
  * Various methods that's useful when dealing with the core models

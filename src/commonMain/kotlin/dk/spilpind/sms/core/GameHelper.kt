@@ -1,9 +1,9 @@
-package dk.spilpind.pms.core
+package dk.spilpind.sms.core
 
-import dk.spilpind.pms.core.TimeHelper.secondsUntilNow
-import dk.spilpind.pms.core.model.Event
-import dk.spilpind.pms.core.model.Game
-import dk.spilpind.pms.core.model.Team
+import dk.spilpind.sms.core.TimeHelper.secondsUntilNow
+import dk.spilpind.sms.core.model.Event
+import dk.spilpind.sms.core.model.Game
+import dk.spilpind.sms.core.model.Team
 
 /**
  * Various utility functionality useful when dealing with overall game logic

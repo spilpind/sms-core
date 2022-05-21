@@ -1,4 +1,4 @@
-package dk.spilpind.pms.core.model
+package dk.spilpind.sms.core.model
 
 /**
  * Represents a user's role in a specific context, like a game, team or tournament. [contextId] represents the id in the
@@ -64,6 +64,7 @@ sealed interface UserRole {
     }
 
     companion object {
+        // TODO: Use context from api instead
         internal enum class RawContext(val identifier: String) {
             Team("team")
         }
