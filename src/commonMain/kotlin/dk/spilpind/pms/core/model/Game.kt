@@ -10,6 +10,7 @@ sealed interface Game {
     val teamBId: Int?
     val description: String
     val isFocused: Boolean
+    val joinInviteCode: String?
 
     data class Raw(
         override val gameId: Int,
@@ -17,17 +18,8 @@ sealed interface Game {
         override val teamAId: Int?,
         override val teamBId: Int?,
         override val description: String,
-        override val isFocused: Boolean
-    ) : Game
-
-    data class Single(
-        override val gameId: Int,
-        override val tournamentId: Int,
-        override val teamAId: Int?,
-        override val teamBId: Int?,
-        override val description: String,
         override val isFocused: Boolean,
-        val joinInviteCode: String?
+        override val joinInviteCode: String?
     ) : Game
 
     data class Detailed(
@@ -36,7 +28,8 @@ sealed interface Game {
         val teamA: Team?,
         val teamB: Team?,
         override val description: String,
-        override val isFocused: Boolean
+        override val isFocused: Boolean,
+        override val joinInviteCode: String?
     ) : Game {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
