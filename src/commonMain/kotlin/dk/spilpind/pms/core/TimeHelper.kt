@@ -3,20 +3,28 @@ package dk.spilpind.pms.core
 import kotlinx.datetime.*
 
 /**
- * Various utility functionality useful when dealing with timing in a game
+ * Various utility functionality useful when dealing with time and timing, both in a game and when persisting date times
  */
-object TimingHelper {
-
-    private val currentInstant: Instant
-        get() = Clock.System.now()
+object TimeHelper {
 
     private val timeZone = TimeZone.currentSystemDefault()
+
+    /**
+     * Returns an object representing the current instant
+     */
+    val now: Instant
+        get() = Clock.System.now()
 
     /**
      * Returns a string representing the current date and time. This can be used e.g. as database values
      */
     val currentDateTimeString: String
-        get() = currentInstant.toLocalDateTime(timeZone).toString()
+        get() = now.toLocalDateTime().toString()
+
+    /**
+     * Converts the instant to local date time based on timezone of this device
+     */
+    fun Instant.toLocalDateTime(): LocalDateTime = toLocalDateTime(timeZone)
 
     /**
      * Parses [isoDateString] to a date time object. This can e.g. parse values from [currentDateTimeString]
@@ -35,7 +43,7 @@ object TimingHelper {
      */
     fun LocalDateTime.secondsUntilNow(): Int {
         val instantInThePast = toInstant(timeZone)
-        return instantInThePast.until(currentInstant, DateTimeUnit.SECOND, timeZone).toInt()
+        return instantInThePast.until(now, DateTimeUnit.SECOND, timeZone).toInt()
     }
 
 }

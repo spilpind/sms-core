@@ -8,9 +8,22 @@ import kotlinx.datetime.LocalDateTime
  * event is needed to represent a real life event. This is e.g. the case for events during the game that result in a
  * direct dead as they are all represented as a fault and thus also needs a [Dead] event right after. There's a few
  * reasons for this, one being that it's more generic and could be configured per game-basis if the event should result
- * in a dead or just a fault
+ * in a dead or just a fault.
+ *
+ * If specified [teamId] in most cases represents the in team. The few ambiguous cases are the events that changes or
+ * "sets" the in team e.g. timing and switch events - in those cases the [teamId] represents the new in team.
+ *
+ * [time] represents the relative seconds within the game the event happened - this is the time you would e.g. see in a
+ * score board
  */
 sealed interface Event {
+    val eventId: Int
+    val gameId: Int
+    val teamId: Int?
+    val typeId: Int
+    val time: Int
+    val refereeId: Int
+    val created: LocalDateTime
 
     /**
      * All type of events, most important part of this are their unique ids which is useful for e.g. storing the events.
@@ -42,47 +55,67 @@ sealed interface Event {
     }
 
     /**
-     * Base information that's used for all events
+     * Represents the raw event
      */
-    data class BaseInfo(
-        val eventId: Int?,
-        val gameId: Int,
-        val teamId: Int?,
-        val time: Int,
-        val refereeId: Int,
-        val created: LocalDateTime
-    )
-
-    val type: Type
-    val baseInfo: BaseInfo
+    data class Raw(
+        override val eventId: Int,
+        override val gameId: Int,
+        override val teamId: Int?,
+        override val typeId: Int,
+        override val time: Int,
+        override val refereeId: Int,
+        override val created: LocalDateTime,
+        val points: Int?
+    ) : Event
 
     /**
-     * Represents points given to [BaseInfo.teamId] after a successful lift
+     * Like [Raw], but with a specified [type]. The subclasses also represents specific type of event and might include
+     * additional data, like [Points] that contains the number of points.
      */
-    data class Points(override val baseInfo: BaseInfo, val points: Int) : Event {
-        override val type: Type = Type.Points
+    sealed class Simple(val type: Type, baseInfo: BaseInfo) : Event {
+        override val eventId: Int = baseInfo.eventId
+        override val gameId: Int = baseInfo.gameId
+        override val teamId: Int? = baseInfo.teamId
+        override val typeId = type.typeId
+        override val time: Int = baseInfo.time
+        override val refereeId: Int = baseInfo.refereeId
+        override val created: LocalDateTime = baseInfo.created
+
+        /**
+         * Base information that's used for all events
+         */
+        data class BaseInfo(
+            val eventId: Int,
+            val gameId: Int,
+            val teamId: Int?,
+            val time: Int,
+            val refereeId: Int,
+            val created: LocalDateTime
+        )
     }
 
     /**
-     * Represents a single dead given to [BaseInfo.teamId]
+     * Represents points given to [teamId] after a successful lift
      */
-    data class Dead(override val baseInfo: BaseInfo) : Event {
-        override val type: Type = Type.Dead
-    }
+    data class Points(private val baseInfo: BaseInfo, val points: Int) :
+        Simple(type = Type.Points, baseInfo = baseInfo)
 
     /**
-     * Represents a lift without any dead or faults by [BaseInfo.teamId]
+     * Represents a single dead given to [teamId]
      */
-    data class LiftSuccess(override val baseInfo: BaseInfo) : Event {
-        override val type: Type = Type.LiftSuccess
-    }
+    data class Dead(private val baseInfo: BaseInfo) : Simple(type = Type.Dead, baseInfo = baseInfo)
 
     /**
-     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a
-     * [BaseInfo.teamId] which should represent the team starting as in team
+     * Represents a lift without any dead or faults by [teamId]
      */
-    data class Timing(override val baseInfo: BaseInfo, val timingType: TimingType) : Event {
-        override val type: Type = timingType.type
+    data class LiftSuccess(private val baseInfo: BaseInfo) : Simple(type = Type.LiftSuccess, baseInfo = baseInfo)
+
+    /**
+     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
+     * which represents the team starting as in team
+     */
+    data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
+        Simple(type = timingType.type, baseInfo = baseInfo) {
 
         /**
          * The various timing types.
@@ -96,11 +129,11 @@ sealed interface Event {
     }
 
     /**
-     * Represents a fault as defined by [faultType] given to [BaseInfo.teamId]. A few of the fault events might also
-     * result in a direct [Dead] event as well
+     * Represents a fault as defined by [faultType] given to [teamId]. A few of the fault events might also result in a
+     * direct [Dead] event as well
      */
-    data class Fault(override val baseInfo: BaseInfo, val faultType: FaultType) : Event {
-        override val type: Type = faultType.type
+    data class Fault(private val baseInfo: BaseInfo, val faultType: FaultType) :
+        Simple(type = faultType.type, baseInfo = baseInfo) {
 
         /**
          * All types of faults. Note that some of them might not be part of the current rules but are just here for
@@ -119,11 +152,11 @@ sealed interface Event {
     }
 
     /**
-     * Represents a switch between in and out team, the reason is defined by [switchType]. [BaseInfo.teamId] should
-     * represent the new in team
+     * Represents a switch between in and out team, the reason is defined by [switchType]. [teamId] represents the new
+     * in team
      */
-    data class Switch(override val baseInfo: BaseInfo, val switchType: SwitchType) : Event {
-        override val type: Type = switchType.type
+    data class Switch(private val baseInfo: BaseInfo, val switchType: SwitchType) :
+        Simple(type = switchType.type, baseInfo = baseInfo) {
 
         /**
          * The reasons for a switch

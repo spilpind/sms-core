@@ -1,6 +1,6 @@
 package dk.spilpind.pms.core
 
-import dk.spilpind.pms.core.TimingHelper.secondsUntilNow
+import dk.spilpind.pms.core.TimeHelper.secondsUntilNow
 import dk.spilpind.pms.core.model.Event
 import dk.spilpind.pms.core.model.Game
 import dk.spilpind.pms.core.model.Team
@@ -23,7 +23,7 @@ object GameHelper {
     /**
      * Finds the in team of the game based on the provided [events]
      */
-    fun Game.findInTeam(events: List<Event>): Team? {
+    fun Game.Detailed.findInTeam(events: List<Event.Simple>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamA
@@ -37,7 +37,7 @@ object GameHelper {
     /**
      * Finds the out team of the game based on the provided [events]
      */
-    fun Game.findOutTeam(events: List<Event>): Team? {
+    fun Game.Detailed.findOutTeam(events: List<Event.Simple>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamB
@@ -51,13 +51,13 @@ object GameHelper {
     /**
      * Calculates the points for the team based on the provided [events]
      */
-    fun Team.calculatePoints(events: List<Event>): Int {
+    fun Team.calculatePoints(events: List<Event.Simple>): Int {
         return events.sumOf { event ->
             when (event) {
                 is Event.Dead -> 0
                 is Event.Fault -> 0
                 is Event.LiftSuccess -> 0
-                is Event.Points -> if (event.baseInfo.teamId == teamId) {
+                is Event.Points -> if (event.teamId == teamId) {
                     event.points
                 } else {
                     0
@@ -71,7 +71,7 @@ object GameHelper {
     /**
      * Returns the game state based on the list of events
      */
-    val List<Event>.gameState: GameState
+    val List<Event.Simple>.gameState: GameState
         get() = when (val event = firstOrNull()) {
             is Event.Dead -> GameState.STARTED
             is Event.Fault -> GameState.STARTED
@@ -90,7 +90,7 @@ object GameHelper {
     /**
      * Returns the fault count for the in team based on the list of events
      */
-    val List<Event>.faultCount: Int
+    val List<Event.Simple>.faultCount: Int
         get() {
             var count = 0
 
@@ -116,7 +116,7 @@ object GameHelper {
     /**
      * Returns the dead count for the in team based on the list of events
      */
-    val List<Event>.deadCount: Int
+    val List<Event.Simple>.deadCount: Int
         get() {
             var count = 0
 
@@ -144,7 +144,7 @@ object GameHelper {
      * hasn't completed yet, based on the list of events. This is useful e.g. to be able to show less buttons in a
      * referee view, as there's less possible actions. The state is independent of pauses which are ignored
      */
-    val List<Event>.isLiftSuccessFull: Boolean
+    val List<Event.Simple>.isLiftSuccessFull: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> false
@@ -164,7 +164,7 @@ object GameHelper {
     /**
      * Returns the total game time in seconds, excluding pauses
      */
-    val List<Event>.gameTime: Int
+    val List<Event.Simple>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> null
@@ -173,12 +173,12 @@ object GameHelper {
                 is Event.Points -> null
                 is Event.Switch -> null
                 is Event.Timing -> {
-                    val eventTime = event.baseInfo.time
+                    val eventTime = event.time
                     when (event.timingType) {
-                        Event.Timing.TimingType.GameStart -> eventTime + event.baseInfo.created.secondsUntilNow()
+                        Event.Timing.TimingType.GameStart -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.GameEnd -> eventTime
                         Event.Timing.TimingType.PauseStart -> eventTime
-                        Event.Timing.TimingType.PauseEnd -> eventTime + event.baseInfo.created.secondsUntilNow()
+                        Event.Timing.TimingType.PauseEnd -> eventTime + event.created.secondsUntilNow()
                     }
                 }
             }
@@ -187,7 +187,7 @@ object GameHelper {
     /**
      * Calculates the turn time in seconds. This is the time since last switch or start of game, excluding pauses
      */
-    val List<Event>.turnTime: Int
+    val List<Event.Simple>.turnTime: Int
         get() {
             val switchTime = firstNotNullOfOrNull { event ->
                 when (event) {
@@ -195,7 +195,7 @@ object GameHelper {
                     is Event.Fault -> null
                     is Event.LiftSuccess -> null
                     is Event.Points -> null
-                    is Event.Switch -> event.baseInfo.time
+                    is Event.Switch -> event.time
                     is Event.Timing -> null
                 }
             }
@@ -207,16 +207,16 @@ object GameHelper {
             }
         }
 
-    private val List<Event>.inTeamId: Int?
+    private val List<Event.Simple>.inTeamId: Int?
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> null
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null
-                is Event.Switch -> event.baseInfo.teamId
+                is Event.Switch -> event.teamId
                 is Event.Timing -> when (event.timingType) {
-                    Event.Timing.TimingType.GameStart -> event.baseInfo.teamId
+                    Event.Timing.TimingType.GameStart -> event.teamId
                     Event.Timing.TimingType.GameEnd -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
