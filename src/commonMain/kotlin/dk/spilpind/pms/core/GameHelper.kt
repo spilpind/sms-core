@@ -23,7 +23,7 @@ object GameHelper {
     /**
      * Finds the in team of the game based on the provided [events]
      */
-    fun Game.Detailed.findInTeam(events: List<Event.Detailed>): Team? {
+    fun Game.Detailed.findInTeam(events: List<Event.Simple>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamA
@@ -37,7 +37,7 @@ object GameHelper {
     /**
      * Finds the out team of the game based on the provided [events]
      */
-    fun Game.Detailed.findOutTeam(events: List<Event.Detailed>): Team? {
+    fun Game.Detailed.findOutTeam(events: List<Event.Simple>): Team? {
         return when (val inTeamId = events.inTeamId) {
             null -> null
             teamA?.teamId -> teamB
@@ -51,7 +51,7 @@ object GameHelper {
     /**
      * Calculates the points for the team based on the provided [events]
      */
-    fun Team.calculatePoints(events: List<Event.Detailed>): Int {
+    fun Team.calculatePoints(events: List<Event.Simple>): Int {
         return events.sumOf { event ->
             when (event) {
                 is Event.Dead -> 0
@@ -71,7 +71,7 @@ object GameHelper {
     /**
      * Returns the game state based on the list of events
      */
-    val List<Event.Detailed>.gameState: GameState
+    val List<Event.Simple>.gameState: GameState
         get() = when (val event = firstOrNull()) {
             is Event.Dead -> GameState.STARTED
             is Event.Fault -> GameState.STARTED
@@ -90,7 +90,7 @@ object GameHelper {
     /**
      * Returns the fault count for the in team based on the list of events
      */
-    val List<Event.Detailed>.faultCount: Int
+    val List<Event.Simple>.faultCount: Int
         get() {
             var count = 0
 
@@ -116,7 +116,7 @@ object GameHelper {
     /**
      * Returns the dead count for the in team based on the list of events
      */
-    val List<Event.Detailed>.deadCount: Int
+    val List<Event.Simple>.deadCount: Int
         get() {
             var count = 0
 
@@ -144,7 +144,7 @@ object GameHelper {
      * hasn't completed yet, based on the list of events. This is useful e.g. to be able to show less buttons in a
      * referee view, as there's less possible actions. The state is independent of pauses which are ignored
      */
-    val List<Event.Detailed>.isLiftSuccessFull: Boolean
+    val List<Event.Simple>.isLiftSuccessFull: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> false
@@ -164,7 +164,7 @@ object GameHelper {
     /**
      * Returns the total game time in seconds, excluding pauses
      */
-    val List<Event.Detailed>.gameTime: Int
+    val List<Event.Simple>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> null
@@ -187,7 +187,7 @@ object GameHelper {
     /**
      * Calculates the turn time in seconds. This is the time since last switch or start of game, excluding pauses
      */
-    val List<Event.Detailed>.turnTime: Int
+    val List<Event.Simple>.turnTime: Int
         get() {
             val switchTime = firstNotNullOfOrNull { event ->
                 when (event) {
@@ -207,7 +207,7 @@ object GameHelper {
             }
         }
 
-    private val List<Event.Detailed>.inTeamId: Int?
+    private val List<Event.Simple>.inTeamId: Int?
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Dead -> null

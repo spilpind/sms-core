@@ -10,7 +10,7 @@ object TimeHelper {
     private val timeZone = TimeZone.currentSystemDefault()
 
     /**
-     * Returns on object representing the current instant
+     * Returns an object representing the current instant
      */
     val now: Instant
         get() = Clock.System.now()

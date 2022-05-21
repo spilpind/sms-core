@@ -48,6 +48,9 @@ sealed interface Event {
         SwitchDead(43),
     }
 
+    /**
+     * Represents the raw event
+     */
     data class Raw(
         override val eventId: Int,
         override val gameId: Int,
@@ -59,7 +62,11 @@ sealed interface Event {
         val points: Int?
     ) : Event
 
-    sealed class Detailed(val type: Type, baseInfo: BaseInfo) : Event {
+    /**
+     * Like [Raw], but with a specified [type]. The subclasses also represents specific type of event and might include
+     * additional data, like [Points] that contains the number of points.
+     */
+    sealed class Simple(val type: Type, baseInfo: BaseInfo) : Event {
         override val eventId: Int = baseInfo.eventId
         override val gameId: Int = baseInfo.gameId
         override val teamId: Int? = baseInfo.teamId
@@ -85,24 +92,24 @@ sealed interface Event {
      * Represents points given to [teamId] after a successful lift
      */
     data class Points(private val baseInfo: BaseInfo, val points: Int) :
-        Detailed(type = Type.Points, baseInfo = baseInfo)
+        Simple(type = Type.Points, baseInfo = baseInfo)
 
     /**
      * Represents a single dead given to [teamId]
      */
-    data class Dead(private val baseInfo: BaseInfo) : Detailed(type = Type.Dead, baseInfo = baseInfo)
+    data class Dead(private val baseInfo: BaseInfo) : Simple(type = Type.Dead, baseInfo = baseInfo)
 
     /**
      * Represents a lift without any dead or faults by [teamId]
      */
-    data class LiftSuccess(private val baseInfo: BaseInfo) : Detailed(type = Type.LiftSuccess, baseInfo = baseInfo)
+    data class LiftSuccess(private val baseInfo: BaseInfo) : Simple(type = Type.LiftSuccess, baseInfo = baseInfo)
 
     /**
      * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
      * which should represent the team starting as in team
      */
     data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
-        Detailed(type = timingType.type, baseInfo = baseInfo) {
+        Simple(type = timingType.type, baseInfo = baseInfo) {
 
         /**
          * The various timing types.
@@ -120,7 +127,7 @@ sealed interface Event {
      * direct [Dead] event as well
      */
     data class Fault(private val baseInfo: BaseInfo, val faultType: FaultType) :
-        Detailed(type = faultType.type, baseInfo = baseInfo) {
+        Simple(type = faultType.type, baseInfo = baseInfo) {
 
         /**
          * All types of faults. Note that some of them might not be part of the current rules but are just here for
@@ -143,7 +150,7 @@ sealed interface Event {
      * new in team
      */
     data class Switch(private val baseInfo: BaseInfo, val switchType: SwitchType) :
-        Detailed(type = switchType.type, baseInfo = baseInfo) {
+        Simple(type = switchType.type, baseInfo = baseInfo) {
 
         /**
          * The reasons for a switch

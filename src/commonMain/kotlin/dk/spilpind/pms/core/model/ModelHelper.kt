@@ -2,8 +2,8 @@ package dk.spilpind.pms.core.model
 
 object ModelHelper {
 
-    fun Event.Raw.toDetailedEvent(): Event.Detailed {
-        val baseInfo = Event.Detailed.BaseInfo(
+    fun Event.Raw.toDetailedEvent(): Event.Simple {
+        val baseInfo = Event.Simple.BaseInfo(
             eventId = eventId,
             gameId = gameId,
             teamId = teamId,
