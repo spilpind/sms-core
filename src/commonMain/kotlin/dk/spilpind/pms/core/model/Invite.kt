@@ -93,10 +93,9 @@ sealed interface Invite {
                     findRequestOrNull<ContextRequest.Game.Requests>(identifier = requestIdentifier)
                 ) {
                     ContextRequest.Game.Requests.Join -> ContextRequest.Game.Join
-                    null -> throwArgumentException(
+                    null -> throwNotFound<ContextRequest.Game.Requests>(
                         rawContext = rawContext,
-                        requestIdentifier = requestIdentifier,
-                        availableRequests = ContextRequest.Game.Requests.values()
+                        requestIdentifier = requestIdentifier
                     )
                 }
                 null -> throw IllegalArgumentException(
@@ -106,13 +105,17 @@ sealed interface Invite {
             }
         }
 
-        private inline fun <reified T> findRequestOrNull(identifier: String): T? where T : Enum<T>, T : RawRequest {
-            return enumValues<T>().firstOrNull { request -> request.identifier == identifier }
+        private inline fun <reified RequestType> findRequestOrNull(identifier: String): RequestType?
+                where RequestType : Enum<RequestType>, RequestType : RawRequest {
+            return enumValues<RequestType>().firstOrNull { request -> request.identifier == identifier }
         }
 
-        private fun <T, R> throwArgumentException(
-            rawContext: RawContext, requestIdentifier: String, availableRequests: Array<T>
-        ): R where T : Enum<T>, T : RawRequest {
+        private inline fun <reified RequestType> throwNotFound(
+            rawContext: RawContext,
+            requestIdentifier: String
+        ): Nothing where RequestType : Enum<RequestType>, RequestType : RawRequest {
+            val availableRequests = enumValues<RequestType>()
+            
             throw IllegalArgumentException(
                 "Request \"$requestIdentifier\" not found en context \"${rawContext.identifier}\". " +
                         "Available requests: ${availableRequests.map { request -> request.identifier }}"

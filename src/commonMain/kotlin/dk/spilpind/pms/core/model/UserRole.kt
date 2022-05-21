@@ -83,10 +83,9 @@ sealed interface UserRole {
             return when (rawContext) {
                 RawContext.Team -> when (findRoleOrNull<ContextRole.Team.Roles>(identifier = roleIdentifier)) {
                     ContextRole.Team.Roles.Captain -> ContextRole.Team.Captain
-                    null -> throwArgumentException(
+                    null -> throwNotFound<ContextRole.Team.Roles>(
                         rawContext = rawContext,
-                        roleIdentifier = roleIdentifier,
-                        availableRoles = ContextRole.Team.Roles.values()
+                        roleIdentifier = roleIdentifier
                     )
                 }
                 null -> throw IllegalArgumentException(
@@ -96,15 +95,17 @@ sealed interface UserRole {
             }
         }
 
-        private inline fun <reified T> findRoleOrNull(identifier: String): T? where T : Enum<T>, T : RawRole {
-            return enumValues<T>().firstOrNull { role -> role.identifier == identifier }
+        private inline fun <reified RoleType> findRoleOrNull(identifier: String): RoleType?
+                where RoleType : Enum<RoleType>, RoleType : RawRole {
+            return enumValues<RoleType>().firstOrNull { role -> role.identifier == identifier }
         }
 
-        private fun <T, R> throwArgumentException(
+        private inline fun <reified RoleType> throwNotFound(
             rawContext: RawContext,
-            roleIdentifier: String,
-            availableRoles: Array<T>
-        ): R where T : Enum<T>, T : RawRole {
+            roleIdentifier: String
+        ): Nothing where RoleType : Enum<RoleType>, RoleType : RawRole {
+            val availableRoles = enumValues<RoleType>()
+
             throw IllegalArgumentException(
                 "Role \"$roleIdentifier\" not found en context \"${rawContext.identifier}\". Available roles: "
                         + "${availableRoles.map { availableRole -> availableRole.identifier }}"
