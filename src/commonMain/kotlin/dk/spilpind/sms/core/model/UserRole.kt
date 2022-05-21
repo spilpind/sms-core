@@ -64,6 +64,7 @@ sealed interface UserRole {
     }
 
     companion object {
+        // TODO: Use context from api instead
         internal enum class RawContext(val identifier: String) {
             Team("team")
         }

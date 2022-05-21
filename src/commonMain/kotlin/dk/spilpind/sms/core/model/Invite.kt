@@ -71,7 +71,7 @@ sealed interface Invite {
     }
 
     companion object {
-        // TODO: Use context from pms-core instead
+        // TODO: Use context from api instead
         internal enum class RawContext(val identifier: String) {
             Game("game")
         }
