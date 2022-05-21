@@ -12,6 +12,9 @@ sealed interface Game {
     val isFocused: Boolean
     val joinInviteCode: String?
 
+    /**
+     * Represents the raw game
+     */
     data class Raw(
         override val gameId: Int,
         override val tournamentId: Int,
@@ -22,6 +25,9 @@ sealed interface Game {
         override val joinInviteCode: String?
     ) : Game
 
+    /**
+     * Like [Raw] with actual representations of tournament and the teams
+     */
     data class Detailed(
         override val gameId: Int,
         val tournament: Tournament,
