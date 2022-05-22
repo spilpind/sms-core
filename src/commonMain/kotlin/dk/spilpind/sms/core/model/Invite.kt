@@ -18,16 +18,16 @@ sealed interface Invite {
     val requesterId: Int
 
     /**
-     * Defines all types of invites that exists
+     * Defines all type of invites that exists
      */
-    sealed class ContextRequest(context: RawContext, request: RawRequest) {
+    sealed class Type(context: RawContext, request: RawRequest) {
         val context = context.identifier
         val request = request.identifier
 
         /**
-         * Defines all types of invites that exists for a game
+         * Defines all type of invites that exists for a game
          */
-        sealed class Game(request: Requests) : ContextRequest(context = RawContext.Game, request = request) {
+        sealed class Game(request: Requests) : Type(context = RawContext.Game, request = request) {
             enum class Requests(override val identifier: String) : RawRequest {
                 Join("join")
             }
@@ -53,20 +53,20 @@ sealed interface Invite {
     ) : Invite
 
     /**
-     * Like [Raw], but with a specified [contextRequest]
+     * Like [Raw], but with a specified [type]
      */
     data class Simple(
         override val inviteId: Int,
-        val contextRequest: ContextRequest,
+        val type: Type,
         override val contextId: Int,
         override val code: String,
         override val expires: LocalDateTime,
         override val requesterId: Int
     ) : Invite {
 
-        override val context: String = contextRequest.context
+        override val context: String = type.context
 
-        override val request: String = contextRequest.request
+        override val request: String = type.request
 
     }
 
@@ -81,19 +81,19 @@ sealed interface Invite {
         }
 
         /**
-         * Finds a [ContextRequest] based on the provided parameters or throw an [IllegalArgumentException] if not found
+         * Finds a [Type] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
-        fun findContextRequest(contextIdentifier: String, requestIdentifier: String): ContextRequest {
+        fun findType(contextIdentifier: String, requestIdentifier: String): Type {
             val rawContext = RawContext.values().firstOrNull { context ->
                 context.identifier == contextIdentifier
             }
 
             return when (rawContext) {
                 RawContext.Game -> when (
-                    findRequestOrNull<ContextRequest.Game.Requests>(identifier = requestIdentifier)
+                    findRequestOrNull<Type.Game.Requests>(identifier = requestIdentifier)
                 ) {
-                    ContextRequest.Game.Requests.Join -> ContextRequest.Game.Join
-                    null -> throwNotFound<ContextRequest.Game.Requests>(
+                    Type.Game.Requests.Join -> Type.Game.Join
+                    null -> throwNotFound<Type.Game.Requests>(
                         rawContext = rawContext,
                         requestIdentifier = requestIdentifier
                     )
