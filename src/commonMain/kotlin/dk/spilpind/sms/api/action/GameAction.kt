@@ -42,7 +42,7 @@ sealed class GameAction : ContextAction() {
      * Accepts an invite related to a game. A successful response to this would be [GameReaction.Accepted]
      */
     @Serializable
-    data class Accept(val inviteAction: String, val code: String, val teamId: Int? = null) : GameAction() {
+    data class Accept(val request: String, val code: String, val teamId: Int? = null) : GameAction() {
         override val action: Action = Action.Accept
         override val minimumAccessLevel: Int? = null
     }
