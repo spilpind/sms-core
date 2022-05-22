@@ -1,4 +1,4 @@
-package dk.spilpind.pms.api.common
+package dk.spilpind.sms.api.common
 
 /**
  * All possible contexts of the api requests and responses. A context represents a group of functionality that usually

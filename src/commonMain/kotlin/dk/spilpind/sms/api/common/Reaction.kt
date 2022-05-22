@@ -1,4 +1,4 @@
-package dk.spilpind.pms.api.common
+package dk.spilpind.sms.api.common
 
 /**
  * All possible reactions that can be made across all contexts in the api. A reaction is usually a direct response to an

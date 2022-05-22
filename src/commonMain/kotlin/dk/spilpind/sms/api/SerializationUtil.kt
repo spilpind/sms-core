@@ -1,4 +1,4 @@
-package dk.spilpind.pms.api
+package dk.spilpind.sms.api
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject

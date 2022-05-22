@@ -1,6 +1,6 @@
-package dk.spilpind.pms.api
+package dk.spilpind.sms.api
 
-import dk.spilpind.pms.api.action.ReactionData
+import dk.spilpind.sms.api.action.ReactionData
 import kotlinx.serialization.Serializable
 
 /**

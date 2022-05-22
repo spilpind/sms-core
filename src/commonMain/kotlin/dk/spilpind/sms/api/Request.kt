@@ -1,6 +1,6 @@
-package dk.spilpind.pms.api
+package dk.spilpind.sms.api
 
-import dk.spilpind.pms.api.action.ContextAction
+import dk.spilpind.sms.api.action.ContextAction
 import kotlinx.serialization.Serializable
 
 /**

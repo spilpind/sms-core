@@ -1,11 +1,11 @@
-package dk.spilpind.pms.api
+package dk.spilpind.sms.api
 
-import dk.spilpind.pms.api.ResponseSerializerInterceptor.ConversionException
-import dk.spilpind.pms.api.SerializationUtil.alterData
-import dk.spilpind.pms.api.SerializationUtil.asStringOrNull
-import dk.spilpind.pms.api.action.*
-import dk.spilpind.pms.api.common.Context
-import dk.spilpind.pms.api.common.Reaction
+import dk.spilpind.sms.api.ResponseSerializerInterceptor.ConversionException
+import dk.spilpind.sms.api.SerializationUtil.alterData
+import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
+import dk.spilpind.sms.api.action.*
+import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*

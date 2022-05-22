@@ -1,4 +1,4 @@
-package dk.spilpind.pms.api.common
+package dk.spilpind.sms.api.common
 
 /**
  * All possible actions that can be made across all contexts in the api. An action is a request for something to be

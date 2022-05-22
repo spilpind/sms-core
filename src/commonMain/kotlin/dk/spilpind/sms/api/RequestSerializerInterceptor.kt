@@ -1,12 +1,12 @@
-package dk.spilpind.pms.api
+package dk.spilpind.sms.api
 
-import dk.spilpind.pms.api.SerializationUtil.alterData
-import dk.spilpind.pms.api.SerializationUtil.asStringOrNull
-import dk.spilpind.pms.api.action.*
-import dk.spilpind.pms.api.common.Action
-import dk.spilpind.pms.api.common.Context
-import dk.spilpind.pms.api.common.Reaction
-import dk.spilpind.pms.api.action.ErrorReaction
+import dk.spilpind.sms.api.SerializationUtil.alterData
+import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
+import dk.spilpind.sms.api.action.*
+import dk.spilpind.sms.api.common.Action
+import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.api.common.Reaction
+import dk.spilpind.sms.api.action.ErrorReaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*
@@ -21,13 +21,13 @@ import kotlinx.serialization.json.*
  * well. The same idea is done with [JsonContentPolymorphicSerializer], but it doesn't seem like we
  * can use just exactly that as we need to access the request's context and action
  */
-object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Request.serializer()) {
+object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms.api.Request>(dk.spilpind.sms.api.Request.serializer()) {
 
     /**
      * Exception thrown in case a conversion could not be performed. [response] can be used as response to the caller
      * to notify about what went wrong
      */
-    class ConversionException(val response: Response) : Exception()
+    class ConversionException(val response: dk.spilpind.sms.api.Response) : Exception()
 
     private val contextActionClassMap = Context.values().associate { context ->
         context.contextKey to Action.values().mapNotNull { action ->
@@ -108,7 +108,11 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         val actionId = element.jsonObject["actionId"]?.asStringOrNull()
         val context = element.jsonObject["context"]?.asStringOrNull()
         val action = element.jsonObject["action"]?.asStringOrNull()
-        val actionClass = findActionClass(actionId = actionId, context = context, action = action)
+        val actionClass = dk.spilpind.sms.api.RequestSerializerInterceptor.findActionClass(
+            actionId = actionId,
+            context = context,
+            action = action
+        )
 
         return element.alterData {
             put("type", JsonPrimitive(actionClass))
@@ -128,11 +132,11 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         context: String?,
         action: String?
     ): String {
-        val actionClassMap = contextActionClassMap[context]
+        val actionClassMap = dk.spilpind.sms.api.RequestSerializerInterceptor.contextActionClassMap[context]
         if (actionClassMap == null) {
-            val availableContexts = contextActionClassMap.keys
+            val availableContexts = dk.spilpind.sms.api.RequestSerializerInterceptor.contextActionClassMap.keys
 
-            val response = Response(
+            val response = dk.spilpind.sms.api.Response(
                 context = context,
                 reaction = Reaction.ContextNotFound.reactionKey,
                 actionId = actionId,
@@ -142,14 +146,14 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 ),
             )
 
-            throw ConversionException(response = response)
+            throw dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException(response = response)
         }
 
         val actionClass = actionClassMap[action]
         if (actionClass == null) {
             val availableActions = actionClassMap.keys
 
-            val response = Response(
+            val response = dk.spilpind.sms.api.Response(
                 context = context,
                 reaction = Reaction.ActionNotFound.reactionKey,
                 actionId = actionId,
@@ -159,7 +163,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 )
             )
 
-            throw ConversionException(response = response)
+            throw dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException(response = response)
         }
 
         return actionClass
