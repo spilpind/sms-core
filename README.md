@@ -1,4 +1,2 @@
-# pms-core
-Core model and logic for Pind Manager System
-# pms-api
-Common API logic for the PMS services
+# SMS Core
+Core components and logic for Stick Manager System.
