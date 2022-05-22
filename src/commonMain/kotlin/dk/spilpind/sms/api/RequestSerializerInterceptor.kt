@@ -21,13 +21,13 @@ import kotlinx.serialization.json.*
  * well. The same idea is done with [JsonContentPolymorphicSerializer], but it doesn't seem like we
  * can use just exactly that as we need to access the request's context and action
  */
-object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms.api.Request>(dk.spilpind.sms.api.Request.serializer()) {
+object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Request.serializer()) {
 
     /**
      * Exception thrown in case a conversion could not be performed. [response] can be used as response to the caller
      * to notify about what went wrong
      */
-    class ConversionException(val response: dk.spilpind.sms.api.Response) : Exception()
+    class ConversionException(val response: Response) : Exception()
 
     private val contextActionClassMap = Context.values().associate { context ->
         context.contextKey to Action.values().mapNotNull { action ->
@@ -108,7 +108,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms
         val actionId = element.jsonObject["actionId"]?.asStringOrNull()
         val context = element.jsonObject["context"]?.asStringOrNull()
         val action = element.jsonObject["action"]?.asStringOrNull()
-        val actionClass = dk.spilpind.sms.api.RequestSerializerInterceptor.findActionClass(
+        val actionClass = findActionClass(
             actionId = actionId,
             context = context,
             action = action
@@ -132,11 +132,11 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms
         context: String?,
         action: String?
     ): String {
-        val actionClassMap = dk.spilpind.sms.api.RequestSerializerInterceptor.contextActionClassMap[context]
+        val actionClassMap = contextActionClassMap[context]
         if (actionClassMap == null) {
-            val availableContexts = dk.spilpind.sms.api.RequestSerializerInterceptor.contextActionClassMap.keys
+            val availableContexts = contextActionClassMap.keys
 
-            val response = dk.spilpind.sms.api.Response(
+            val response = Response(
                 context = context,
                 reaction = Reaction.ContextNotFound.reactionKey,
                 actionId = actionId,
@@ -146,14 +146,14 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms
                 ),
             )
 
-            throw dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException(response = response)
+            throw ConversionException(response = response)
         }
 
         val actionClass = actionClassMap[action]
         if (actionClass == null) {
             val availableActions = actionClassMap.keys
 
-            val response = dk.spilpind.sms.api.Response(
+            val response = Response(
                 context = context,
                 reaction = Reaction.ActionNotFound.reactionKey,
                 actionId = actionId,
@@ -163,7 +163,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<dk.spilpind.sms
                 )
             )
 
-            throw dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException(response = response)
+            throw ConversionException(response = response)
         }
 
         return actionClass
