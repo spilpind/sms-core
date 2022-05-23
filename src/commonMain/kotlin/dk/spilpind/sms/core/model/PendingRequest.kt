@@ -3,13 +3,13 @@ package dk.spilpind.sms.core.model
 import kotlinx.datetime.LocalDateTime
 
 /**
- * Represents an invite (for a [request] in the given [context]) that needs to be accepted by one or more users. This
- * can for instance be an invite to be added as captain of a team or become the second team of a game. [contextId]
- * represents the id in the context - for instance, if context is "tournament" it is expected to be the id of the
- * tournament this invite relates to
+ * Represents an pending [request] (in the given [context]) that needs to be accepted by one or more users. This can for
+ * instance be an invite to be added as captain of a team or become the second team of a game. [contextId] represents
+ * the id in the context - for instance, if context is "tournament" it is expected to be the id of the tournament this
+ * request relates to
  */
-sealed interface Invite {
-    val inviteId: Int
+sealed interface PendingRequest {
+    val pendingRequestId: Int
     val context: String
     val contextId: Int
     val request: String
@@ -18,51 +18,51 @@ sealed interface Invite {
     val requesterId: Int
 
     /**
-     * Defines all type of invites that exists
+     * Defines all type of pending requests that exists
      */
     sealed class Type(context: RawContext, request: RawRequest) {
         val context = context.identifier
         val request = request.identifier
 
         /**
-         * Defines all type of invites that exists for a game
+         * Defines all type of pending requests that exists for a game
          */
         sealed class Game(request: Requests) : Type(context = RawContext.Game, request = request) {
             enum class Requests(override val identifier: String) : RawRequest {
-                Join("join")
+                TeamJoinInvite("teamJoinInvite")
             }
 
             /**
              * An invite for a team to join the game
              */
-            object Join : Game(request = Requests.Join)
+            object TeamJoinInvite : Game(request = Requests.TeamJoinInvite)
         }
     }
 
     /**
-     * Represents the raw invite
+     * Represents the raw pending request
      */
     data class Raw(
-        override val inviteId: Int,
+        override val pendingRequestId: Int,
         override val context: String,
         override val contextId: Int,
         override val request: String,
         override val code: String,
         override val expires: LocalDateTime,
         override val requesterId: Int
-    ) : Invite
+    ) : PendingRequest
 
     /**
      * Like [Raw], but with a specified [type]
      */
     data class Simple(
-        override val inviteId: Int,
+        override val pendingRequestId: Int,
         val type: Type,
         override val contextId: Int,
         override val code: String,
         override val expires: LocalDateTime,
         override val requesterId: Int
-    ) : Invite {
+    ) : PendingRequest {
 
         override val context: String = type.context
 
@@ -92,7 +92,7 @@ sealed interface Invite {
                 RawContext.Game -> when (
                     findRequestOrNull<Type.Game.Requests>(identifier = requestIdentifier)
                 ) {
-                    Type.Game.Requests.Join -> Type.Game.Join
+                    Type.Game.Requests.TeamJoinInvite -> Type.Game.TeamJoinInvite
                     null -> throwNotFound<Type.Game.Requests>(
                         rawContext = rawContext,
                         requestIdentifier = requestIdentifier

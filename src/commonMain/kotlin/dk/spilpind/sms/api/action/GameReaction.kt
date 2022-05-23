@@ -40,7 +40,7 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
-     * Response to [GameAction.Accept]. [game] will represent the game which the invite was related to
+     * Response to [GameAction.Accept]. [game] will represent the game which the pending request was related to
      */
     @Serializable
     data class Accepted(val game: Game) : GameReaction() {
@@ -74,6 +74,6 @@ sealed class GameReaction : ContextReaction() {
         val teamBId: Int?,
         val description: String,
         val isFocused: Boolean,
-        val joinInviteCode: String? = null
+        val teamJoinInviteCode: String? = null
     )
 }
