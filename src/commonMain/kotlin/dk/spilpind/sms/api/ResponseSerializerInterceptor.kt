@@ -16,14 +16,14 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 
 /**
- * Intercepts the deserialization of [Response] and maps reaction (and potentially context) to the
- * correct [ReactionData]. If the conversion could not be performed, [ConversionException] will be
- * thrown. This might be possible to handle in another way in the future:
- * https://github.com/Kotlin/kotlinx.serialization/issues/793
+ * Intercepts the deserialization of [Response] and maps reaction (and potentially context) to the correct
+ * [ReactionData]. If the conversion could not be performed, [ConversionException] will be thrown.
  *
- * This also intercepts serialization, but that's mainly to avoid the type being outputted as
- * well. The same idea is done with [JsonContentPolymorphicSerializer], but it doesn't seem like we
- * can use just exactly that as we need to access the response's context and reaction
+ * This also intercepts serialization, but that's mainly to avoid the type being outputted as well. The same idea is
+ * done with [JsonContentPolymorphicSerializer], but it doesn't seem like we can use just exactly that as we need to
+ * access context and reaction of the response.
+ *
+ * TODO This might be possible to handle better in the future: github.com/Kotlin/kotlinx.serialization/issues/793
  */
 object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Response.serializer()) {
 

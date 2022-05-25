@@ -17,14 +17,14 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 
 /**
- * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If
- * the conversion could not be performed, [ConversionException] will be thrown. This might be
- * possible to handle in another way in the future:
- * https://github.com/Kotlin/kotlinx.serialization/issues/793
+ * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If the conversion
+ * could not be performed, [ConversionException] will be thrown.
  *
- * This also intercepts serialization, but that's mainly to avoid the type being outputted as
- * well. The same idea is done with [JsonContentPolymorphicSerializer], but it doesn't seem like we
- * can use just exactly that as we need to access the request's context and action
+ * This also intercepts serialization, but that's mainly to avoid the type being outputted as well. The same idea is
+ * done with [JsonContentPolymorphicSerializer], but it doesn't seem like we can use just exactly that as we need to
+ * access context and action of the request.
+ *
+ * TODO This might be possible to handle better in the future: github.com/Kotlin/kotlinx.serialization/issues/793
  */
 object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Request.serializer()) {
 
