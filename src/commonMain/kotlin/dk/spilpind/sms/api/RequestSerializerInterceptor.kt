@@ -1,15 +1,20 @@
 package dk.spilpind.sms.api
 
-import dk.spilpind.sms.api.SerializationUtil.alterData
+import dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException
+import dk.spilpind.sms.api.SerializationUtil.alterObjectIfExists
 import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
+import dk.spilpind.sms.api.SerializationUtil.putType
+import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Context
 import dk.spilpind.sms.api.common.Reaction
-import dk.spilpind.sms.api.action.ErrorReaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.jsonObject
 
 /**
  * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If
@@ -105,32 +110,28 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
     }
 
     override fun transformDeserialize(element: JsonElement): JsonElement {
-        val actionId = element.jsonObject["actionId"]?.asStringOrNull()
-        val context = element.jsonObject["context"]?.asStringOrNull()
-        val action = element.jsonObject["action"]?.asStringOrNull()
         val actionClass = findActionClass(
-            actionId = actionId,
-            context = context,
-            action = action
+            context = element.jsonObject[Request.CONTEXT_SERIAL_NAME]?.asStringOrNull(),
+            action = element.jsonObject[Request.ACTION_SERIAL_NAME]?.asStringOrNull(),
+            actionId = element.jsonObject[Request.ACTION_ID_SERIAL_NAME]?.asStringOrNull()
         )
 
-        return element.alterData {
-            put("type", JsonPrimitive(actionClass))
+        return element.alterObjectIfExists(key = Request.DATA_SERIAL_NAME) {
+            putType(actionClass)
         }
     }
 
     override fun transformSerialize(element: JsonElement): JsonElement {
-        return element.alterData {
-            // We don't want to expose internal types as they're not needed (context + action should
-            // do the trick)
-            remove("type")
+        return element.alterObjectIfExists(key = Request.DATA_SERIAL_NAME) {
+            // We don't want to expose internal types as they're not needed (context + action should do the trick)
+            removeType()
         }
     }
 
     private fun findActionClass(
-        actionId: String?,
         context: String?,
-        action: String?
+        action: String?,
+        actionId: String?
     ): String {
         val actionClassMap = contextActionClassMap[context]
         if (actionClassMap == null) {

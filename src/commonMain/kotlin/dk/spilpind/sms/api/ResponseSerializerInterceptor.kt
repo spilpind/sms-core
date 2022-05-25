@@ -1,14 +1,19 @@
 package dk.spilpind.sms.api
 
 import dk.spilpind.sms.api.ResponseSerializerInterceptor.ConversionException
-import dk.spilpind.sms.api.SerializationUtil.alterData
+import dk.spilpind.sms.api.SerializationUtil.alterObjectIfExists
 import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
+import dk.spilpind.sms.api.SerializationUtil.putType
+import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
 import dk.spilpind.sms.api.common.Context
 import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.jsonObject
 
 /**
  * Intercepts the deserialization of [Response] and maps reaction (and potentially context) to the
@@ -156,20 +161,19 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
     }
 
     override fun transformDeserialize(element: JsonElement): JsonElement {
-        val context = element.jsonObject["context"]?.asStringOrNull()
-        val reaction = element.jsonObject["reaction"]?.asStringOrNull()
+        val context = element.jsonObject[Response.CONTEXT_SERIAL_NAME]?.asStringOrNull()
+        val reaction = element.jsonObject[Response.REACTION_SERIAL_NAME]?.asStringOrNull()
         val actionClass = findReactionClass(context = context, reaction = reaction)
 
-        return element.alterData {
-            put("type", JsonPrimitive(actionClass))
+        return element.alterObjectIfExists(key = Response.DATA_SERIAL_NAME) {
+            putType(actionClass)
         }
     }
 
     override fun transformSerialize(element: JsonElement): JsonElement {
-        return element.alterData {
-            // We don't want to expose internal types as they're not needed (context + reaction
-            // should do the trick)
-            remove("type")
+        return element.alterObjectIfExists(key = Response.DATA_SERIAL_NAME) {
+            // We don't want to expose internal types as they're not needed (context + reaction should do the trick)
+            removeType()
         }
     }
 
