@@ -141,14 +141,10 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.ServerError ->
                 ReactionClassMap.ContextLess(ErrorReaction.ServerError.serializer())
-            Reaction.EncodingError ->
-                ReactionClassMap.ContextLess(ErrorReaction.EncodingError.serializer())
-            Reaction.ContextNotFound ->
-                ReactionClassMap.ContextLess(ErrorReaction.ContextNotFound.serializer())
-            Reaction.ActionNotFound ->
-                ReactionClassMap.ContextLess(ErrorReaction.ActionNotFound.serializer())
-            Reaction.DataStructureError ->
-                ReactionClassMap.ContextLess(ErrorReaction.DataStructureError.serializer())
+            Reaction.RequestStructureError ->
+                ReactionClassMap.ContextLess(ErrorReaction.RequestStructureError.serializer())
+            Reaction.RequestTypeError ->
+                ReactionClassMap.ContextLess(ErrorReaction.RequestTypeError.serializer())
             Reaction.DataValueError ->
                 ReactionClassMap.ContextLess(ErrorReaction.DataValueError.serializer())
             Reaction.UnsafeOperation ->

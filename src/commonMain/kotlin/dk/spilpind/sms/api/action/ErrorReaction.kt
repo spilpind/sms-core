@@ -12,7 +12,8 @@ sealed class ErrorReaction : ReactionData() {
     abstract val debugMessage: String?
 
     /**
-     * Generic error in case an unknown error
+     * Generic error in case of an unknown error. This is usually not an error the client can fix and is hopefully only
+     * temporary - if the client did something wrong it will instead be represented by one of the other errors
      */
     @Serializable
     data class ServerError(
@@ -23,54 +24,33 @@ sealed class ErrorReaction : ReactionData() {
     }
 
     /**
-     * The structure of the request was malformed and could not be deserialized. This could e.g. be
-     * a missing property or actual malformed structure
+     * The structure of the request was malformed and could not be deserialized. This could e.g. be a missing property
+     * or an actual malformed structure. If structure could be deserialized but values were incorrect, other errors will
+     * be used instead. This is a client error
      */
     @Serializable
-    data class EncodingError(
+    data class RequestStructureError(
         override val localizedMessage: String,
         override val debugMessage: String?
     ) : ErrorReaction() {
-        override val reaction: Reaction = Reaction.EncodingError
+        override val reaction: Reaction = Reaction.RequestStructureError
     }
 
     /**
-     * The specified context was not found
+     * The request type could not be determined based on the provided context and action. This is a client error
      */
     @Serializable
-    data class ContextNotFound(
+    data class RequestTypeError(
         override val localizedMessage: String,
         override val debugMessage: String?
     ) : ErrorReaction() {
-        override val reaction: Reaction = Reaction.ContextNotFound
+        override val reaction: Reaction = Reaction.RequestTypeError
     }
 
     /**
-     * The specified action was not found for the specified context
-     */
-    @Serializable
-    data class ActionNotFound(
-        override val localizedMessage: String,
-        override val debugMessage: String?
-    ) : ErrorReaction() {
-        override val reaction: Reaction = Reaction.ActionNotFound
-    }
-
-    /**
-     * There was an error in the structure of the data part of the request. This could e.g. be a
-     * missing property or actual malformed structure
-     */
-    @Serializable
-    data class DataStructureError(
-        override val localizedMessage: String,
-        override val debugMessage: String?
-    ) : ErrorReaction() {
-        override val reaction: Reaction = Reaction.DataStructureError
-    }
-
-    /**
-     * The value(s) of the data was insufficient, wrong or invalid. This can e.g. be because a value
-     * isn't within a valid range
+     * The value(s) of the data was insufficient, wrong or invalid. This can e.g. be because a value isn't within a
+     * valid range. This is a client error, but can usually be fixed by the user correcting the wrong value(s) - the
+     * error can therefore be treated more as a warning to the user
      */
     @Serializable
     data class DataValueError(
@@ -81,9 +61,9 @@ sealed class ErrorReaction : ReactionData() {
     }
 
     /**
-     * The request would result in an undefined state. This can happen e.g. if some data is
-     * requested to be deleted by referred to by some other data - in that case the other data
-     * should be deleted first
+     * The request would result in an undefined state. This can happen e.g. if some data is requested to be deleted by
+     * referred to by some other data - in that case the other data should be deleted first. This is a client error, but
+     * can be treated more as a warning to the user
      */
     @Serializable
     data class UnsafeOperation(
@@ -95,8 +75,8 @@ sealed class ErrorReaction : ReactionData() {
 
     /**
      * The logged-in user (or lack of) does not have permissions to perform the action. This can be as simple as the
-     * user needs to log in, but can also be because the user does not have permission to the action at all or because
-     * the user doesn't have permission to alter or view the specific data
+     * user needs to log in, but can e.g. also be because the user doesn't have permission to alter or view the specific
+     * data. This is a client error, but could potentially be fixed by a re-authorization
      */
     @Serializable
     data class MissingPermission(
@@ -107,8 +87,10 @@ sealed class ErrorReaction : ReactionData() {
     }
 
     /**
-     * The requested item was not found in the system. E.g. for authorization this means the user
-     * wasn't found in the database
+     * The requested item was not found in the system. This is used e.g. if a specific item was requested or referenced
+     * and could not be found. Requesting all games for a tournament would result in this error if the tournament was
+     * not found, but not if there just weren't any games - in that case an empty list of games will be the result. This
+     * is a client error
      */
     @Serializable
     data class ItemNotFound(

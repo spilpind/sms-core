@@ -140,9 +140,9 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
 
             val response = Response(
                 context = context,
-                reaction = Reaction.ContextNotFound.reactionKey,
+                reaction = Reaction.RequestTypeError.reactionKey,
                 actionId = actionId,
-                data = ErrorReaction.ContextNotFound(
+                data = ErrorReaction.RequestTypeError(
                     localizedMessage = Localization.Danish.unknownErrorPermanent,
                     debugMessage = "Available contexts: $availableContexts"
                 ),
@@ -157,9 +157,9 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
 
             val response = Response(
                 context = context,
-                reaction = Reaction.ActionNotFound.reactionKey,
+                reaction = Reaction.RequestTypeError.reactionKey,
                 actionId = actionId,
-                data = ErrorReaction.ActionNotFound(
+                data = ErrorReaction.RequestTypeError(
                     localizedMessage = Localization.Danish.unknownErrorPermanent,
                     debugMessage = "Available for context is: $availableActions"
                 )
