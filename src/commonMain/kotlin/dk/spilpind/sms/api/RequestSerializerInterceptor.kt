@@ -9,6 +9,7 @@ import dk.spilpind.sms.api.action.*
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Context
 import dk.spilpind.sms.api.common.Reaction
+import dk.spilpind.sms.common.Localization
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -142,8 +143,8 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 reaction = Reaction.ContextNotFound.reactionKey,
                 actionId = actionId,
                 data = ErrorReaction.ContextNotFound(
-                    action = action,
-                    message = "Available contexts: $availableContexts"
+                    localizedMessage = Localization.Danish.unknownErrorPermanent,
+                    debugMessage = "Available contexts: $availableContexts"
                 ),
             )
 
@@ -159,8 +160,8 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                 reaction = Reaction.ActionNotFound.reactionKey,
                 actionId = actionId,
                 data = ErrorReaction.ActionNotFound(
-                    action = action,
-                    message = "Available for context is: $availableActions"
+                    localizedMessage = Localization.Danish.unknownErrorPermanent,
+                    debugMessage = "Available for context is: $availableActions"
                 )
             )
 

@@ -4,20 +4,20 @@ import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.Serializable
 
 /**
- * Error class used as reaction to all non-successful responses, as defined by the subclasses
+ * Error class used as reaction to all non-successful responses, as defined by the subclasses.
  */
 @Serializable
 sealed class ErrorReaction : ReactionData() {
-    abstract val action: String?
-    abstract val message: String?
+    abstract val localizedMessage: String
+    abstract val debugMessage: String?
 
     /**
      * Generic error in case an unknown error
      */
     @Serializable
     data class ServerError(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.ServerError
     }
@@ -28,8 +28,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class EncodingError(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.EncodingError
     }
@@ -39,8 +39,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class ContextNotFound(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.ContextNotFound
     }
@@ -50,8 +50,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class ActionNotFound(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.ActionNotFound
     }
@@ -62,8 +62,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class DataStructureError(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.DataStructureError
     }
@@ -74,8 +74,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class DataValueError(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.DataValueError
     }
@@ -87,8 +87,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class UnsafeOperation(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.UnsafeOperation
     }
@@ -100,8 +100,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class MissingPermission(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.MissingPermission
     }
@@ -112,8 +112,8 @@ sealed class ErrorReaction : ReactionData() {
      */
     @Serializable
     data class ItemNotFound(
-        override val action: String?,
-        override val message: String?
+        override val localizedMessage: String,
+        override val debugMessage: String?
     ) : ErrorReaction() {
         override val reaction: Reaction = Reaction.ItemNotFound
     }
