@@ -1,6 +1,6 @@
 package dk.spilpind.sms.api
 
-import dk.spilpind.sms.api.RequestSerializerInterceptor.ConversionException
+import dk.spilpind.sms.api.RequestSerializerInterceptor.ContextActionException
 import dk.spilpind.sms.api.SerializationUtil.alterObjectIfExists
 import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.sms.api.SerializationUtil.putType
@@ -8,8 +8,6 @@ import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Context
-import dk.spilpind.sms.api.common.Reaction
-import dk.spilpind.sms.common.Localization
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -18,8 +16,8 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 
 /**
- * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If the conversion
- * could not be performed, [ConversionException] will be thrown.
+ * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If the action and/or
+ * context could not be determined, [ContextActionException] will be thrown.
  *
  * This also intercepts serialization, but that's mainly to avoid the type being outputted as well. The same idea is
  * done with [JsonContentPolymorphicSerializer], but it doesn't seem like we can use just exactly that as we need to
@@ -30,10 +28,14 @@ import kotlinx.serialization.json.jsonObject
 object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Request.serializer()) {
 
     /**
-     * Exception thrown in case a conversion could not be performed. [response] can be used as response to the caller
-     * to notify about what went wrong
+     * Exception thrown in case a conversion could not be performed. [context] and [actionId] can be used as part of the
+     * response to the caller to easier identify what request it belongs to
      */
-    class ConversionException(val response: Response) : Exception()
+    class ContextActionException(
+        message: String,
+        val context: String?,
+        val actionId: String?
+    ) : Exception(message)
 
     private val contextActionClassMap = Context.values().associate { context ->
         context.contextKey to Action.values().mapNotNull { action ->
@@ -137,35 +139,21 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         val actionClassMap = contextActionClassMap[context]
         if (actionClassMap == null) {
             val availableContexts = contextActionClassMap.keys
-
-            val response = Response(
+            throw ContextActionException(
+                message = "Context not found. Available contexts: $availableContexts",
                 context = context,
-                reaction = Reaction.RequestTypeError.reactionKey,
-                actionId = actionId,
-                data = ErrorReaction.RequestTypeError(
-                    localizedMessage = Localization.Danish.unknownErrorPermanent,
-                    debugMessage = "Available contexts: $availableContexts"
-                ),
+                actionId = actionId
             )
-
-            throw ConversionException(response = response)
         }
 
         val actionClass = actionClassMap[action]
         if (actionClass == null) {
             val availableActions = actionClassMap.keys
-
-            val response = Response(
+            throw ContextActionException(
+                message = "Action not found. Available for context is: $availableActions",
                 context = context,
-                reaction = Reaction.RequestTypeError.reactionKey,
-                actionId = actionId,
-                data = ErrorReaction.RequestTypeError(
-                    localizedMessage = Localization.Danish.unknownErrorPermanent,
-                    debugMessage = "Available for context is: $availableActions"
-                )
+                actionId = actionId
             )
-
-            throw ConversionException(response = response)
         }
 
         return actionClass
