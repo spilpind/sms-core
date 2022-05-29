@@ -5,7 +5,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Data needed in order to make a request to the api
+ * Data needed in order to make a request to the api. [context] and [action] in combination define what kind of request
+ * this is and [data] has to match data for that request type (see subclasses of [ContextAction]). [actionId] is useful
+ * for the client to keep track of what responses match this request (see [Response.actionId]), but might be left out of
+ * some responses, e.g. in case of a fatal data structure error
  */
 @Serializable
 data class Request(
