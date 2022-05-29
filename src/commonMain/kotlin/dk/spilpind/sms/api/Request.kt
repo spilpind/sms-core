@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Request(
     @SerialName(CONTEXT_SERIAL_NAME)
-    val context: String? = null,
+    val context: String,
     @SerialName(ACTION_SERIAL_NAME)
-    val action: String? = null,
+    val action: String,
     @SerialName(ACTION_ID_SERIAL_NAME)
     val actionId: String? = null,
     @SerialName(DATA_SERIAL_NAME)
