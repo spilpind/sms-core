@@ -12,7 +12,7 @@ sealed class GameReaction : ContextReaction() {
     override val context: Context = Context.Game
 
     /**
-     * Response to [GameAction.Add]
+     * Response to [GameAction.Add] and updates via subscriptions
      */
     @Serializable
     data class Added(val game: Game) : GameReaction() {
@@ -20,7 +20,7 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
-     * Response to [GameAction.Remove]
+     * Response to [GameAction.Remove] and updates via subscriptions
      */
     @Serializable
     data class Removed(val gameId: Int) : GameReaction() {

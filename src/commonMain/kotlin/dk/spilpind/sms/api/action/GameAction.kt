@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Context
+import  dk.spilpind.sms.core.model.PendingRequest
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,8 +13,8 @@ sealed class GameAction : ContextAction() {
     override val context: Context = Context.Game
 
     /**
-     * Adds a new game. [teamAId] and [teamBId] cannot represent the same team. A successful response to this would be
-     * [GameReaction.Added]
+     * Adds a new game. [teamAId] and [teamBId] cannot represent the same team and has to be associated with the
+     * tournament identified by [tournamentId]. A successful response to this would be [GameReaction.Added]
      */
     @Serializable
     data class Add(
@@ -39,7 +40,9 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Accepts an pending requests related to a game. A successful response to this would be [GameReaction.Accepted]
+     * Accepts a pending requests related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
+     * of [PendingRequest.Type.Game.request]. If the type of pending request requires it, [teamId] has to be non-null. A
+     * successful response to this would be [GameReaction.Accepted]
      */
     @Serializable
     data class Accept(val request: String, val code: String, val teamId: Int? = null) : GameAction() {
@@ -48,10 +51,10 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to all games (or a single game) available for the current user and associated with the
-     * given parameters. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called.
-     * Changes to the list will be sent to the socket, via relevant [GameReaction]s. A successful response to this would
-     * be [GameReaction.Subscribed] followed by [GameReaction.Updated]
+     * Subscribes to all games (or a single game) associated with the given parameters available for the current user.
+     * The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called. Changes to the list
+     * will be sent to the socket, via relevant [GameReaction]s. A successful response to this would be
+     * [GameReaction.Subscribed] followed by [GameReaction.Updated]
      */
     @Serializable
     data class Subscribe(val gameId: Int? = null, val tournamentId: Int? = null) : GameAction() {
