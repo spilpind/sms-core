@@ -28,14 +28,14 @@ object SerializationUtil {
         key: String,
         edit: MutableMap<String, JsonElement>.() -> Unit
     ): JsonElement {
-        val jsonElement = jsonObject[key]?.jsonObject ?: return this
+        val originalObject = jsonObject[key]?.jsonObject ?: return this
 
-        val data = jsonElement.toMutableMap().apply {
+        val editedObject = originalObject.toMutableMap().apply {
             edit()
         }
 
         return JsonObject(jsonObject.toMutableMap().apply {
-            put(key, JsonObject(data))
+            put(key, JsonObject(editedObject))
         })
     }
 
