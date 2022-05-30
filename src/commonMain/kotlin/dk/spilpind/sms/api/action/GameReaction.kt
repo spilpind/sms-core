@@ -73,7 +73,6 @@ sealed class GameReaction : ContextReaction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val isFocused: Boolean,
         val teamJoinInviteCode: String? = null
     )
 }

@@ -22,7 +22,6 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
-        val isFocused: Boolean,
         val addTeamJoinInvite: Boolean = false
     ) : GameAction() {
         override val action: Action = Action.Add

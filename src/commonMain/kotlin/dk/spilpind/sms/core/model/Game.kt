@@ -10,7 +10,6 @@ sealed interface Game {
     val teamAId: Int?
     val teamBId: Int?
     val description: String
-    val isFocused: Boolean
     val teamJoinInviteCode: String?
 
     /**
@@ -22,7 +21,6 @@ sealed interface Game {
         override val teamAId: Int?,
         override val teamBId: Int?,
         override val description: String,
-        override val isFocused: Boolean,
         override val teamJoinInviteCode: String?
     ) : Game
 
@@ -35,7 +33,6 @@ sealed interface Game {
         val teamA: Team?,
         val teamB: Team?,
         override val description: String,
-        override val isFocused: Boolean,
         override val teamJoinInviteCode: String?
     ) : Game {
         override val tournamentId = tournament.tournamentId
