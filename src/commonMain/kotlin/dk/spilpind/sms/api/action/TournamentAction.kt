@@ -31,10 +31,10 @@ sealed class TournamentAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to all tournaments available for the current user. The subscription will be kept alive
-     * until the socket disconnects or [Unsubscribe] is called. Changes to the list will be sent to the socket, via
-     * relevant [TournamentReaction]s. A successful response to this would be [TournamentReaction.Subscribed] followed
-     * by [TournamentReaction.Updated]
+     * Subscribes to all tournaments available for the current user. The subscription will be kept alive until the
+     * session is destroyed or [Unsubscribe] is called. Changes to the list will be sent via relevant
+     * [TournamentReaction]s. A successful response to this would be [TournamentReaction.Subscribed] followed by
+     * [TournamentReaction.Updated]
      */
     @Serializable
     class Subscribe : TournamentAction() {

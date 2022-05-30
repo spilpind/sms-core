@@ -51,9 +51,9 @@ sealed class GameAction : ContextAction() {
 
     /**
      * Subscribes to all games (or a single game) associated with the given parameters available for the current user.
-     * The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called. Changes to the list
-     * will be sent to the socket, via relevant [GameReaction]s. A successful response to this would be
-     * [GameReaction.Subscribed] followed by [GameReaction.Updated]
+     * The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called. Changes to the
+     * list will be sent via relevant [GameReaction]s. A successful response to this would be [GameReaction.Subscribed]
+     * followed by [GameReaction.Updated]
      */
     @Serializable
     data class Subscribe(val gameId: Int? = null, val tournamentId: Int? = null) : GameAction() {

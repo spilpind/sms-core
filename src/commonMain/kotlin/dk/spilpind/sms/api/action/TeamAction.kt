@@ -36,10 +36,10 @@ sealed class TeamAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to all teams available for the current user and associated with the tournament identified
-     * by [tournamentId]. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is called.
-     * Changes to the list will be sent to the socket, via relevant [TeamReaction]s. A successful response to this would
-     * be [TeamReaction.Subscribed] followed by [TeamReaction.Updated]
+     * Subscribes to all teams associated with the tournament identified by [tournamentId] available for the current
+     * user. The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called. Changes to
+     * the list will be sent via relevant [TeamReaction]s. A successful response to this would be
+     * [TeamReaction.Subscribed] followed by [TeamReaction.Updated]
      */
     @Serializable
     data class Subscribe(val tournamentId: Int) : TeamAction() {

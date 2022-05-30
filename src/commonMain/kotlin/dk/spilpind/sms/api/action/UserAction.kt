@@ -22,10 +22,10 @@ sealed class UserAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to all users (or a single user) available for the current logged-in user and associated
-     * with the given parameters. The subscription will be kept alive until the socket disconnects or [Unsubscribe] is
-     * called. Changes to the list will be sent to the socket, via relevant [UserReaction]s. A successful response to
-     * this would be [UserReaction.Subscribed] followed by [UserReaction.Updated]
+     * Subscribes to all users (or a single user) associated with the given parameters available for the current
+     * logged-in user. The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called.
+     * Changes to the list will be sent via relevant [UserReaction]s. A successful response to this would be
+     * [UserReaction.Subscribed] followed by [UserReaction.Updated]
      */
     @Serializable
     data class Subscribe(val userId: Int?) : UserAction() {

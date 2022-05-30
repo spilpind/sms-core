@@ -39,10 +39,9 @@ sealed class RefereeAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to the game identified by [gameId]. The subscription will be kept alive until the socket
-     * disconnects or [Unsubscribe] is called. Changes to the game will be sent to the socket, most likely via
-     * [RefereeReaction.Updated]. It is allowed to have subscriptions to several games at the same time. A successful
-     * response to this would be [RefereeReaction.Subscribed]
+     * Subscribes to the game identified by [gameId]. The subscription will be kept alive until the session is destroyed
+     * or [Unsubscribe] is called. Changes to the game will be sent via relevant [RefereeReaction]s. A successful
+     * response to this would be [RefereeReaction.Subscribed] followed by [RefereeReaction.Updated]
      */
     @Serializable
     data class Subscribe(val gameId: Int) : RefereeAction() {
@@ -51,7 +50,7 @@ sealed class RefereeAction : ContextAction() {
     }
 
     /**
-     * Unsubscribes the socket from the game identified by [gameId], previously subscribed by [Subscribe].  A successful
+     * Unsubscribes the socket from the game identified by [gameId], previously subscribed by [Subscribe]. A successful
      * response to this would be [RefereeReaction.Unsubscribed]
      */
     @Serializable

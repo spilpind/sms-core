@@ -27,10 +27,10 @@ sealed class UserRoleAction : ContextAction() {
     }
 
     /**
-     * Subscribes the socket to all user roles associated with the user identified by [userId]. The subscription will be
-     * kept alive until the socket disconnects or [Unsubscribe] is called. Changes to the list will be sent to the
-     * socket, via relevant [UserRoleReaction]s. A successful response to this would be [UserRoleReaction.Subscribed]
-     * followed by [UserRoleReaction.Updated]
+     * Subscribes to all user roles associated with the user identified by [userId] if available for the current user.
+     * The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called. Changes to the
+     * list will be sent via relevant [UserRoleReaction]s. A successful response to this would be
+     * [UserRoleReaction.Subscribed] followed by [UserRoleReaction.Updated]
      */
     @Serializable
     data class Subscribe(val userId: Int) : UserRoleAction() {
