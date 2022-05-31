@@ -178,11 +178,11 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         reaction: String?
     ): String {
         val classMap = reactionContextClassMap[reaction]
-            ?: throw ConversionException(message = "Unknown reaction: $reaction")
+            ?: throw ConversionException(message = "Unknown reaction: \"$reaction\" (context \"$context\")")
 
         return classMap.findReactionClassOrNull(context)
             ?: throw ConversionException(
-                message = "Unknown reaction for context \"$context\": $reaction"
+                message = "Unknown context \"$context\" for reaction \"$reaction\""
             )
     }
 
