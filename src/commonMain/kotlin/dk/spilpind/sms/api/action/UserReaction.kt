@@ -5,15 +5,22 @@ import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.Serializable
 
 /**
- * All possible reactions that can be made in relation to [Context.User]. Note that there isn't an add action as it's
- * done via [AuthenticationAction.Add]
+ * All possible reactions that can be made in relation to [Context.User]
  */
 @Serializable
 sealed class UserReaction : ContextReaction() {
     override val context: Context = Context.User
 
     /**
-     * Response to [UserAction.Remove]
+     * Response used for updates via subscriptions
+     */
+    @Serializable
+    data class Added(val user: User) : UserReaction() {
+        override val reaction: Reaction = Reaction.Added
+    }
+
+    /**
+     * Response to [UserAction.Remove] and updates via subscriptions
      */
     @Serializable
     data class Removed(val userId: Int) : UserReaction() {

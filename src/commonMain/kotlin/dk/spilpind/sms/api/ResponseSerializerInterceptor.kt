@@ -76,7 +76,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             Reaction.Added -> createContextMap { context ->
                 when (context) {
                     Context.Authentication -> AuthenticationReaction.Added.serializer()
-                    Context.User -> null
+                    Context.User -> UserReaction.Added.serializer()
                     Context.UserRole -> UserRoleReaction.Added.serializer()
                     Context.Tournament -> TournamentReaction.Added.serializer()
                     Context.Game -> GameReaction.Added.serializer()
