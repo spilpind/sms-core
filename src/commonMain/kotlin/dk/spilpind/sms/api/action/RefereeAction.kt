@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Event
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,9 +13,11 @@ sealed class RefereeAction : ContextAction() {
     override val context: Context = Context.Referee
 
     /**
-     * Adds an event to the game identified by [gameId]. [lastEventId] ensures the client has the newest event locally
-     * (to make sure it's not out of sync). [typeId] should match the core type ids and the remaining parameters can be
-     * left out dependent on the type of event. A successful response to this would be [RefereeReaction.Updated]
+     * Adds an event to the game identified by [gameId]. [typeId] should match the core type ids (see [Event.typeId]).
+     * [lastEventId] ensures the client has the newest event locally and hasn't come out of sync. [startingInTeam] is
+     * only required to be non-null for [Event.Timing.TimingType.GameStart] and [points] is only required to be non-null
+     * for [Event.Points]. Depending on state of the game (see [RefereeReaction.Updated.gameState]) only certain event
+     * types are allowed to add. A successful response to this would be [RefereeReaction.Updated]
      */
     @Serializable
     data class Add(

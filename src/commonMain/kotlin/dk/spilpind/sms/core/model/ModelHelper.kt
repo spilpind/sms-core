@@ -23,7 +23,7 @@ object ModelHelper {
 
         return when (type) {
             Event.Type.Points -> Event.Points(baseInfo = baseInfo, points = points ?: 0) // TODO - Log if null points
-            Event.Type.Dead -> Event.Dead(baseInfo = baseInfo)
+            Event.Type.Death -> Event.Death(baseInfo = baseInfo)
             Event.Type.LiftSuccess -> Event.LiftSuccess(baseInfo = baseInfo)
             Event.Type.GameStart -> Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.GameStart)
             Event.Type.GameEnd -> Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.GameEnd)
@@ -40,7 +40,7 @@ object ModelHelper {
             Event.Type.FaultHitCatch -> Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.HitCatch)
             Event.Type.SwitchForce -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Force)
             Event.Type.SwitchTime -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Time)
-            Event.Type.SwitchDead -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Dead)
+            Event.Type.SwitchDeaths -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Death)
         }
     }
 }
