@@ -1,6 +1,6 @@
 package dk.spilpind.sms.api
 
-import dk.spilpind.sms.api.RequestSerializerInterceptor.ContextActionException
+import dk.spilpind.sms.api.RequestSerializerInterceptor.IllegalContextActionException
 import dk.spilpind.sms.api.SerializationUtil.alterObjectIfExists
 import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.sms.api.SerializationUtil.putType
@@ -17,7 +17,7 @@ import kotlinx.serialization.json.jsonObject
 
 /**
  * Intercepts the deserialization and maps the context and action to the correct [ContextAction]. If the action and/or
- * context could not be determined, [ContextActionException] will be thrown.
+ * context could not be determined, [IllegalContextActionException] will be thrown.
  *
  * This also intercepts serialization, but that's mainly to avoid the type being outputted as well. The same idea is
  * done with [JsonContentPolymorphicSerializer], but it doesn't seem like we can use just exactly that as we need to
@@ -29,9 +29,10 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
 
     /**
      * Exception thrown in case a conversion could not be performed. [context] and [actionId] can be used as part of the
-     * response to the caller to easier identify what request it belongs to
+     * response to the caller to easier identify what request it belongs to, but be aware that they might be invalid
+     * as they're just copied directly from the invalid request
      */
-    class ContextActionException(
+    class IllegalContextActionException(
         message: String,
         val context: String?,
         val actionId: String?
@@ -139,7 +140,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         val actionClassMap = contextActionClassMap[context]
         if (actionClassMap == null) {
             val availableContexts = contextActionClassMap.keys
-            throw ContextActionException(
+            throw IllegalContextActionException(
                 message = "Context not found. Available contexts: $availableContexts",
                 context = context,
                 actionId = actionId
@@ -149,7 +150,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
         val actionClass = actionClassMap[action]
         if (actionClass == null) {
             val availableActions = actionClassMap.keys
-            throw ContextActionException(
+            throw IllegalContextActionException(
                 message = "Action not found. Available for context is: $availableActions",
                 context = context,
                 actionId = actionId
