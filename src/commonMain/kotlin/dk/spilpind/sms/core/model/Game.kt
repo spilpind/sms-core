@@ -1,7 +1,8 @@
 package dk.spilpind.sms.core.model
 
 /**
- * Represents overall game data
+ * Represents overall game data. If provided, [teamJoinInviteCode] can be used for accepting a pending request of type
+ * [PendingRequest.Type.Game.TeamJoinInvite]
  */
 sealed interface Game {
     val gameId: Int
@@ -9,8 +10,7 @@ sealed interface Game {
     val teamAId: Int?
     val teamBId: Int?
     val description: String
-    val isFocused: Boolean
-    val joinInviteCode: String?
+    val teamJoinInviteCode: String?
 
     /**
      * Represents the raw game
@@ -21,8 +21,7 @@ sealed interface Game {
         override val teamAId: Int?,
         override val teamBId: Int?,
         override val description: String,
-        override val isFocused: Boolean,
-        override val joinInviteCode: String?
+        override val teamJoinInviteCode: String?
     ) : Game
 
     /**
@@ -34,8 +33,7 @@ sealed interface Game {
         val teamA: Team?,
         val teamB: Team?,
         override val description: String,
-        override val isFocused: Boolean,
-        override val joinInviteCode: String?
+        override val teamJoinInviteCode: String?
     ) : Game {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId

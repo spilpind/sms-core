@@ -54,7 +54,7 @@ object GameHelper {
     fun Team.calculatePoints(events: List<Event.Simple>): Int {
         return events.sumOf { event ->
             when (event) {
-                is Event.Dead -> 0
+                is Event.Death -> 0
                 is Event.Fault -> 0
                 is Event.LiftSuccess -> 0
                 is Event.Points -> if (event.teamId == teamId) {
@@ -73,7 +73,7 @@ object GameHelper {
      */
     val List<Event.Simple>.gameState: GameState
         get() = when (val event = firstOrNull()) {
-            is Event.Dead -> GameState.STARTED
+            is Event.Death -> GameState.STARTED
             is Event.Fault -> GameState.STARTED
             is Event.LiftSuccess -> GameState.STARTED
             is Event.Points -> GameState.STARTED
@@ -96,7 +96,7 @@ object GameHelper {
 
             forEach { event ->
                 count += when (event) {
-                    is Event.Dead -> return count
+                    is Event.Death -> return count
                     is Event.Fault -> 1
                     is Event.LiftSuccess -> 0
                     is Event.Points -> return count
@@ -114,15 +114,15 @@ object GameHelper {
         }
 
     /**
-     * Returns the dead count for the in team based on the list of events
+     * Returns the number of deaths for the in team based on the list of events
      */
-    val List<Event.Simple>.deadCount: Int
+    val List<Event.Simple>.deathCount: Int
         get() {
             var count = 0
 
             forEach { event ->
                 count += when (event) {
-                    is Event.Dead -> 1
+                    is Event.Death -> 1
                     is Event.Fault -> 0
                     is Event.LiftSuccess -> 0
                     is Event.Points -> 0
@@ -147,7 +147,7 @@ object GameHelper {
     val List<Event.Simple>.isLiftSuccessFull: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Dead -> false
+                is Event.Death -> false
                 is Event.Fault -> null // In theory there could be a fault after successful lift (if the rules allow it)
                 is Event.LiftSuccess -> true
                 is Event.Points -> false
@@ -167,7 +167,7 @@ object GameHelper {
     val List<Event.Simple>.gameTime: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Dead -> null
+                is Event.Death -> null
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null
@@ -191,7 +191,7 @@ object GameHelper {
         get() {
             val switchTime = firstNotNullOfOrNull { event ->
                 when (event) {
-                    is Event.Dead -> null
+                    is Event.Death -> null
                     is Event.Fault -> null
                     is Event.LiftSuccess -> null
                     is Event.Points -> null
@@ -210,7 +210,7 @@ object GameHelper {
     private val List<Event.Simple>.inTeamId: Int?
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Dead -> null
+                is Event.Death -> null
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null

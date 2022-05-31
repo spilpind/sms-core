@@ -6,9 +6,9 @@ import kotlinx.datetime.LocalDateTime
  * Representation of all possible events during a game. This does in most cases represent 1:1 what happens in the game
  * and can be used for e.g. calculating time spent in the game and points of the teams. In a few cases more than one
  * event is needed to represent a real life event. This is e.g. the case for events during the game that result in a
- * direct dead as they are all represented as a fault and thus also needs a [Dead] event right after. There's a few
+ * direct death as they are all represented as a fault and thus also needs a [Death] event right after. There's a few
  * reasons for this, one being that it's more generic and could be configured per game-basis if the event should result
- * in a dead or just a fault.
+ * in a death or just a fault.
  *
  * If specified [teamId] in most cases represents the in team. The few ambiguous cases are the events that changes or
  * "sets" the in team e.g. timing and switch events - in those cases the [teamId] represents the new in team.
@@ -30,12 +30,12 @@ sealed interface Event {
      * The ids are grouped as follows:
      * - 10+: Overall game events stuff
      * - 20+: [Timing] events
-     * - 30+: [Fault] events (including events that might result in a direct dead)
+     * - 30+: [Fault] events (including events that might result in a direct death)
      * - 40+: [Switch] events
      */
     enum class Type(val typeId: Int) {
         Points(11),
-        Dead(12),
+        Death(12),
         LiftSuccess(14),
         GameStart(21),
         GameEnd(22),
@@ -51,7 +51,7 @@ sealed interface Event {
         FaultHitCatch(38),
         SwitchForce(41),
         SwitchTime(42),
-        SwitchDead(43),
+        SwitchDeaths(43),
     }
 
     /**
@@ -101,12 +101,12 @@ sealed interface Event {
         Simple(type = Type.Points, baseInfo = baseInfo)
 
     /**
-     * Represents a single dead given to [teamId]
+     * Represents a single death given to [teamId]
      */
-    data class Dead(private val baseInfo: BaseInfo) : Simple(type = Type.Dead, baseInfo = baseInfo)
+    data class Death(private val baseInfo: BaseInfo) : Simple(type = Type.Death, baseInfo = baseInfo)
 
     /**
-     * Represents a lift without any dead or faults by [teamId]
+     * Represents a lift without any death or faults by [teamId]
      */
     data class LiftSuccess(private val baseInfo: BaseInfo) : Simple(type = Type.LiftSuccess, baseInfo = baseInfo)
 
@@ -130,7 +130,7 @@ sealed interface Event {
 
     /**
      * Represents a fault as defined by [faultType] given to [teamId]. A few of the fault events might also result in a
-     * direct [Dead] event as well
+     * direct [Death] event as well
      */
     data class Fault(private val baseInfo: BaseInfo, val faultType: FaultType) :
         Simple(type = faultType.type, baseInfo = baseInfo) {
@@ -164,7 +164,7 @@ sealed interface Event {
         enum class SwitchType(val type: Type) {
             Force(Type.SwitchForce),
             Time(Type.SwitchTime),
-            Dead(Type.SwitchDead),
+            Death(Type.SwitchDeaths),
         }
     }
 }
