@@ -36,12 +36,12 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         fun findReactionClassOrNull(context: String?): String?
 
         class ContextBased(
-            serializerMap: Map<String, KSerializer<out ReactionData>>
+            serializerMap: Map<Context, KSerializer<out ReactionData>>
         ) : ReactionClassMap {
-            private val classSerialNameMap = serializerMap.mapValues { (_, serializer) ->
+            private val classSerialNameMap = serializerMap.map { (context, serializer) ->
                 @OptIn(ExperimentalSerializationApi::class)
-                serializer.descriptor.serialName
-            }
+                Pair(context.contextKey, serializer.descriptor.serialName)
+            }.toMap()
 
             override fun findReactionClassOrNull(context: String?): String? {
                 return classSerialNameMap[context]
@@ -192,7 +192,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         return ReactionClassMap.ContextBased(
             serializerMap = Context.values().mapNotNull { context ->
                 val serializer = mapper(context) ?: return@mapNotNull null
-                Pair(context.contextKey, serializer)
+                Pair(context, serializer)
             }.toMap()
         )
     }
