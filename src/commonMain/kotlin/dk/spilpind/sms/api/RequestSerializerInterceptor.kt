@@ -41,6 +41,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
     private val contextActionClassMap = Context.values().associate { context ->
         context.contextKey to Action.values().mapNotNull { action ->
             val actionClass: KSerializer<out ContextAction>? = when (context) {
+                Context.System -> null
                 Context.Authentication -> when (action) {
                     Action.Inform -> AuthenticationAction.Inform.serializer()
                     Action.Add -> AuthenticationAction.Add.serializer()

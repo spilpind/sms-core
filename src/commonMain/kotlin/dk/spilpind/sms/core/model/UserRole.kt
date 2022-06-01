@@ -20,6 +20,26 @@ sealed interface UserRole {
         val role = role.identifier
 
         /**
+         * Defines all types of user roles that exists for the overall system
+         */
+        sealed class System(role: Roles) : ContextRole(context = RoleContext.System, role = role) {
+            enum class Roles(override val identifier: String) : RawRole {
+                SuperAdmin("superAdmin"),
+                Admin("admin")
+            }
+
+            /**
+             * A user role representing a super admin of the system, having at least the same rights as an [Admin]
+             */
+            object SuperAdmin : System(role = Roles.SuperAdmin)
+
+            /**
+             * A user role representing an admin of the system
+             */
+            object Admin : System(role = Roles.Admin)
+        }
+
+        /**
          * Defines all types of user roles that exists for a team
          */
         sealed class Team(role: Roles) : ContextRole(context = RoleContext.Team, role = role) {
@@ -65,6 +85,7 @@ sealed interface UserRole {
 
     companion object {
         internal enum class RoleContext(val context: Context) {
+            System(Context.System),
             Team(Context.Team)
         }
 
@@ -81,6 +102,14 @@ sealed interface UserRole {
             }
 
             return when (context) {
+                RoleContext.System -> when (findRoleOrNull<ContextRole.System.Roles>(identifier = roleIdentifier)) {
+                    ContextRole.System.Roles.SuperAdmin -> ContextRole.System.SuperAdmin
+                    ContextRole.System.Roles.Admin -> ContextRole.System.Admin
+                    null -> throwNotFound<ContextRole.Team.Roles>(
+                        context = context,
+                        roleIdentifier = roleIdentifier
+                    )
+                }
                 RoleContext.Team -> when (findRoleOrNull<ContextRole.Team.Roles>(identifier = roleIdentifier)) {
                     ContextRole.Team.Roles.Captain -> ContextRole.Team.Captain
                     null -> throwNotFound<ContextRole.Team.Roles>(

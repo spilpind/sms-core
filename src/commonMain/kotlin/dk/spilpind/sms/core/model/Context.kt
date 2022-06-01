@@ -10,6 +10,7 @@ import dk.spilpind.sms.api.common.Reaction
  * way it's possible to distinguish between if the user of the API e.g. wants to add a game or a team
  */
 enum class Context(val contextKey: String) {
+    System("system"),
     Authentication("authentication"),
     User("user"),
     UserRole("userRole"),
