@@ -6,7 +6,7 @@ import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.sms.api.SerializationUtil.putType
 import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

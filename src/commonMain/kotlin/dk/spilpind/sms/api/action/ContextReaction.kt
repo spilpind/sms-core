@@ -1,6 +1,6 @@
 package dk.spilpind.sms.api.action
 
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import kotlinx.serialization.Serializable
 
 /**
