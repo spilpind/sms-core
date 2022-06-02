@@ -63,7 +63,6 @@ sealed class UserReaction : ContextReaction() {
     data class User(
         val userId: Int,
         val name: String,
-        val username: String,
-        val email: String
+        val email: String?
     )
 }
