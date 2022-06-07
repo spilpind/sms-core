@@ -14,6 +14,14 @@ object ModelHelper {
         email = email,
         roles = roles
     )
+
+    /**
+     * Defines if the tournament is the current stick league based on the tags - this can therefore change from season
+     * to season
+     */
+    val Tournament.isCurrentStickLeague: Boolean
+        get() = tags.contains("stick-league-current")
+
     /**
      * Converts a raw event to a simple event
      */

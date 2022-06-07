@@ -18,7 +18,6 @@ sealed class AuthenticationAction : ContextAction() {
     @Serializable
     data class Inform(val redirectUrl: String) : AuthenticationAction() {
         override val action: Action = Action.Inform
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -33,7 +32,6 @@ sealed class AuthenticationAction : ContextAction() {
         val googleCode: GoogleCode? = null
     ) : AuthenticationAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int? = null
 
         @Serializable
         data class GoogleCode(val code: String, val redirectUrl: String)
@@ -46,6 +44,5 @@ sealed class AuthenticationAction : ContextAction() {
     @Serializable
     class Remove : AuthenticationAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int? = null
     }
 }

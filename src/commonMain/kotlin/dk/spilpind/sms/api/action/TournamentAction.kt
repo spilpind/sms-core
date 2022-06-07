@@ -17,7 +17,6 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     data class Add(val name: String) : TournamentAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -27,7 +26,6 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     data class Remove(val tournamentId: Int) : TournamentAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -39,7 +37,6 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     class Subscribe : TournamentAction() {
         override val action: Action = Action.Subscribe
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -49,6 +46,5 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     class Unsubscribe : TournamentAction() {
         override val action: Action = Action.Unsubscribe
-        override val minimumAccessLevel: Int? = null
     }
 }

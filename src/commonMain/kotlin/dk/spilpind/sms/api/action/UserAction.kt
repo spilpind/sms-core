@@ -19,7 +19,6 @@ sealed class UserAction : ContextAction() {
     @Serializable
     data class Remove(val userId: Int) : UserAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -31,7 +30,6 @@ sealed class UserAction : ContextAction() {
     @Serializable
     data class Subscribe(val userId: Int?) : UserAction() {
         override val action: Action = Action.Subscribe
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -41,6 +39,5 @@ sealed class UserAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val userId: Int?) : UserAction() {
         override val action: Action = Action.Unsubscribe
-        override val minimumAccessLevel: Int? = null
     }
 }
