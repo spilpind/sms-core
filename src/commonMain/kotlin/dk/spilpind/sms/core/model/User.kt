@@ -26,6 +26,6 @@ sealed interface User {
         override val userId: Int,
         override val name: String,
         override val email: String?,
-        val roles: List<UserRole>
+        val roles: List<UserRole.Simple>
     ) : User
 }

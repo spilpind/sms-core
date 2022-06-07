@@ -6,6 +6,15 @@ package dk.spilpind.sms.core.model
 object ModelHelper {
 
     /**
+     * Converts a user to a privileged user with [roles]
+     */
+    fun User.toPrivileged(roles: List<UserRole.Simple>) = User.Privileged(
+        userId = userId,
+        name = name,
+        email = email,
+        roles = roles
+    )
+    /**
      * Converts a raw event to a simple event
      */
     fun Event.Raw.toDetailedEvent(): Event.Simple {
