@@ -4,7 +4,8 @@ import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.api.common.Reaction
 
 /**
- * All possible contexts. A context represents a group of functionality that usually is related directly to some data.
+ * All possible contexts. A context represents a group of functionality that in most cases is related directly to some
+ * data.
  *
  * Context is for instance used for the API, where there is a set of [Action]s and [Reaction]s for each context. In that
  * way it's possible to distinguish between if the user of the API e.g. wants to add a game or a team
