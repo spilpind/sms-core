@@ -102,20 +102,16 @@ sealed interface UserRole {
             }
 
             return when (context) {
-                RoleContext.System -> when (findRoleOrNull<ContextRole.System.Role>(identifier = roleIdentifier)) {
+                RoleContext.System -> when (
+                    findRoleOrThrow<ContextRole.System.Role>(context = context, roleIdentifier = roleIdentifier)
+                ) {
                     ContextRole.System.Role.SuperAdmin -> ContextRole.System.SuperAdmin
                     ContextRole.System.Role.Admin -> ContextRole.System.Admin
-                    null -> throwNotFound<ContextRole.Team.Role>(
-                        context = context,
-                        roleIdentifier = roleIdentifier
-                    )
                 }
-                RoleContext.Team -> when (findRoleOrNull<ContextRole.Team.Role>(identifier = roleIdentifier)) {
+                RoleContext.Team -> when (
+                    findRoleOrThrow<ContextRole.Team.Role>(context = context, roleIdentifier = roleIdentifier)
+                ) {
                     ContextRole.Team.Role.Captain -> ContextRole.Team.Captain
-                    null -> throwNotFound<ContextRole.Team.Role>(
-                        context = context,
-                        roleIdentifier = roleIdentifier
-                    )
                 }
                 null -> throw IllegalArgumentException(
                     "Context \"$contextIdentifier\" not found. Available contexts: "
@@ -124,18 +120,15 @@ sealed interface UserRole {
             }
         }
 
-        private inline fun <reified RoleType> findRoleOrNull(identifier: String): RoleType?
-                where RoleType : Enum<RoleType>, RoleType : RawRole {
-            return enumValues<RoleType>().firstOrNull { role -> role.identifier == identifier }
-        }
-
-        private inline fun <reified RoleType> throwNotFound(
+        private inline fun <reified RoleType> findRoleOrThrow(
             context: RoleContext,
             roleIdentifier: String
-        ): Nothing where RoleType : Enum<RoleType>, RoleType : RawRole {
+        ): RoleType where RoleType : Enum<RoleType>, RoleType : RawRole {
             val availableRoles = enumValues<RoleType>()
 
-            throw IllegalArgumentException(
+            return availableRoles.firstOrNull { role ->
+                role.identifier == roleIdentifier
+            } ?: throw IllegalArgumentException(
                 "Role \"$roleIdentifier\" not found in context \"${context.context.contextKey}\". Available roles: "
                         + "${availableRoles.map { availableRole -> availableRole.identifier }}"
             )
