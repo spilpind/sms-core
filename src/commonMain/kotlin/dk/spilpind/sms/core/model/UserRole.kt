@@ -22,8 +22,8 @@ sealed interface UserRole {
         /**
          * Defines all types of user roles that exists for the overall system
          */
-        sealed class System(role: Roles) : ContextRole(context = RoleContext.System, role = role) {
-            enum class Roles(override val identifier: String) : RawRole {
+        sealed class System(role: Role) : ContextRole(context = RoleContext.System, role = role) {
+            enum class Role(override val identifier: String) : RawRole {
                 SuperAdmin("superAdmin"),
                 Admin("admin")
             }
@@ -31,26 +31,26 @@ sealed interface UserRole {
             /**
              * A user role representing a super admin of the system, having at least the same rights as an [Admin]
              */
-            object SuperAdmin : System(role = Roles.SuperAdmin)
+            object SuperAdmin : System(role = Role.SuperAdmin)
 
             /**
              * A user role representing an admin of the system
              */
-            object Admin : System(role = Roles.Admin)
+            object Admin : System(role = Role.Admin)
         }
 
         /**
          * Defines all types of user roles that exists for a team
          */
-        sealed class Team(role: Roles) : ContextRole(context = RoleContext.Team, role = role) {
-            enum class Roles(override val identifier: String) : RawRole {
+        sealed class Team(role: Role) : ContextRole(context = RoleContext.Team, role = role) {
+            enum class Role(override val identifier: String) : RawRole {
                 Captain("captain")
             }
 
             /**
              * A user role representing a captain of a team
              */
-            object Captain : Team(role = Roles.Captain)
+            object Captain : Team(role = Role.Captain)
         }
     }
 
@@ -102,17 +102,17 @@ sealed interface UserRole {
             }
 
             return when (context) {
-                RoleContext.System -> when (findRoleOrNull<ContextRole.System.Roles>(identifier = roleIdentifier)) {
-                    ContextRole.System.Roles.SuperAdmin -> ContextRole.System.SuperAdmin
-                    ContextRole.System.Roles.Admin -> ContextRole.System.Admin
-                    null -> throwNotFound<ContextRole.Team.Roles>(
+                RoleContext.System -> when (findRoleOrNull<ContextRole.System.Role>(identifier = roleIdentifier)) {
+                    ContextRole.System.Role.SuperAdmin -> ContextRole.System.SuperAdmin
+                    ContextRole.System.Role.Admin -> ContextRole.System.Admin
+                    null -> throwNotFound<ContextRole.Team.Role>(
                         context = context,
                         roleIdentifier = roleIdentifier
                     )
                 }
-                RoleContext.Team -> when (findRoleOrNull<ContextRole.Team.Roles>(identifier = roleIdentifier)) {
-                    ContextRole.Team.Roles.Captain -> ContextRole.Team.Captain
-                    null -> throwNotFound<ContextRole.Team.Roles>(
+                RoleContext.Team -> when (findRoleOrNull<ContextRole.Team.Role>(identifier = roleIdentifier)) {
+                    ContextRole.Team.Role.Captain -> ContextRole.Team.Captain
+                    null -> throwNotFound<ContextRole.Team.Role>(
                         context = context,
                         roleIdentifier = roleIdentifier
                     )
