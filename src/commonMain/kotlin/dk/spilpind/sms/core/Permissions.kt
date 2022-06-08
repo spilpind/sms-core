@@ -139,6 +139,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can add the specified [team] to a game on behalf of the team
+     */
+    fun User.Privileged.canJoinGame(team: Team): Boolean {
+        return hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
+    }
+
+    /**
      * Checks if the user (or "everyone" if null) can view teams with the specified [tournament] or any team if
      * [tournament] is null
      */
@@ -163,7 +170,6 @@ object Permissions {
      */
     fun User.Privileged.canAddTeam(tournament: Tournament): Boolean {
         return canAddTeams() || tournament.isCurrentStickLeague
-
     }
 
     /**
