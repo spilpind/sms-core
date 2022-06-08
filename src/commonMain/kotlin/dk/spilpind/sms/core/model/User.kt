@@ -20,7 +20,7 @@ sealed interface User {
 
     /**
      * Represents a user with privileges (see [roles]). Note that the list of user roles might be empty if the user
-     * doesn't have any - in that case the user would just have default in-logged privileges
+     * doesn't have any - in that case the user would just have default privileges as a logged-in user
      */
     data class Privileged(
         override val userId: Int,
