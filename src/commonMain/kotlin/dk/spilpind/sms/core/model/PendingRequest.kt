@@ -98,7 +98,7 @@ sealed interface PendingRequest {
                     )
                 }
                 null -> throw IllegalArgumentException(
-                    "Context \"$contextIdentifier\" not found. Available contexts: ${
+                    "Context \"$contextIdentifier\" of pending request not found. Available contexts: ${
                         PendingRequestContext.values().map { availableContext -> availableContext.context.contextKey }
                     }"
                 )
@@ -117,7 +117,7 @@ sealed interface PendingRequest {
             val availableRequests = enumValues<RequestType>()
 
             throw IllegalArgumentException(
-                "Request \"$requestIdentifier\" not found in context \"${context.context.contextKey}\". " +
+                "Pending request type \"$requestIdentifier\" not found in context \"${context.context.contextKey}\". " +
                         "Available requests: ${availableRequests.map { request -> request.identifier }}"
             )
         }
