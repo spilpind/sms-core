@@ -6,6 +6,23 @@ package dk.spilpind.sms.core.model
 object ModelHelper {
 
     /**
+     * Converts a user to a privileged user with [roles]
+     */
+    fun User.toPrivileged(roles: List<UserRole.Simple>) = User.Privileged(
+        userId = userId,
+        name = name,
+        email = email,
+        roles = roles
+    )
+
+    /**
+     * Defines if the tournament is the current stick league based on the tags - this can therefore change from season
+     * to season
+     */
+    val Tournament.isCurrentStickLeague: Boolean
+        get() = tags.contains("stick-league-current")
+
+    /**
      * Converts a raw event to a simple event
      */
     fun Event.Raw.toDetailedEvent(): Event.Simple {

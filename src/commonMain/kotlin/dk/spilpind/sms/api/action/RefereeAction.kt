@@ -1,7 +1,7 @@
 package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.core.model.Event
 import kotlinx.serialization.Serializable
 
@@ -28,7 +28,6 @@ sealed class RefereeAction : ContextAction() {
         val points: Int? = null
     ) : RefereeAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -38,7 +37,6 @@ sealed class RefereeAction : ContextAction() {
     @Serializable
     data class Remove(val eventId: Int) : RefereeAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -49,7 +47,6 @@ sealed class RefereeAction : ContextAction() {
     @Serializable
     data class Subscribe(val gameId: Int) : RefereeAction() {
         override val action: Action = Action.Subscribe
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -59,6 +56,5 @@ sealed class RefereeAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val gameId: Int) : RefereeAction() {
         override val action: Action = Action.Unsubscribe
-        override val minimumAccessLevel: Int? = null
     }
 }

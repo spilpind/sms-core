@@ -1,6 +1,6 @@
 package dk.spilpind.sms.api.action
 
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.Serializable
 
@@ -63,7 +63,6 @@ sealed class UserReaction : ContextReaction() {
     data class User(
         val userId: Int,
         val name: String,
-        val username: String,
-        val email: String
+        val email: String?
     )
 }

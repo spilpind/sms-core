@@ -20,14 +20,14 @@ sealed interface PendingRequest {
     /**
      * Defines all type of pending requests that exists
      */
-    sealed class Type(context: RawContext, request: RawRequest) {
-        val context = context.identifier
+    sealed class Type(context: PendingRequestContext, request: RawRequest) {
+        val context = context.context
         val request = request.identifier
 
         /**
          * Defines all type of pending requests that exists for a game
          */
-        sealed class Game(request: Requests) : Type(context = RawContext.Game, request = request) {
+        sealed class Game(request: Requests) : Type(context = PendingRequestContext.Game, request = request) {
             enum class Requests(override val identifier: String) : RawRequest {
                 TeamJoinInvite("teamJoinInvite")
             }
@@ -64,16 +64,15 @@ sealed interface PendingRequest {
         override val requesterId: Int
     ) : PendingRequest {
 
-        override val context: String = type.context
+        override val context: String = type.context.contextKey
 
         override val request: String = type.request
 
     }
 
     companion object {
-        // TODO: Use context from api instead
-        internal enum class RawContext(val identifier: String) {
-            Game("game")
+        internal enum class PendingRequestContext(val context: Context) {
+            Game(Context.Game)
         }
 
         internal interface RawRequest {
@@ -84,23 +83,24 @@ sealed interface PendingRequest {
          * Finds a [Type] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
         fun findType(contextIdentifier: String, requestIdentifier: String): Type {
-            val rawContext = RawContext.values().firstOrNull { context ->
-                context.identifier == contextIdentifier
+            val context = PendingRequestContext.values().firstOrNull { context ->
+                context.context.contextKey == contextIdentifier
             }
 
-            return when (rawContext) {
-                RawContext.Game -> when (
+            return when (context) {
+                PendingRequestContext.Game -> when (
                     findRequestOrNull<Type.Game.Requests>(identifier = requestIdentifier)
                 ) {
                     Type.Game.Requests.TeamJoinInvite -> Type.Game.TeamJoinInvite
                     null -> throwNotFound<Type.Game.Requests>(
-                        rawContext = rawContext,
+                        context = context,
                         requestIdentifier = requestIdentifier
                     )
                 }
                 null -> throw IllegalArgumentException(
-                    "Context \"$contextIdentifier\" not found. Available contexts: " +
-                            "${RawContext.values().map { availableContext -> availableContext.identifier }}"
+                    "Context \"$contextIdentifier\" of pending request not found. Available contexts: ${
+                        PendingRequestContext.values().map { availableContext -> availableContext.context.contextKey }
+                    }"
                 )
             }
         }
@@ -111,13 +111,13 @@ sealed interface PendingRequest {
         }
 
         private inline fun <reified RequestType> throwNotFound(
-            rawContext: RawContext,
+            context: PendingRequestContext,
             requestIdentifier: String
         ): Nothing where RequestType : Enum<RequestType>, RequestType : RawRequest {
             val availableRequests = enumValues<RequestType>()
 
             throw IllegalArgumentException(
-                "Request \"$requestIdentifier\" not found in context \"${rawContext.identifier}\". " +
+                "Pending request type \"$requestIdentifier\" not found in context \"${context.context.contextKey}\". " +
                         "Available requests: ${availableRequests.map { request -> request.identifier }}"
             )
         }

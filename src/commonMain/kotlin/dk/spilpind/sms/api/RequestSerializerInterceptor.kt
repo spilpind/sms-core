@@ -7,7 +7,7 @@ import dk.spilpind.sms.api.SerializationUtil.putType
 import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
 import dk.spilpind.sms.api.common.Action
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -41,6 +41,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
     private val contextActionClassMap = Context.values().associate { context ->
         context.contextKey to Action.values().mapNotNull { action ->
             val actionClass: KSerializer<out ContextAction>? = when (context) {
+                Context.System -> null
                 Context.Authentication -> when (action) {
                     Action.Inform -> AuthenticationAction.Inform.serializer()
                     Action.Add -> AuthenticationAction.Add.serializer()

@@ -1,7 +1,7 @@
 package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import kotlinx.serialization.Serializable
 
 /**
@@ -22,7 +22,6 @@ sealed class TeamAction : ContextAction() {
         val addAsCaptain: Boolean = false
     ) : TeamAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -32,7 +31,6 @@ sealed class TeamAction : ContextAction() {
     @Serializable
     data class Remove(val teamId: Int) : TeamAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -44,7 +42,6 @@ sealed class TeamAction : ContextAction() {
     @Serializable
     data class Subscribe(val tournamentId: Int) : TeamAction() {
         override val action: Action = Action.Subscribe
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -54,6 +51,5 @@ sealed class TeamAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val tournamentId: Int) : TeamAction() {
         override val action: Action = Action.Unsubscribe
-        override val minimumAccessLevel: Int? = null
     }
 }

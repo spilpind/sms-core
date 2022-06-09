@@ -6,7 +6,7 @@ import dk.spilpind.sms.api.SerializationUtil.asStringOrNull
 import dk.spilpind.sms.api.SerializationUtil.putType
 import dk.spilpind.sms.api.SerializationUtil.removeType
 import dk.spilpind.sms.api.action.*
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -64,6 +64,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         reaction.reactionKey to when (reaction) {
             Reaction.Informed -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> AuthenticationReaction.Informed.serializer()
                     Context.User -> null
                     Context.UserRole -> null
@@ -75,6 +76,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Added -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> AuthenticationReaction.Added.serializer()
                     Context.User -> UserReaction.Added.serializer()
                     Context.UserRole -> UserRoleReaction.Added.serializer()
@@ -86,6 +88,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Removed -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> AuthenticationReaction.Removed.serializer()
                     Context.User -> UserReaction.Removed.serializer()
                     Context.UserRole -> null
@@ -97,6 +100,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Updated -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> null
                     Context.User -> UserReaction.Updated.serializer()
                     Context.UserRole -> UserRoleReaction.Updated.serializer()
@@ -108,6 +112,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Accepted -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> null
                     Context.User -> null
                     Context.UserRole -> null
@@ -119,6 +124,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Subscribed -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> null
                     Context.User -> UserReaction.Subscribed.serializer()
                     Context.UserRole -> UserRoleReaction.Subscribed.serializer()
@@ -130,6 +136,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
             }
             Reaction.Unsubscribed -> createContextMap { context ->
                 when (context) {
+                    Context.System -> null
                     Context.Authentication -> null
                     Context.User -> UserReaction.Unsubscribed.serializer()
                     Context.UserRole -> UserRoleReaction.Unsubscribed.serializer()

@@ -1,7 +1,7 @@
 package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
-import dk.spilpind.sms.api.common.Context
+import dk.spilpind.sms.core.model.Context
 import  dk.spilpind.sms.core.model.PendingRequest
 import kotlinx.serialization.Serializable
 
@@ -25,7 +25,6 @@ sealed class GameAction : ContextAction() {
         val addTeamJoinInvite: Boolean = false
     ) : GameAction() {
         override val action: Action = Action.Add
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -35,7 +34,6 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Remove(val gameId: Int) : GameAction() {
         override val action: Action = Action.Remove
-        override val minimumAccessLevel: Int = 2
     }
 
     /**
@@ -46,7 +44,6 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Accept(val request: String, val code: String, val teamId: Int? = null) : GameAction() {
         override val action: Action = Action.Accept
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -58,7 +55,6 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Subscribe(val gameId: Int? = null, val tournamentId: Int? = null) : GameAction() {
         override val action: Action = Action.Subscribe
-        override val minimumAccessLevel: Int? = null
     }
 
     /**
@@ -68,6 +64,5 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val gameId: Int? = null, val tournamentId: Int? = null) : GameAction() {
         override val action: Action = Action.Unsubscribe
-        override val minimumAccessLevel: Int? = null
     }
 }

@@ -15,22 +15,42 @@ sealed interface UserRole {
     /**
      * Defines all types of user roles that exists
      */
-    sealed class ContextRole(context: RawContext, role: RawRole) {
-        val context = context.identifier
+    sealed class ContextRole(context: RoleContext, role: RawRole) {
+        val context = context.context
         val role = role.identifier
+
+        /**
+         * Defines all types of user roles that exists for the overall system
+         */
+        sealed class System(role: Role) : ContextRole(context = RoleContext.System, role = role) {
+            enum class Role(override val identifier: String) : RawRole {
+                SuperAdmin("superAdmin"),
+                Admin("admin")
+            }
+
+            /**
+             * A user role representing a super admin of the system, having at least the same rights as an [Admin]
+             */
+            object SuperAdmin : System(role = Role.SuperAdmin)
+
+            /**
+             * A user role representing an admin of the system
+             */
+            object Admin : System(role = Role.Admin)
+        }
 
         /**
          * Defines all types of user roles that exists for a team
          */
-        sealed class Team(role: Roles) : ContextRole(context = RawContext.Team, role = role) {
-            enum class Roles(override val identifier: String) : RawRole {
+        sealed class Team(role: Role) : ContextRole(context = RoleContext.Team, role = role) {
+            enum class Role(override val identifier: String) : RawRole {
                 Captain("captain")
             }
 
             /**
              * A user role representing a captain of a team
              */
-            object Captain : Team(role = Roles.Captain)
+            object Captain : Team(role = Role.Captain)
         }
     }
 
@@ -57,16 +77,16 @@ sealed interface UserRole {
         override val isPublic: Boolean
     ) : UserRole {
 
-        override val context: String = contextRole.context
+        override val context: String = contextRole.context.contextKey
 
         override val role: String = contextRole.role
 
     }
 
     companion object {
-        // TODO: Use context from api instead
-        internal enum class RawContext(val identifier: String) {
-            Team("team")
+        internal enum class RoleContext(val context: Context) {
+            System(Context.System),
+            Team(Context.Team)
         }
 
         internal interface RawRole {
@@ -77,38 +97,39 @@ sealed interface UserRole {
          * Finds a [ContextRole] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
         fun findContext(contextIdentifier: String, roleIdentifier: String): ContextRole {
-            val rawContext = RawContext.values().firstOrNull { context ->
-                context.identifier == contextIdentifier
+            val context = RoleContext.values().firstOrNull { context ->
+                context.context.contextKey == contextIdentifier
             }
 
-            return when (rawContext) {
-                RawContext.Team -> when (findRoleOrNull<ContextRole.Team.Roles>(identifier = roleIdentifier)) {
-                    ContextRole.Team.Roles.Captain -> ContextRole.Team.Captain
-                    null -> throwNotFound<ContextRole.Team.Roles>(
-                        rawContext = rawContext,
-                        roleIdentifier = roleIdentifier
-                    )
+            return when (context) {
+                RoleContext.System -> when (
+                    findRoleOrThrow<ContextRole.System.Role>(context = context, roleIdentifier = roleIdentifier)
+                ) {
+                    ContextRole.System.Role.SuperAdmin -> ContextRole.System.SuperAdmin
+                    ContextRole.System.Role.Admin -> ContextRole.System.Admin
+                }
+                RoleContext.Team -> when (
+                    findRoleOrThrow<ContextRole.Team.Role>(context = context, roleIdentifier = roleIdentifier)
+                ) {
+                    ContextRole.Team.Role.Captain -> ContextRole.Team.Captain
                 }
                 null -> throw IllegalArgumentException(
                     "Context \"$contextIdentifier\" not found. Available contexts: "
-                            + "${RawContext.values().map { availableContext -> availableContext.identifier }}"
+                            + "${RoleContext.values().map { availableContext -> availableContext.context.contextKey }}"
                 )
             }
         }
 
-        private inline fun <reified RoleType> findRoleOrNull(identifier: String): RoleType?
-                where RoleType : Enum<RoleType>, RoleType : RawRole {
-            return enumValues<RoleType>().firstOrNull { role -> role.identifier == identifier }
-        }
-
-        private inline fun <reified RoleType> throwNotFound(
-            rawContext: RawContext,
+        private inline fun <reified RoleType> findRoleOrThrow(
+            context: RoleContext,
             roleIdentifier: String
-        ): Nothing where RoleType : Enum<RoleType>, RoleType : RawRole {
+        ): RoleType where RoleType : Enum<RoleType>, RoleType : RawRole {
             val availableRoles = enumValues<RoleType>()
 
-            throw IllegalArgumentException(
-                "Role \"$roleIdentifier\" not found in context \"${rawContext.identifier}\". Available roles: "
+            return availableRoles.firstOrNull { role ->
+                role.identifier == roleIdentifier
+            } ?: throw IllegalArgumentException(
+                "Role \"$roleIdentifier\" not found in context \"${context.context.contextKey}\". Available roles: "
                         + "${availableRoles.map { availableRole -> availableRole.identifier }}"
             )
         }
