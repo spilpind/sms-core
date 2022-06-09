@@ -154,7 +154,7 @@ object Permissions {
         return if (this != null && hasSystemRole(UserRole.ContextRole.System.Admin)) {
             true
         } else {
-            tournament != null && tournament.isCurrentStickLeague
+            tournament != null && canViewTournament(tournament)
         }
     }
 
