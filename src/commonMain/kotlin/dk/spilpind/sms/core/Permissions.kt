@@ -6,8 +6,8 @@ import dk.spilpind.sms.core.model.ModelHelper.isCurrentStickLeague
 
 /**
  * Defines functionality to determine if the logged-in user (or "everyone" if null) is allowed to perform a specific
- * action. It's important to notice that this is only privilege-wise, not considering e.g. business logic like if
- * duplicates of user roles
+ * action. It's important to notice that this is only privilege-wise, not considering e.g. business logic like adding
+ * duplicates of user roles or using an already used name for a team
  */
 object Permissions {
 
@@ -90,7 +90,8 @@ object Permissions {
     }
 
     /**
-     * Checks if the user (or "everyone" if null) can view the specified [game] with the specified [tournament]
+     * Checks if the user (or "everyone" if null) can view the specified [game] when associated with the specified
+     * [tournament]
      */
     fun User.Privileged?.canViewGame(game: Game, tournament: Tournament): Boolean {
         return if (this != null && hasSystemRole(UserRole.ContextRole.System.Admin)) {
