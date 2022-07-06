@@ -11,16 +11,6 @@ import dk.spilpind.sms.core.model.Team
 object GameHelper {
 
     /**
-     * Represents available states of a game. [NOT_STARTED] is expected if the game hasn't started and [FINISHED] is to
-     * be used in case the game is done. [STARTED] is when the game is active and [PAUSED] represents when the game (and
-     * time) has temporarily been stopped. This means [NOT_STARTED], [STARTED] and [FINISHED] are always expected at
-     * some point during a game (and in that order) and [PAUSED] should only exist between two [STARTED] states
-     */
-    enum class GameState {
-        NOT_STARTED, STARTED, PAUSED, FINISHED
-    }
-
-    /**
      * Finds the in team of the game based on the provided [events]
      */
     fun Game.Detailed.findInTeam(events: List<Event.Simple>): Team? {
@@ -71,20 +61,20 @@ object GameHelper {
     /**
      * Returns the game state based on the list of events
      */
-    val List<Event.Simple>.gameState: GameState
+    val List<Event.Simple>.gameState: Game.State
         get() = when (val event = firstOrNull()) {
-            is Event.Death -> GameState.STARTED
-            is Event.Fault -> GameState.STARTED
-            is Event.LiftSuccess -> GameState.STARTED
-            is Event.Points -> GameState.STARTED
-            is Event.Switch -> GameState.STARTED
+            is Event.Death -> Game.State.STARTED
+            is Event.Fault -> Game.State.STARTED
+            is Event.LiftSuccess -> Game.State.STARTED
+            is Event.Points -> Game.State.STARTED
+            is Event.Switch -> Game.State.STARTED
             is Event.Timing -> when (event.timingType) {
-                Event.Timing.TimingType.GameStart -> GameState.STARTED
-                Event.Timing.TimingType.GameEnd -> GameState.FINISHED
-                Event.Timing.TimingType.PauseStart -> GameState.PAUSED
-                Event.Timing.TimingType.PauseEnd -> GameState.STARTED
+                Event.Timing.TimingType.GameStart -> Game.State.STARTED
+                Event.Timing.TimingType.GameEnd -> Game.State.FINISHED
+                Event.Timing.TimingType.PauseStart -> Game.State.PAUSED
+                Event.Timing.TimingType.PauseEnd -> Game.State.STARTED
             }
-            null -> GameState.NOT_STARTED
+            null -> Game.State.NOT_STARTED
         }
 
     /**
