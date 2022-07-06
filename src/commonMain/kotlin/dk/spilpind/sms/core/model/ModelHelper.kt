@@ -78,13 +78,29 @@ object ModelHelper {
     )
 
     /**
-     * Converts a simple game to a detailed game
+     * Converts a simple game to a detailed game. It is expected that the provided parameters matches the properties of
+     * the simple game
      */
     fun Game.Simple.toDetailedGame(tournament: Tournament, teamA: Team?, teamB: Team?) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
         teamA = teamA,
         teamB = teamB,
+        state = state,
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        description = description,
+        teamJoinInviteCode = teamJoinInviteCode
+    )
+
+    /**
+     * Converts a detailed game to a simple game
+     */
+    fun Game.Detailed.toSimpleGame() = Game.Simple(
+        gameId = gameId,
+        tournamentId = tournament.tournamentId,
+        teamAId = teamAId,
+        teamBId = teamBId,
         state = state,
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
