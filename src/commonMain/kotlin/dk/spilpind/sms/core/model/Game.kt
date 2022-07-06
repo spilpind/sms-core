@@ -10,6 +10,8 @@ sealed interface Game {
     val teamAId: Int?
     val teamBId: Int?
     val gameState: String
+    val teamAPoints: Int
+    val teamBPoints: Int
     val description: String
     val teamJoinInviteCode: String?
 
@@ -35,6 +37,8 @@ sealed interface Game {
         override val teamAId: Int?,
         override val teamBId: Int?,
         override val gameState: String,
+        override val teamAPoints: Int,
+        override val teamBPoints: Int,
         override val description: String,
         override val teamJoinInviteCode: String?
     ) : Game
@@ -48,6 +52,8 @@ sealed interface Game {
         override val teamAId: Int?,
         override val teamBId: Int?,
         val state: State,
+        override val teamAPoints: Int,
+        override val teamBPoints: Int,
         override val description: String,
         override val teamJoinInviteCode: String?
     ) : Game {
@@ -63,6 +69,8 @@ sealed interface Game {
         val teamA: Team?,
         val teamB: Team?,
         val state: State,
+        override val teamAPoints: Int,
+        override val teamBPoints: Int,
         override val description: String,
         override val teamJoinInviteCode: String?
     ) : Game {
