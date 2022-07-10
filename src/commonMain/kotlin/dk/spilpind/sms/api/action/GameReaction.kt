@@ -72,6 +72,9 @@ sealed class GameReaction : ContextReaction() {
         val tournamentId: Int,
         val teamAId: Int?,
         val teamBId: Int?,
+        val gameState: String,
+        val teamAPoints: Int,
+        val teamBPoints: Int,
         val description: String,
         val teamJoinInviteCode: String? = null
     )

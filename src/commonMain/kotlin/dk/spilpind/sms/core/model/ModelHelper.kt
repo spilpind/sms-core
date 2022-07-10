@@ -60,4 +60,51 @@ object ModelHelper {
             Event.Type.SwitchDeaths -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Death)
         }
     }
+
+    /**
+     * Converts a raw game to a simple game
+     */
+    fun Game.Raw.toSimpleGame() = Game.Simple(
+        gameId = gameId,
+        tournamentId = tournamentId,
+        teamAId = teamAId,
+        teamBId = teamBId,
+        state = Game.State.values().firstOrNull { state -> state.identifier == gameState }
+            ?: throw IllegalStateException("Got unknown game state: $gameState"),
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        description = description,
+        teamJoinInviteCode = teamJoinInviteCode
+    )
+
+    /**
+     * Converts a simple game to a detailed game. It is expected that the provided parameters matches the properties of
+     * the simple game
+     */
+    fun Game.Simple.toDetailedGame(tournament: Tournament, teamA: Team?, teamB: Team?) = Game.Detailed(
+        gameId = gameId,
+        tournament = tournament,
+        teamA = teamA,
+        teamB = teamB,
+        state = state,
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        description = description,
+        teamJoinInviteCode = teamJoinInviteCode
+    )
+
+    /**
+     * Converts a detailed game to a simple game
+     */
+    fun Game.Detailed.toSimpleGame() = Game.Simple(
+        gameId = gameId,
+        tournamentId = tournamentId,
+        teamAId = teamAId,
+        teamBId = teamBId,
+        state = state,
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        description = description,
+        teamJoinInviteCode = teamJoinInviteCode
+    )
 }

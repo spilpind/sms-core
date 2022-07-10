@@ -1,9 +1,9 @@
 package dk.spilpind.sms.api.action
 
-import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
-import dk.spilpind.sms.core.GameHelper
+import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.core.model.Event.Raw
+import dk.spilpind.sms.core.model.Game
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -16,11 +16,11 @@ sealed class RefereeReaction : ContextReaction() {
 
     /**
      * Response to changes in the game, e.g. [RefereeAction.Add], [RefereeAction.Remove] (both directly and via
-     * subscriptions). [gameState] matches [GameHelper.GameState.name]. [inTeamId] and [outTeamId] is always non-null
-     * except if [gameState] is [GameHelper.GameState.NOT_STARTED]. [faults] is faults for the current player (since
-     * last death/points/switch) and [deaths] is deaths of current in team (since last switch). [gameTime] and
-     * [turnTime] is in seconds and represent time since start of the game and time since last switch (both excluding
-     * any pauses in the game). [recentEvents] is the most recent events and ordered such that the newest event is first
+     * subscriptions). [gameState] matches [Game.State.name]. [inTeamId] and [outTeamId] is always non-null except if
+     * [gameState] is [Game.State.NOT_STARTED]. [faults] is faults for the current player (since last death, points or
+     * switch) and [deaths] is deaths of current in team (since last switch). [gameTime] and [turnTime] is in seconds
+     * and represent time since start of the game and time since last switch (both excluding any pauses in the game).
+     * [recentEvents] is the most recent events and ordered such that the newest event is first
      */
     @Serializable
     data class Updated(
