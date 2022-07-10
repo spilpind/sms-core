@@ -98,7 +98,7 @@ object ModelHelper {
      */
     fun Game.Detailed.toSimpleGame() = Game.Simple(
         gameId = gameId,
-        tournamentId = tournament.tournamentId,
+        tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
         state = state,
