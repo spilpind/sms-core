@@ -42,7 +42,9 @@ sealed class GameAction : ContextAction() {
      * successful response to this would be [GameReaction.Accepted]
      */
     @Serializable
+    @Deprecated("Will be remove in version 2. Use AcceptRequest")
     data class Accept(val request: String, val code: String, val teamId: Int? = null) : GameAction() {
+        @Suppress("DEPRECATION")
         override val action: Action = Action.Accept
     }
 
@@ -64,5 +66,26 @@ sealed class GameAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val gameId: Int? = null, val tournamentId: Int? = null) : GameAction() {
         override val action: Action = Action.Unsubscribe
+    }
+
+    /**
+     * Creates a pending requests related to a game (see [PendingRequest.Type.Game]) identified by [gameId]. [request]
+     * has to match value of [PendingRequest.Type.Game.request]. If the request already exists, it will be overwritten
+     * (a new code will be generated and its expiration time will be reset). A successful response to this would be
+     * [GameReaction.RequestCreated]
+     */
+    @Serializable
+    data class CreateRequest(val request: String, val gameId: Int) : GameAction() {
+        override val action: Action = Action.CreateRequest
+    }
+
+    /**
+     * Accepts a pending requests related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
+     * of [PendingRequest.Type.Game.request]. If the type of pending request requires it, [teamId] has to be non-null. A
+     * successful response to this would be [GameReaction.RequestAccepted]
+     */
+    @Serializable
+    data class AcceptRequest(val request: String, val code: String, val teamId: Int? = null) : GameAction() {
+        override val action: Action = Action.AcceptRequest
     }
 }

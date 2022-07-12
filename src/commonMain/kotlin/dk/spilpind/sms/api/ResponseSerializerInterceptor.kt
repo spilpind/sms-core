@@ -60,6 +60,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         }
     }
 
+    @Suppress("DEPRECATION") // Accepted
     private val reactionContextClassMap = Reaction.values().associate { reaction ->
         reaction.reactionKey to when (reaction) {
             Reaction.Informed -> createContextMap { context ->
@@ -144,6 +145,30 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Unsubscribed.serializer()
                     Context.Team -> TeamReaction.Unsubscribed.serializer()
                     Context.Referee -> RefereeReaction.Unsubscribed.serializer()
+                }
+            }
+            Reaction.RequestCreated -> createContextMap { context ->
+                when (context) {
+                    Context.System -> null
+                    Context.Authentication -> null
+                    Context.User -> null
+                    Context.UserRole -> null
+                    Context.Tournament -> null
+                    Context.Game -> GameReaction.RequestCreated.serializer()
+                    Context.Team -> null
+                    Context.Referee -> null
+                }
+            }
+            Reaction.RequestAccepted -> createContextMap { context ->
+                when (context) {
+                    Context.System -> null
+                    Context.Authentication -> null
+                    Context.User -> null
+                    Context.UserRole -> null
+                    Context.Tournament -> null
+                    Context.Game -> GameReaction.RequestAccepted.serializer()
+                    Context.Team -> null
+                    Context.Referee -> null
                 }
             }
             Reaction.ServerError ->

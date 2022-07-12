@@ -140,6 +140,19 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can create an invite such that another team can join the [game]
+     */
+    fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin) ||
+                game.teamAId?.let { teamId ->
+                    hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+                } ?: false ||
+                game.teamBId?.let { teamId ->
+                    hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+                } ?: false
+    }
+
+    /**
      * Checks if the user can add the specified [team] to a game on behalf of the team
      */
     fun User.Privileged.canJoinGame(team: Team): Boolean {
