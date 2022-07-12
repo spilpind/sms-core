@@ -65,6 +65,8 @@ object Permissions {
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
             UserRole.ContextRole.Team.Captain -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
+            UserRole.ContextRole.Team.Member -> hasSystemRole(UserRole.ContextRole.System.Admin)
+                    || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
         }
     }
 
@@ -191,6 +193,19 @@ object Permissions {
      */
     fun User.Privileged.canRemoveTeams(): Boolean {
         return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can invite other users to become members of the [team]
+     */
+    fun User.Privileged.canInviteMembers(team: Team): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
+    }
+
+    fun User.Privileged.canRevokeMemberInvite(team: Team): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
     }
 
     /**

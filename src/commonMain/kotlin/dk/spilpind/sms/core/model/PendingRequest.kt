@@ -25,7 +25,7 @@ sealed interface PendingRequest {
         val request = request.identifier
 
         /**
-         * Defines all type of pending requests that exists for a game
+         * Defines all types of pending requests that exist for a game
          */
         sealed class Game(request: Requests) : Type(context = PendingRequestContext.Game, request = request) {
             enum class Requests(override val identifier: String) : RawRequest {
@@ -36,6 +36,20 @@ sealed interface PendingRequest {
              * An invite for a team to join the game
              */
             object TeamJoinInvite : Game(request = Requests.TeamJoinInvite)
+        }
+
+        /**
+         * Defines all types of pending requests that exist for a team
+         */
+        sealed class Team(request: Requests) : Type(context = PendingRequestContext.Team, request = request) {
+            enum class Requests(override val identifier: String) : RawRequest {
+                MemberJoinInvite("memberJoinInvite")
+            }
+
+            /**
+             * An invite for a user to join the team as a member
+             */
+            object MemberJoinInvite : Team(request = Requests.MemberJoinInvite)
         }
     }
 
@@ -72,11 +86,29 @@ sealed interface PendingRequest {
 
     companion object {
         internal enum class PendingRequestContext(val context: Context) {
-            Game(Context.Game)
+            Game(Context.Game),
+            Team(Context.Team)
         }
 
         internal interface RawRequest {
             val identifier: String
+        }
+
+        /**
+         * Finds a [Type] based on the provided parameters or throw an [IllegalArgumentException] if not found or not
+         * the expected [RequestType]
+         */
+        inline fun <reified RequestType : Type> findExpectedType(
+            contextIdentifier: String,
+            requestIdentifier: String
+        ): RequestType {
+            val type = findType(contextIdentifier = contextIdentifier, requestIdentifier = requestIdentifier)
+
+            if (type !is RequestType) {
+                throw IllegalArgumentException("Pending request type was found, but it wasn't the expected type")
+            }
+
+            return type
         }
 
         /**
@@ -93,6 +125,15 @@ sealed interface PendingRequest {
                 ) {
                     Type.Game.Requests.TeamJoinInvite -> Type.Game.TeamJoinInvite
                     null -> throwNotFound<Type.Game.Requests>(
+                        context = context,
+                        requestIdentifier = requestIdentifier
+                    )
+                }
+                PendingRequestContext.Team -> when (
+                    findRequestOrNull<Type.Team.Requests>(identifier = requestIdentifier)
+                ) {
+                    Type.Team.Requests.MemberJoinInvite -> Type.Team.MemberJoinInvite
+                    null -> throwNotFound<Type.Team.Requests>(
                         context = context,
                         requestIdentifier = requestIdentifier
                     )

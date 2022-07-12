@@ -18,6 +18,7 @@ enum class Reaction(val reactionKey: String) {
     Subscribed("subscribed"),
     Unsubscribed("unsubscribed"),
     RequestCreated("requestCreated"),
+    RequestRevoked("requestRevoked"),
     RequestAccepted("requestAccepted"),
     ServerError("serverError"),
     RequestStructureError("requestStructureError"),

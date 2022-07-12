@@ -155,7 +155,19 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.UserRole -> null
                     Context.Tournament -> null
                     Context.Game -> GameReaction.RequestCreated.serializer()
-                    Context.Team -> null
+                    Context.Team -> TeamReaction.RequestCreated.serializer()
+                    Context.Referee -> null
+                }
+            }
+            Reaction.RequestRevoked -> createContextMap { context ->
+                when (context) {
+                    Context.System -> null
+                    Context.Authentication -> null
+                    Context.User -> null
+                    Context.UserRole -> null
+                    Context.Tournament -> null
+                    Context.Game -> null
+                    Context.Team -> TeamReaction.RequestRevoked.serializer()
                     Context.Referee -> null
                 }
             }
@@ -167,7 +179,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.UserRole -> null
                     Context.Tournament -> null
                     Context.Game -> GameReaction.RequestAccepted.serializer()
-                    Context.Team -> null
+                    Context.Team -> TeamReaction.RequestAccepted.serializer()
                     Context.Referee -> null
                 }
             }

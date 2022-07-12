@@ -17,5 +17,6 @@ enum class Action(val actionKey: String) {
     Subscribe("subscribe"),
     Unsubscribe("unsubscribe"),
     CreateRequest("createRequest"),
+    RevokeRequest("revokeRequest"),
     AcceptRequest("acceptRequest"),
 }

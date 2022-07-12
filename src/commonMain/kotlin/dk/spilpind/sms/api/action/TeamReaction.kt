@@ -56,6 +56,30 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
+     * Response to [TeamAction.CreateRequest]. [code] will represent the newly generated code that fulfills the request
+     */
+    @Serializable
+    data class RequestCreated(val code: String) : TeamReaction() {
+        override val reaction: Reaction = Reaction.RequestCreated
+    }
+
+    /**
+     * Response to [TeamAction.RevokeRequest]. [code] will represent the newly generated code that fulfills the request
+     */
+    @Serializable
+    class RequestRevoked : TeamReaction() {
+        override val reaction: Reaction = Reaction.RequestRevoked
+    }
+
+    /**
+     * Response to [TeamAction.AcceptRequest]. [team] will represent the team which the pending request was related to
+     */
+    @Serializable
+    data class RequestAccepted(val team: Team) : TeamReaction() {
+        override val reaction: Reaction = Reaction.RequestAccepted
+    }
+
+    /**
      * Represents a single team
      */
     @Serializable
