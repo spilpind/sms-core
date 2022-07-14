@@ -49,6 +49,7 @@ sealed interface Event {
         FaultWicketDirect(36),
         FaultWicketShin(37),
         FaultHitCatch(38),
+        FaultCrossingDefenceLine(39),
         SwitchForce(41),
         SwitchTime(42),
         SwitchDeaths(43),
@@ -148,6 +149,7 @@ sealed interface Event {
             WicketDirect(Type.FaultWicketDirect),
             WicketShin(Type.FaultWicketShin),
             HitCatch(Type.FaultHitCatch),
+            CrossingDefenceLine(Type.FaultCrossingDefenceLine),
         }
     }
 
