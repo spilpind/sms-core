@@ -22,14 +22,15 @@ sealed class AuthenticationAction : ContextAction() {
 
     /**
      * Request to authenticate the user (i.e. add it to the current session). It is required to pass in either
-     * [googleToken] or [googleCode], where [GoogleCode.redirectUrl] should be the same as for [Inform]. If a valid
-     * token cannot be associated with a user, a new user will be created. A successful response to this would be
+     * [googleToken], [googleCode] or [appleToken]. [GoogleCode.redirectUrl] should be the same as for [Inform]. If a
+     * valid token cannot be associated with a user, a new user will be created. A successful response to this would be
      * [AuthenticationReaction.Added]
      */
     @Serializable
     data class Add(
         val googleToken: String? = null,
-        val googleCode: GoogleCode? = null
+        val googleCode: GoogleCode? = null,
+        val appleToken: String? = null
     ) : AuthenticationAction() {
         override val action: Action = Action.Add
 
