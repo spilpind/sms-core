@@ -11,7 +11,8 @@ object ModelHelper {
     fun User.toPrivileged(roles: List<UserRole.Simple>) = User.Privileged(
         userId = userId,
         name = name,
-        email = email,
+        appleEmail = appleEmail,
+        googleEmail = googleEmail,
         roles = roles
     )
 
