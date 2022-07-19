@@ -20,10 +20,11 @@ sealed class AuthenticationReaction : ContextReaction() {
     }
 
     /**
-     * Response to [AuthenticationAction.Add]
+     * Response to [AuthenticationAction.Add]. If included, the [refreshToken] be used then adding an authentication
+     * later on (if not expired)
      */
     @Serializable
-    data class Added(val userId: Int) : AuthenticationReaction() {
+    data class Added(val userId: Int, val refreshToken: String?) : AuthenticationReaction() {
         override val reaction: Reaction = Reaction.Added
     }
 

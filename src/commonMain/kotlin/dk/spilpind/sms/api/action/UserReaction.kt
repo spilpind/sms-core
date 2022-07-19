@@ -55,7 +55,6 @@ sealed class UserReaction : ContextReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
     }
 
-
     /**
      * Represents a single user
      */
