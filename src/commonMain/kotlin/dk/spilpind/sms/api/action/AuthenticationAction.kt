@@ -31,12 +31,15 @@ sealed class AuthenticationAction : ContextAction() {
         val refreshToken: String? = null,
         val googleToken: String? = null,
         val googleCode: GoogleCode? = null,
-        val appleCode: String? = null
+        val appleCode: AppleCode? = null
     ) : AuthenticationAction() {
         override val action: Action = Action.Add
 
         @Serializable
         data class GoogleCode(val code: String, val redirectUrl: String)
+
+        @Serializable
+        data class AppleCode(val code: String, val fullName: String?)
     }
 
     /**
