@@ -35,6 +35,10 @@ sealed class RefereeReaction : ContextReaction() {
         val gameTime: Int,
         val turnTime: Int,
         val liftSucceeded: Boolean,
+        val shouldSwitchTime: Boolean,
+        val shouldSwitchDeath: Boolean,
+        val shouldFaultDeath: Boolean,
+        val shouldEndGame: Boolean,
         val recentEvents: Collection<Event>
     ) : RefereeReaction() {
         override val reaction: Reaction = Reaction.Updated
