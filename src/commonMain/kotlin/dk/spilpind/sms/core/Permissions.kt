@@ -222,6 +222,13 @@ object Permissions {
         }
     }
 
+    /**
+     * Checks if the user can ignore prompts during the game, like when it's time to switch teams or end the game
+     */
+    fun User.Privileged.canIgnorePrompts(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
     private fun User.Privileged?.canViewStickLeagueGame(game: Game): Boolean {
         val teamAId = game.teamAId
         val teamBId = game.teamBId
