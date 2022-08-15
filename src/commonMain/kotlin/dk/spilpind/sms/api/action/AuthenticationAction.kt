@@ -23,8 +23,8 @@ sealed class AuthenticationAction : ContextAction() {
     /**
      * Request to authenticate the user (i.e. add it to the current session). It is required to pass in either
      * [refreshToken] (gained from [AuthenticationReaction.Added.refreshToken]), [googleToken], [googleCode] or
-     * [appleCode]. [GoogleCode.redirectUrl] should be the same as for [Inform]. If a valid token cannot be associated
-     * with a user, a new user will be created. A successful response to this would be [AuthenticationReaction.Added]
+     * [appleCode]. If a valid token cannot be associated with a user, a new user will be created. A successful response
+     * to this would be [AuthenticationReaction.Added]
      */
     @Serializable
     data class Add(
@@ -35,9 +35,18 @@ sealed class AuthenticationAction : ContextAction() {
     ) : AuthenticationAction() {
         override val action: Action = Action.Add
 
+        /**
+         * Represents a Google code. [code] is gained when logging in via a browser. [GoogleCode.redirectUrl] should be
+         * the same as the one provided for [Inform]
+         */
         @Serializable
         data class GoogleCode(val code: String, val redirectUrl: String)
 
+        /**
+         * Represents an Apple code. [code] can be gained when logging in with the Apple Sign In service. [fullName] can
+         * be gained the same way and is required the first time logging in with a new user (as it's not possible to
+         * fetch in the backend)
+         */
         @Serializable
         data class AppleCode(val code: String, val fullName: String?)
     }
