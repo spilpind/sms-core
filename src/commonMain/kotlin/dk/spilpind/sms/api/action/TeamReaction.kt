@@ -56,7 +56,8 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
-     * Response to [TeamAction.CreateRequest]. [code] will represent the newly generated code that fulfills the request
+     * Response to [TeamAction.CreateRequest]. [code] will represent the newly generated code that should be used for
+     * accepting the request
      */
     @Serializable
     data class RequestCreated(val code: String) : TeamReaction() {
@@ -64,7 +65,7 @@ sealed class TeamReaction : ContextReaction() {
     }
 
     /**
-     * Response to [TeamAction.RevokeRequest]. [code] will represent the newly generated code that fulfills the request
+     * Response to [TeamAction.RevokeRequest]
      */
     @Serializable
     class RequestRevoked : TeamReaction() {

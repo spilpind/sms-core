@@ -66,7 +66,8 @@ sealed class GameReaction : ContextReaction() {
     }
 
     /**
-     * Response to [GameAction.CreateRequest]. [code] will represent the newly generated code that fulfills the request
+     * Response to [GameAction.CreateRequest]. [code] will represent the newly generated code that should be used for
+     * accepting the request
      */
     @Serializable
     data class RequestCreated(val code: String) : GameReaction() {

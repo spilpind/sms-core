@@ -37,7 +37,7 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Accepts a pending requests related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
+     * Accepts a pending request related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
      * of [PendingRequest.Type.Game.request]. If the type of pending request requires it, [teamId] has to be non-null. A
      * successful response to this would be [GameReaction.Accepted]
      */
@@ -69,7 +69,7 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Creates a pending requests related to a game (see [PendingRequest.Type.Game]) identified by [gameId]. [request]
+     * Creates a pending request related to a game (see [PendingRequest.Type.Game]) identified by [gameId]. [request]
      * has to match value of [PendingRequest.Type.Game.request]. If the request already exists, it will be overwritten
      * (a new code will be generated and its expiration time will be reset). A successful response to this would be
      * [GameReaction.RequestCreated]
@@ -80,7 +80,7 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
-     * Accepts a pending requests related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
+     * Accepts a pending request related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
      * of [PendingRequest.Type.Game.request]. If the type of pending request requires it, [teamId] has to be non-null. A
      * successful response to this would be [GameReaction.RequestAccepted]
      */
