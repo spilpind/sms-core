@@ -43,7 +43,9 @@ sealed class GameReaction : ContextReaction() {
      * Response to [GameAction.Accept]. [game] will represent the game which the pending request was related to
      */
     @Serializable
+    @Deprecated("Will be remove in version 2. Use RequestAccepted")
     data class Accepted(val game: Game) : GameReaction() {
+        @Suppress("DEPRECATION")
         override val reaction: Reaction = Reaction.Accepted
     }
 
@@ -61,6 +63,23 @@ sealed class GameReaction : ContextReaction() {
     @Serializable
     class Unsubscribed : GameReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
+    /**
+     * Response to [GameAction.CreateRequest]. [code] will represent the newly generated code that should be used for
+     * accepting the request
+     */
+    @Serializable
+    data class RequestCreated(val code: String) : GameReaction() {
+        override val reaction: Reaction = Reaction.RequestCreated
+    }
+
+    /**
+     * Response to [GameAction.AcceptRequest]. [game] will represent the game which the pending request was related to
+     */
+    @Serializable
+    data class RequestAccepted(val game: Game) : GameReaction() {
+        override val reaction: Reaction = Reaction.RequestAccepted
     }
 
     /**

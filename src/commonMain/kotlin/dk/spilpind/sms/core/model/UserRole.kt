@@ -44,13 +44,19 @@ sealed interface UserRole {
          */
         sealed class Team(role: Role) : ContextRole(context = RoleContext.Team, role = role) {
             enum class Role(override val identifier: String) : RawRole {
-                Captain("captain")
+                Captain("captain"),
+                Member("member")
             }
 
             /**
              * A user role representing a captain of a team
              */
             object Captain : Team(role = Role.Captain)
+
+            /**
+             * A user role representing a member of a team
+             */
+            object Member : Team(role = Role.Member)
         }
     }
 
@@ -112,6 +118,7 @@ sealed interface UserRole {
                     findRoleOrThrow<ContextRole.Team.Role>(context = context, roleIdentifier = roleIdentifier)
                 ) {
                     ContextRole.Team.Role.Captain -> ContextRole.Team.Captain
+                    ContextRole.Team.Role.Member -> ContextRole.Team.Member
                 }
                 null -> throw IllegalArgumentException(
                     "Context \"$contextIdentifier\" not found. Available contexts: "

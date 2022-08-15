@@ -7,7 +7,8 @@ package dk.spilpind.sms.core.model
 sealed interface User {
     val userId: Int
     val name: String
-    val email: String?
+    val googleEmail: String?
+    val appleEmail: String?
 
     /**
      * Represents a raw user
@@ -15,7 +16,8 @@ sealed interface User {
     data class Raw(
         override val userId: Int,
         override val name: String,
-        override val email: String?
+        override val googleEmail: String?,
+        override val appleEmail: String?
     ) : User
 
     /**
@@ -25,7 +27,8 @@ sealed interface User {
     data class Privileged(
         override val userId: Int,
         override val name: String,
-        override val email: String?,
+        override val googleEmail: String?,
+        override val appleEmail: String?,
         val roles: List<UserRole.Simple>
     ) : User
 }

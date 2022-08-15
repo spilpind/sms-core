@@ -11,7 +11,8 @@ object ModelHelper {
     fun User.toPrivileged(roles: List<UserRole.Simple>) = User.Privileged(
         userId = userId,
         name = name,
-        email = email,
+        appleEmail = appleEmail,
+        googleEmail = googleEmail,
         roles = roles
     )
 
@@ -55,6 +56,8 @@ object ModelHelper {
                 Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.WicketDirect)
             Event.Type.FaultWicketShin -> Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.WicketShin)
             Event.Type.FaultHitCatch -> Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.HitCatch)
+            Event.Type.FaultCrossingDefenceLine ->
+                Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.CrossingDefenceLine)
             Event.Type.SwitchForce -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Force)
             Event.Type.SwitchTime -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Time)
             Event.Type.SwitchDeaths -> Event.Switch(baseInfo = baseInfo, switchType = Event.Switch.SwitchType.Death)

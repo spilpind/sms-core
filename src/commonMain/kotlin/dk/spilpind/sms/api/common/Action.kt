@@ -11,7 +11,12 @@ enum class Action(val actionKey: String) {
     Add("add"),
     Remove("remove"),
     Update("update"),
+
+    @Deprecated("Will be remove in version 2. Use AcceptRequest")
     Accept("accept"),
     Subscribe("subscribe"),
     Unsubscribe("unsubscribe"),
+    CreateRequest("createRequest"),
+    RevokeRequest("revokeRequest"),
+    AcceptRequest("acceptRequest"),
 }

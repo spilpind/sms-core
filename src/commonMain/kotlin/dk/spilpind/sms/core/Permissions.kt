@@ -65,6 +65,8 @@ object Permissions {
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
             UserRole.ContextRole.Team.Captain -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
+            UserRole.ContextRole.Team.Member -> hasSystemRole(UserRole.ContextRole.System.Admin)
+                    || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
         }
     }
 
@@ -140,6 +142,19 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can create an invite such that another team can join the [game]
+     */
+    fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin) ||
+                game.teamAId?.let { teamId ->
+                    hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+                } ?: false ||
+                game.teamBId?.let { teamId ->
+                    hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+                } ?: false
+    }
+
+    /**
      * Checks if the user can add the specified [team] to a game on behalf of the team
      */
     fun User.Privileged.canJoinGame(team: Team): Boolean {
@@ -181,6 +196,19 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can invite other users to become members of the [team]
+     */
+    fun User.Privileged.canInviteMembers(team: Team): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
+    }
+
+    fun User.Privileged.canRevokeMemberInvite(team: Team): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
+    }
+
+    /**
      * Checks if the user can judge (and thus be a referee of) [game]
      */
     fun User.Privileged.canJudgeGame(game: Game.Detailed): Boolean {
@@ -192,6 +220,13 @@ object Permissions {
         } else {
             false
         }
+    }
+
+    /**
+     * Checks if the user can ignore prompts during the game, like when it's time to switch teams or end the game
+     */
+    fun User.Privileged.canIgnorePrompts(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     private fun User.Privileged?.canViewStickLeagueGame(game: Game): Boolean {

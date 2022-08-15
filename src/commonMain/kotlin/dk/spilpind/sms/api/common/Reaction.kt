@@ -12,9 +12,14 @@ enum class Reaction(val reactionKey: String) {
     Added("added"),
     Removed("removed"),
     Updated("updated"),
+
+    @Deprecated("Will be remove in version 2. Use RequestAccepted")
     Accepted("accepted"),
     Subscribed("subscribed"),
     Unsubscribed("unsubscribed"),
+    RequestCreated("requestCreated"),
+    RequestRevoked("requestRevoked"),
+    RequestAccepted("requestAccepted"),
     ServerError("serverError"),
     RequestStructureError("requestStructureError"),
     RequestTypeError("requestTypeError"),

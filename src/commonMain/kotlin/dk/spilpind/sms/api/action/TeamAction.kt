@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.core.model.Context
+import dk.spilpind.sms.core.model.PendingRequest
 import kotlinx.serialization.Serializable
 
 /**
@@ -51,5 +52,35 @@ sealed class TeamAction : ContextAction() {
     @Serializable
     data class Unsubscribe(val tournamentId: Int) : TeamAction() {
         override val action: Action = Action.Unsubscribe
+    }
+
+    /**
+     * Creates a pending request related to a team (see [PendingRequest.Type.Team]) identified by [teamId]. [request]
+     * has to match value of [PendingRequest.Type.Team.request]. If the request already exists, it will be overwritten
+     * (a new code will be generated and its expiration time will be reset). A successful response to this would be
+     * [TeamReaction.RequestCreated]
+     */
+    @Serializable
+    data class CreateRequest(val request: String, val teamId: Int) : TeamAction() {
+        override val action: Action = Action.CreateRequest
+    }
+
+    /**
+     * Revokes a pending request related to a team (see [PendingRequest.Type.Team]) identified by [teamId], such that no
+     * new accepts can be made with that request. [request] has to match value of [PendingRequest.Type.Team.request]. A
+     * successful response to this would be [TeamReaction.RequestRevoked]
+     */
+    @Serializable
+    data class RevokeRequest(val request: String, val teamId: Int) : TeamAction() {
+        override val action: Action = Action.RevokeRequest
+    }
+
+    /**
+     * Accepts a pending request related to a team (see [PendingRequest.Type.Team]), where [request] has to match value
+     * of [PendingRequest.Type.Team.request]. A successful response to this would be [TeamReaction.RequestAccepted]
+     */
+    @Serializable
+    data class AcceptRequest(val request: String, val code: String) : TeamAction() {
+        override val action: Action = Action.AcceptRequest
     }
 }

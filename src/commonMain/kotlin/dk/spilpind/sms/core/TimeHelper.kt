@@ -27,6 +27,11 @@ object TimeHelper {
     fun Instant.toLocalDateTime(): LocalDateTime = toLocalDateTime(timeZone)
 
     /**
+     * Converts the local date time to instant based on timezone of this device
+     */
+    fun LocalDateTime.toInstant(): Instant = toInstant(timeZone)
+
+    /**
      * Parses [isoDateString] to a date time object. This can e.g. parse values from [currentDateTimeString]
      */
     fun parse(isoDateString: String): LocalDateTime {
@@ -45,5 +50,4 @@ object TimeHelper {
         val instantInThePast = toInstant(timeZone)
         return instantInThePast.until(now, DateTimeUnit.SECOND, timeZone).toInt()
     }
-
 }

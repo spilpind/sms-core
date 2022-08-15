@@ -55,7 +55,6 @@ sealed class UserReaction : ContextReaction() {
         override val reaction: Reaction = Reaction.Unsubscribed
     }
 
-
     /**
      * Represents a single user
      */
@@ -63,6 +62,9 @@ sealed class UserReaction : ContextReaction() {
     data class User(
         val userId: Int,
         val name: String,
-        val email: String?
+        @Deprecated("Use googleEmail or appleEmail")
+        val email: String?,
+        val googleEmail: String?,
+        val appleEmail: String?
     )
 }
