@@ -178,12 +178,12 @@ object GameHelper {
      * Calculates the turn time in seconds. This is the time since last switch or start of game, excluding pauses
      */
     val List<Event.Simple>.turnTime: Int
-        get() = gameTime - switchTime
+        get() = gameTime - timeOfLastSwitch
 
     /**
      * Time of last event of game, not including pauses
      */
-    val List<Event.Simple>.lastEventTimeForGame: Int
+    val List<Event.Simple>.timeOfLastActionForGame: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Death -> event.time
@@ -203,24 +203,10 @@ object GameHelper {
     /**
      * Time of last event with respect to last switch (thus of this turn), not including pauses
      */
-    val List<Event.Simple>.lastEventTimeForTurn: Int
-        get() = firstNotNullOfOrNull { event ->
-            when (event) {
-                is Event.Death -> event.time
-                is Event.Fault -> event.time
-                is Event.LiftSuccess -> event.time
-                is Event.Points -> event.time
-                is Event.Switch -> event.time
-                is Event.Timing -> when (event.timingType) {
-                    Event.Timing.TimingType.GameStart -> event.time
-                    Event.Timing.TimingType.GameEnd -> event.time
-                    Event.Timing.TimingType.PauseStart -> null
-                    Event.Timing.TimingType.PauseEnd -> null
-                }
-            }
-        }?.minus(switchTime) ?: 0
+    val List<Event.Simple>.timeOfLastActionForTurn: Int
+        get() = (timeOfLastActionForGame - timeOfLastSwitch).coerceAtLeast(0)
 
-    private val List<Event.Simple>.switchTime: Int
+    private val List<Event.Simple>.timeOfLastSwitch: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Death -> null
