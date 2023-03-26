@@ -28,7 +28,7 @@ kotlin {
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
             }
         }
