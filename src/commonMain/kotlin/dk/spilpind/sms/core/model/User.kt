@@ -1,8 +1,9 @@
 package dk.spilpind.sms.core.model
 
 /**
- * Represents data about a user. Note that [email] might be null in some cases, e.g. if the logged in user doesn't have
- * access to see the email of that particular user
+ * Represents data about a user. Note that [googleEmail] and [appleEmail] might be null in some cases, e.g. if the user
+ * signed up with the opposite account provider or if the logged in user doesn't have access to see the email of that
+ * particular user
  */
 sealed interface User {
     val userId: Int
