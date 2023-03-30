@@ -1,6 +1,7 @@
 package dk.spilpind.sms.core.model
 
 import kotlinx.datetime.LocalDateTime
+import kotlin.jvm.JvmInline
 
 /**
  * Represents an pending [request] (in the given [context]) that needs to be accepted by one or more users. This can for
@@ -9,13 +10,25 @@ import kotlinx.datetime.LocalDateTime
  * request relates to
  */
 sealed interface PendingRequest {
-    val pendingRequestId: Int
+    val pendingRequestId: Id
     val context: String
     val contextId: Int
     val request: String
     val code: String
     val expires: LocalDateTime
     val requesterId: Int
+
+    /**
+     * Id of a pending request. Can be used to reference a pending request without having to care about the remaining
+     * pending request data
+     */
+    @JvmInline
+    value class Id(override val identifier: Int) : ContextIdentifier, Comparable<Id> {
+
+        override fun compareTo(other: Id): Int =
+            identifier.compareTo(other.identifier)
+
+    }
 
     /**
      * Defines all type of pending requests that exists
@@ -57,7 +70,7 @@ sealed interface PendingRequest {
      * Represents the raw pending request
      */
     data class Raw(
-        override val pendingRequestId: Int,
+        override val pendingRequestId: Id,
         override val context: String,
         override val contextId: Int,
         override val request: String,
@@ -70,7 +83,7 @@ sealed interface PendingRequest {
      * Like [Raw], but with a specified [type]
      */
     data class Simple(
-        override val pendingRequestId: Int,
+        override val pendingRequestId: Id,
         val type: Type,
         override val contextId: Int,
         override val code: String,

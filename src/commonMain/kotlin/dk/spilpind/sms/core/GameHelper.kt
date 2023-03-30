@@ -218,7 +218,7 @@ object GameHelper {
             }
         } ?: 0
 
-    private val List<Event.Simple>.inTeamId: Int?
+    private val List<Event.Simple>.inTeamId: Team.Id?
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Death -> null

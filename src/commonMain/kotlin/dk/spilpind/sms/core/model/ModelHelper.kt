@@ -110,4 +110,40 @@ object ModelHelper {
         description = description,
         teamJoinInviteCode = teamJoinInviteCode
     )
+
+    /**
+     * Creates an event id from the integer
+     */
+    fun Int.toEventId() = Event.Id(this)
+
+    /**
+     * Creates a game id from the integer
+     */
+    fun Int.toGameId() = Game.Id(this)
+
+    /**
+     * Creates a pending request id from the integer
+     */
+    fun Int.toPendingRequestId() = PendingRequest.Id(this)
+
+    /**
+     * Creates a team id from the integer
+     */
+    fun Int.toTeamId() = Team.Id(this)
+
+    /**
+     * Creates a tournament id from the integer
+     */
+    fun Int.toTournamentId() = Tournament.Id(this)
+
+    /**
+     * Creates a user id from the integer
+     */
+    fun Int.toUserId() = User.Id(this)
+
+    /**
+     * Creates a user role id from the integer
+     */
+    fun Int.toUserRoleId() = UserRole.Id(this)
+
 }

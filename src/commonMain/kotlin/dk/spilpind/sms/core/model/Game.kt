@@ -1,19 +1,32 @@
 package dk.spilpind.sms.core.model
 
+import kotlin.jvm.JvmInline
+
 /**
  * Represents overall game data. If provided, [teamJoinInviteCode] can be used for accepting a pending request of type
  * [PendingRequest.Type.Game.TeamJoinInvite]
  */
 sealed interface Game {
-    val gameId: Int
-    val tournamentId: Int
-    val teamAId: Int?
-    val teamBId: Int?
+    val gameId: Id
+    val tournamentId: Tournament.Id
+    val teamAId: Team.Id?
+    val teamBId: Team.Id?
     val gameState: String
     val teamAPoints: Int
     val teamBPoints: Int
     val description: String
     val teamJoinInviteCode: String?
+
+    /**
+     * Id of a game. Can be used to reference a game without having to care about the remaining game data
+     */
+    @JvmInline
+    value class Id(override val identifier: Int) : ContextIdentifier, Comparable<Id> {
+
+        override fun compareTo(other: Id): Int =
+            identifier.compareTo(other.identifier)
+
+    }
 
     /**
      * Represents available states of a game. [NOT_STARTED] is expected if the game hasn't started and [FINISHED] is to
@@ -32,10 +45,10 @@ sealed interface Game {
      * Represents the raw game
      */
     data class Raw(
-        override val gameId: Int,
-        override val tournamentId: Int,
-        override val teamAId: Int?,
-        override val teamBId: Int?,
+        override val gameId: Id,
+        override val tournamentId: Tournament.Id,
+        override val teamAId: Team.Id?,
+        override val teamBId: Team.Id?,
         override val gameState: String,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
@@ -47,10 +60,10 @@ sealed interface Game {
      * Like [Raw] with an actual representation of the game state
      */
     data class Simple(
-        override val gameId: Int,
-        override val tournamentId: Int,
-        override val teamAId: Int?,
-        override val teamBId: Int?,
+        override val gameId: Id,
+        override val tournamentId: Tournament.Id,
+        override val teamAId: Team.Id?,
+        override val teamBId: Team.Id?,
         val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
@@ -64,7 +77,7 @@ sealed interface Game {
      * Like [Simple] with actual representations of tournament and the teams
      */
     data class Detailed(
-        override val gameId: Int,
+        override val gameId: Id,
         val tournament: Tournament,
         val teamA: Team?,
         val teamB: Team?,
