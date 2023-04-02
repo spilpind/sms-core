@@ -1,6 +1,9 @@
 package dk.spilpind.sms.core.model
 
+import dk.spilpind.sms.core.model.Event.Death
+import dk.spilpind.sms.core.model.Event.Timing.TimingType
 import kotlinx.datetime.LocalDateTime
+import kotlin.jvm.JvmInline
 
 /**
  * Representation of all possible events during a game. This does in most cases represent 1:1 what happens in the game
@@ -17,13 +20,24 @@ import kotlinx.datetime.LocalDateTime
  * score board
  */
 sealed interface Event {
-    val eventId: Int
-    val gameId: Int
-    val teamId: Int?
+    val eventId: Id
+    val gameId: Game.Id
+    val teamId: Team.Id?
     val typeId: Int
     val time: Int
-    val refereeId: Int
+    val refereeId: User.Id
     val created: LocalDateTime
+
+    /**
+     * Id of an event. Can be used to reference an event without having to care about the remaining event data
+     */
+    @JvmInline
+    value class Id(override val identifier: Int) : ContextIdentifier, Comparable<Id> {
+
+        override fun compareTo(other: Id): Int =
+            identifier.compareTo(other.identifier)
+
+    }
 
     /**
      * All type of events, most important part of this are their unique ids which is useful for e.g. storing the events.
@@ -59,12 +73,12 @@ sealed interface Event {
      * Represents the raw event
      */
     data class Raw(
-        override val eventId: Int,
-        override val gameId: Int,
-        override val teamId: Int?,
+        override val eventId: Id,
+        override val gameId: Game.Id,
+        override val teamId: Team.Id?,
         override val typeId: Int,
         override val time: Int,
-        override val refereeId: Int,
+        override val refereeId: User.Id,
         override val created: LocalDateTime,
         val points: Int?
     ) : Event
@@ -74,23 +88,23 @@ sealed interface Event {
      * additional data, like [Points] that contains the number of points.
      */
     sealed class Simple(val type: Type, baseInfo: BaseInfo) : Event {
-        override val eventId: Int = baseInfo.eventId
-        override val gameId: Int = baseInfo.gameId
-        override val teamId: Int? = baseInfo.teamId
+        override val eventId: Id = baseInfo.eventId
+        override val gameId: Game.Id = baseInfo.gameId
+        override val teamId: Team.Id? = baseInfo.teamId
         override val typeId = type.typeId
         override val time: Int = baseInfo.time
-        override val refereeId: Int = baseInfo.refereeId
+        override val refereeId: User.Id = baseInfo.refereeId
         override val created: LocalDateTime = baseInfo.created
 
         /**
          * Base information that's used for all events
          */
         data class BaseInfo(
-            val eventId: Int,
-            val gameId: Int,
-            val teamId: Int?,
+            val eventId: Id,
+            val gameId: Game.Id,
+            val teamId: Team.Id?,
             val time: Int,
-            val refereeId: Int,
+            val refereeId: User.Id,
             val created: LocalDateTime
         )
     }

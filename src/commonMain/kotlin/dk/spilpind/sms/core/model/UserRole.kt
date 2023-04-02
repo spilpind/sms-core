@@ -1,16 +1,29 @@
 package dk.spilpind.sms.core.model
 
+import kotlin.jvm.JvmInline
+
 /**
  * Represents a user's role in a specific context, like a game, team or tournament. [contextId] represents the id in the
  * context - for instance, if context is "game" it is expected to be the id of the game this user role relates to
  */
 sealed interface UserRole {
-    val userRoleId: Int
-    val userId: Int
+    val userRoleId: Id
+    val userId: User.Id
     val context: String
     val contextId: Int
     val role: String
     val isPublic: Boolean
+
+    /**
+     * Id of a user. Can be used to reference a user without having to care about the remaining user data
+     */
+    @JvmInline
+    value class Id(override val identifier: Int) : ContextIdentifier, Comparable<Id> {
+
+        override fun compareTo(other: Id): Int =
+            identifier.compareTo(other.identifier)
+
+    }
 
     /**
      * Defines all types of user roles that exists
@@ -64,8 +77,8 @@ sealed interface UserRole {
      * Represents the raw user role
      */
     data class Raw(
-        override val userRoleId: Int,
-        override val userId: Int,
+        override val userRoleId: Id,
+        override val userId: User.Id,
         override val context: String,
         override val contextId: Int,
         override val role: String,
@@ -76,8 +89,8 @@ sealed interface UserRole {
      * Like [Raw], but with a specified [contextRole]
      */
     data class Simple(
-        override val userRoleId: Int,
-        override val userId: Int,
+        override val userRoleId: Id,
+        override val userId: User.Id,
         val contextRole: ContextRole,
         override val contextId: Int,
         override val isPublic: Boolean

@@ -28,8 +28,11 @@ object Permissions {
     /**
      * Checks if the user has an exact match of the specified combination of [role] and [contextId]
      */
-    fun User.Privileged.hasRole(role: UserRole.ContextRole, contextId: Int): Boolean {
-        return roles.any { actualRole -> actualRole.contextRole == role && actualRole.contextId == contextId }
+    fun User.Privileged.hasRole(role: UserRole.ContextRole, contextId: ContextIdentifier): Boolean {
+        return roles.any { actualRole ->
+            actualRole.contextRole == role
+                    && actualRole.contextId == contextId.identifier
+        }
     }
 
     /**
@@ -59,7 +62,7 @@ object Permissions {
      * used when directly/only adding a user role, if it's added as part of some other action (like for instance when
      * [TeamAction.Add.addAsCaptain] is set to true) other rules might apply
      */
-    fun User.Privileged.canAddUserRole(role: UserRole.ContextRole, contextId: Int?): Boolean {
+    fun User.Privileged.canAddUserRole(role: UserRole.ContextRole, contextId: ContextIdentifier?): Boolean {
         return when (role) {
             UserRole.ContextRole.System.SuperAdmin,
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
