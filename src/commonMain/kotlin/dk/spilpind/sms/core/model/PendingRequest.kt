@@ -16,7 +16,7 @@ sealed interface PendingRequest {
     val request: String
     val code: String
     val expires: LocalDateTime
-    val requesterId: Int
+    val requesterId: User.Id
 
     /**
      * Id of a pending request. Can be used to reference a pending request without having to care about the remaining
@@ -76,7 +76,7 @@ sealed interface PendingRequest {
         override val request: String,
         override val code: String,
         override val expires: LocalDateTime,
-        override val requesterId: Int
+        override val requesterId: User.Id
     ) : PendingRequest
 
     /**
@@ -88,7 +88,7 @@ sealed interface PendingRequest {
         override val contextId: Int,
         override val code: String,
         override val expires: LocalDateTime,
-        override val requesterId: Int
+        override val requesterId: User.Id
     ) : PendingRequest {
 
         override val context: String = type.context.contextKey
