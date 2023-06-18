@@ -16,10 +16,10 @@ object TimeHelper {
         get() = Clock.System.now()
 
     /**
-     * Returns a string representing the current date and time. This can be used e.g. as database values
+     * Returns a representation of the current local date and time
      */
-    val currentDateTimeString: String
-        get() = now.toLocalDateTime().toString()
+    val currentDateTime: LocalDateTime
+        get() = now.toLocalDateTime()
 
     /**
      * Converts the instant to local date time based on timezone of this device
