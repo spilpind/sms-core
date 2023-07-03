@@ -20,18 +20,22 @@ data class Status(
     @Serializable(with = TypeSerializer::class)
     enum class Type {
         /**
-         * The service is fully functional
+         * The service is fully functional and open for everyone
          */
-        Running,
+        Open,
 
         /**
-         * The service is functional, but restricted and thus cannot be used without special access. This is expected
-         * to be temporary
+         * The service is fully functional, but restricted and thus cannot be used without special access. This is
+         * expected to be temporary, but can be for a longer period of time.
+         *
+         * This can for instance be during games of a tournament where referees must have access, but the servers has
+         * experienced too much load and thus can't allow non-essential clients to access the service
          */
         Restricted,
 
         /**
-         * The service is under maintenance (being upgraded, fixed or alike). This is expected to be temporary
+         * The service is under maintenance (being upgraded, fixed or alike). This is expected to be temporary for a
+         * short period of time
          */
         Maintenance,
 
