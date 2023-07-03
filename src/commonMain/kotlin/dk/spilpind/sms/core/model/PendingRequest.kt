@@ -54,7 +54,7 @@ sealed interface PendingRequest {
             /**
              * An invite for a user to become a referee of the game
              */
-            object RefereeInvite : Game(request = Requests.TeamJoinInvite)
+            object RefereeInvite : Game(request = Requests.RefereeInvite)
         }
 
         /**
