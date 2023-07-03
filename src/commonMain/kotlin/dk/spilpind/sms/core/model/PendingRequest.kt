@@ -42,13 +42,19 @@ sealed interface PendingRequest {
          */
         sealed class Game(request: Requests) : Type(context = PendingRequestContext.Game, request = request) {
             enum class Requests(override val identifier: String) : RawRequest {
-                TeamJoinInvite("teamJoinInvite")
+                TeamJoinInvite("teamJoinInvite"),
+                RefereeInvite("refereeInvite")
             }
 
             /**
              * An invite for a team to join the game
              */
             object TeamJoinInvite : Game(request = Requests.TeamJoinInvite)
+
+            /**
+             * An invite for a user to become a referee of the game
+             */
+            object RefereeInvite : Game(request = Requests.RefereeInvite)
         }
 
         /**
@@ -137,6 +143,7 @@ sealed interface PendingRequest {
                     findRequestOrNull<Type.Game.Requests>(identifier = requestIdentifier)
                 ) {
                     Type.Game.Requests.TeamJoinInvite -> Type.Game.TeamJoinInvite
+                    Type.Game.Requests.RefereeInvite -> Type.Game.RefereeInvite
                     null -> throwNotFound<Type.Game.Requests>(
                         context = context,
                         requestIdentifier = requestIdentifier

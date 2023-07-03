@@ -66,6 +66,8 @@ object Permissions {
         return when (role) {
             UserRole.ContextRole.System.SuperAdmin,
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
+            UserRole.ContextRole.Game.Referee -> hasSystemRole(UserRole.ContextRole.System.Admin)
+                    || (contextId != null && hasRole(UserRole.ContextRole.Game.Referee, contextId = contextId))
             UserRole.ContextRole.Team.Captain -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
             UserRole.ContextRole.Team.Member -> hasSystemRole(UserRole.ContextRole.System.Admin)
@@ -99,9 +101,15 @@ object Permissions {
      * [tournament]
      */
     fun User.Privileged?.canViewGame(game: Game, tournament: Tournament): Boolean {
-        return if (this != null && hasSystemRole(UserRole.ContextRole.System.Admin)) {
-            true
-        } else if (!canViewTournament(tournament = tournament)) {
+        if (this != null) {
+            if (hasSystemRole(UserRole.ContextRole.System.Admin)
+                || canJudgeGame(game = game, tournament = tournament)
+            ) {
+                return true
+            }
+        }
+
+        return if (!canViewTournament(tournament = tournament)) {
             false
         } else if (tournament.isCurrentStickLeague) {
             canViewStickLeagueGame(game)
@@ -155,6 +163,13 @@ object Permissions {
                 game.teamBId?.let { teamId ->
                     hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
                 } ?: false
+    }
+
+    /**
+     * Checks if the user can create an invite such that another user can become a referee of the [game]
+     */
+    fun User.Privileged.canCreateRefereeInviteForGame(game: Game, tournament: Tournament): Boolean {
+        return canJudgeGame(game = game, tournament = tournament)
     }
 
     /**
@@ -215,9 +230,16 @@ object Permissions {
      * Checks if the user can judge (and thus be a referee of) [game]
      */
     fun User.Privileged.canJudgeGame(game: Game.Detailed): Boolean {
-        return if (hasSystemRole(UserRole.ContextRole.System.Admin)) {
+        return canJudgeGame(game = game, tournament = game.tournament)
+    }
+
+    fun User.Privileged.canJudgeGame(game: Game, tournament: Tournament): Boolean {
+        return if (
+            hasSystemRole(UserRole.ContextRole.System.Admin)
+            || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
+        ) {
             true
-        } else if (game.tournament.isCurrentStickLeague) {
+        } else if (tournament.isCurrentStickLeague) {
             val teamId = game.teamAId ?: return false // This is the team creating the game
             hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
         } else {

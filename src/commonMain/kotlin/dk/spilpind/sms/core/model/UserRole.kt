@@ -53,6 +53,20 @@ sealed interface UserRole {
         }
 
         /**
+         * Defines all types of user roles that exists for a game
+         */
+        sealed class Game(role: Role) : ContextRole(context = RoleContext.Game, role = role) {
+            enum class Role(override val identifier: String) : RawRole {
+                Referee("referee"),
+            }
+
+            /**
+             * A user role representing a referee of a game
+             */
+            object Referee : Game(role = Role.Referee)
+        }
+
+        /**
          * Defines all types of user roles that exists for a team
          */
         sealed class Team(role: Role) : ContextRole(context = RoleContext.Team, role = role) {
@@ -105,6 +119,7 @@ sealed interface UserRole {
     companion object {
         internal enum class RoleContext(val context: Context) {
             System(Context.System),
+            Game(Context.Game),
             Team(Context.Team)
         }
 
@@ -126,6 +141,11 @@ sealed interface UserRole {
                 ) {
                     ContextRole.System.Role.SuperAdmin -> ContextRole.System.SuperAdmin
                     ContextRole.System.Role.Admin -> ContextRole.System.Admin
+                }
+                RoleContext.Game -> when (
+                    findRoleOrThrow<ContextRole.Game.Role>(context = context, roleIdentifier = roleIdentifier)
+                ) {
+                    ContextRole.Game.Role.Referee -> ContextRole.Game.Referee
                 }
                 RoleContext.Team -> when (
                     findRoleOrThrow<ContextRole.Team.Role>(context = context, roleIdentifier = roleIdentifier)
