@@ -77,7 +77,8 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
-        teamJoinInviteCode = teamJoinInviteCode
+        teamJoinInviteCode = teamJoinInviteCode,
+        refereeInviteCode = refereeInviteCode
     )
 
     /**
@@ -93,7 +94,8 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
-        teamJoinInviteCode = teamJoinInviteCode
+        teamJoinInviteCode = teamJoinInviteCode,
+        refereeInviteCode = refereeInviteCode
     )
 
     /**
@@ -108,7 +110,8 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
-        teamJoinInviteCode = teamJoinInviteCode
+        teamJoinInviteCode = teamJoinInviteCode,
+        refereeInviteCode = refereeInviteCode
     )
 
     /**
