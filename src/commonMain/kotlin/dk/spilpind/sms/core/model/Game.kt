@@ -16,6 +16,7 @@ sealed interface Game {
     val teamBPoints: Int
     val description: String
     val teamJoinInviteCode: String?
+    val refereeInviteCode: String?
 
     /**
      * Id of a game. Can be used to reference a game without having to care about the remaining game data
@@ -53,7 +54,8 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
-        override val teamJoinInviteCode: String?
+        override val teamJoinInviteCode: String?,
+        override val refereeInviteCode: String?
     ) : Game
 
     /**
@@ -68,7 +70,8 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
-        override val teamJoinInviteCode: String?
+        override val teamJoinInviteCode: String?,
+        override val refereeInviteCode: String?
     ) : Game {
         override val gameState: String = state.identifier
     }
@@ -85,7 +88,8 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
-        override val teamJoinInviteCode: String?
+        override val teamJoinInviteCode: String?,
+        override val refereeInviteCode: String?
     ) : Game {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
