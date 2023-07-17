@@ -153,6 +153,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can edit any game
+     */
+    fun User.Privileged.canEditGames(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user can create an invite such that another team can join the [game]
      */
     fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game): Boolean {
