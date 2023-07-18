@@ -35,6 +35,19 @@ sealed class TeamAction : ContextAction() {
     }
 
     /**
+     * Updates the team with id [teamId] with the values provided. It is important to consider all values even though
+     * you're not allowed to change them, as for instance a value set to empty or null will be updated to that value
+     */
+    @Serializable
+    data class Update(
+        val teamId: Int,
+        val name: String,
+        val shortName: String,
+    ) : TeamAction() {
+        override val action: Action = Action.Update
+    }
+
+    /**
      * Subscribes to all teams associated with the tournament identified by [tournamentId] available for the current
      * user. The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called. Changes to
      * the list will be sent via relevant [TeamReaction]s. A successful response to this would be

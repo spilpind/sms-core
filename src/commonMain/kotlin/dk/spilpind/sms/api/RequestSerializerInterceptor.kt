@@ -107,7 +107,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Inform -> null
                     Action.Add -> TeamAction.Add.serializer()
                     Action.Remove -> TeamAction.Remove.serializer()
-                    Action.Update -> null
+                    Action.Update -> TeamAction.Update.serializer()
                     Action.Accept -> null
                     Action.Subscribe -> TeamAction.Subscribe.serializer()
                     Action.Unsubscribe -> TeamAction.Unsubscribe.serializer()
