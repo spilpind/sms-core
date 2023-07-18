@@ -221,6 +221,14 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can edit team associated with [teamId]
+     */
+    fun User.Privileged.canEditTeam(teamId: Team.Id): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+    }
+
+    /**
      * Checks if the user can invite other users to become members of the [team]
      */
     fun User.Privileged.canInviteMembers(team: Team): Boolean {
