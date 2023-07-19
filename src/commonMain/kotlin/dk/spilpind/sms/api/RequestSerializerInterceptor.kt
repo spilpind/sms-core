@@ -95,7 +95,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Inform -> null
                     Action.Add -> GameAction.Add.serializer()
                     Action.Remove -> GameAction.Remove.serializer()
-                    Action.Update -> null
+                    Action.Update -> GameAction.Update.serializer()
                     Action.Accept -> GameAction.Accept.serializer()
                     Action.Subscribe -> GameAction.Subscribe.serializer()
                     Action.Unsubscribe -> GameAction.Unsubscribe.serializer()
@@ -107,7 +107,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Inform -> null
                     Action.Add -> TeamAction.Add.serializer()
                     Action.Remove -> TeamAction.Remove.serializer()
-                    Action.Update -> null
+                    Action.Update -> TeamAction.Update.serializer()
                     Action.Accept -> null
                     Action.Subscribe -> TeamAction.Subscribe.serializer()
                     Action.Unsubscribe -> TeamAction.Unsubscribe.serializer()

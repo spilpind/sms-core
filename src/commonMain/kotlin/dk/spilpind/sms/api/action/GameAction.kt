@@ -37,6 +37,20 @@ sealed class GameAction : ContextAction() {
     }
 
     /**
+     * Updates the game with id [gameId] with the values provided. It is important to consider all values even though
+     * you're not allowed to change them, as for instance a value set to empty or null will be updated to that value
+     */
+    @Serializable
+    data class Update(
+        val gameId: Int,
+        val teamAId: Int?,
+        val teamBId: Int?,
+        val description: String,
+    ) : GameAction() {
+        override val action: Action = Action.Update
+    }
+
+    /**
      * Accepts a pending request related to a game (see [PendingRequest.Type.Game]), where [request] has to match value
      * of [PendingRequest.Type.Game.request]. If the type of pending request requires it, [teamId] has to be non-null. A
      * successful response to this would be [GameReaction.Accepted]

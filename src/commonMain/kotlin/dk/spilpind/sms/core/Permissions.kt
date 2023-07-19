@@ -153,6 +153,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can edit any game
+     */
+    fun User.Privileged.canEditGames(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user can create an invite such that another team can join the [game]
      */
     fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game): Boolean {
@@ -214,6 +221,14 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can edit team associated with [teamId]
+     */
+    fun User.Privileged.canEditTeam(teamId: Team.Id): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+    }
+
+    /**
      * Checks if the user can invite other users to become members of the [team]
      */
     fun User.Privileged.canInviteMembers(team: Team): Boolean {
@@ -248,9 +263,9 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can ignore prompts during the game, like when it's time to switch teams or end the game
+     * Checks if the user can ignore prompts during the game that usually can't be ignored
      */
-    fun User.Privileged.canIgnorePrompts(): Boolean {
+    fun User.Privileged.canIgnoreImportantPrompts(): Boolean {
         return hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
