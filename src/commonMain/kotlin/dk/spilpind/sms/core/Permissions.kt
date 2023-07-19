@@ -263,9 +263,9 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can ignore prompts during the game, like when it's time to switch teams or end the game
+     * Checks if the user can ignore prompts during the game that usually can't be ignored
      */
-    fun User.Privileged.canIgnorePrompts(): Boolean {
+    fun User.Privileged.canIgnoreImportantPrompts(): Boolean {
         return hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
