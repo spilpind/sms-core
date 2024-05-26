@@ -4,8 +4,8 @@ group = "dk.spilpind"
 version = "1.5.0"
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 
     id("maven-publish")
 }
@@ -35,8 +35,8 @@ kotlin {
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                implementation(libs.kotlin.datetime)
+                implementation(libs.kotlin.serialization)
             }
         }
     }
