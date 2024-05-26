@@ -1,6 +1,13 @@
+import java.net.URI
+
+group = "dk.spilpind"
+version = "1.5.0"
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
+
+    id("maven-publish")
 }
 
 repositories {
@@ -30,6 +37,19 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+            }
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = URI("https://maven.pkg.github.com/spilpind/sms-core")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }

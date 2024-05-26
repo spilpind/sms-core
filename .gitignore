@@ -1,4 +1,4 @@
-#Taken from here: https://github.com/Kotlin/kmm-sample/blob/master/.gitignore
+# Inspired by https://github.com/Kotlin/kmm-sample/blob/master/.gitignore
 
 *.iml
 .gradle/
@@ -6,3 +6,5 @@ build/
 .idea/
 .DS_STORE
 local.properties
+
+.kotlin
