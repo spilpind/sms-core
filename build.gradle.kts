@@ -15,11 +15,9 @@ repositories {
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
-        }
-    }
+    jvmToolchain(17)
+
+    jvm()
 
     js(IR) {
         binaries.executable()
