@@ -29,8 +29,6 @@ kotlin {
     iosArm64()
 
     sourceSets {
-
-        @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlin.datetime)
