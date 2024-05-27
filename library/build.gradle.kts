@@ -1,7 +1,7 @@
 import java.net.URI
 
 group = "dk.spilpind"
-version = "1.5.0"
+version = "1.5.1"
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
