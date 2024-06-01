@@ -104,7 +104,7 @@ The game consists of two teams that in turns are "in" and "out". Whenever a team
 get too many deaths the two teams switch and the in team becomes the out team. The equipment needed to play is a small
 stick, a long stick and a fence (for instance two bricks).
 
-A more thorough guide with illustrations can be found in Danish at https://spilpind.dk/spillet.
+A more thorough guide with illustrations can be found in Danish at [spilpind.dk/spillet](https://spilpind.dk/spillet).
 
 ## Disclaimer
 
