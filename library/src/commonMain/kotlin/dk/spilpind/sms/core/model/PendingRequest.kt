@@ -134,7 +134,7 @@ sealed interface PendingRequest {
          * Finds a [Type] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
         fun findType(contextIdentifier: String, requestIdentifier: String): Type {
-            val context = PendingRequestContext.values().firstOrNull { context ->
+            val context = PendingRequestContext.entries.firstOrNull { context ->
                 context.context.contextKey == contextIdentifier
             }
 
@@ -160,7 +160,7 @@ sealed interface PendingRequest {
                 }
                 null -> throw IllegalArgumentException(
                     "Context \"$contextIdentifier\" of pending request not found. Available contexts: ${
-                        PendingRequestContext.values().map { availableContext -> availableContext.context.contextKey }
+                        PendingRequestContext.entries.map { availableContext -> availableContext.context.contextKey }
                     }"
                 )
             }

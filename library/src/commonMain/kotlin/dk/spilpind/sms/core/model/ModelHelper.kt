@@ -36,7 +36,7 @@ object ModelHelper {
             created = created
         )
 
-        val type = Event.Type.values().firstOrNull { type -> type.typeId == typeId }
+        val type = Event.Type.entries.firstOrNull { type -> type.typeId == typeId }
             ?: throw IllegalStateException("Got unknown event type: $typeId")
 
         return when (type) {
@@ -72,7 +72,7 @@ object ModelHelper {
         tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
-        state = Game.State.values().firstOrNull { state -> state.identifier == gameState }
+        state = Game.State.entries.firstOrNull { state -> state.identifier == gameState }
             ?: throw IllegalStateException("Got unknown game state: $gameState"),
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,

@@ -71,7 +71,7 @@ data class Status(
 
         override fun deserialize(decoder: Decoder): Type {
             val typeName = decoder.decodeString()
-            return Type.values().find { type ->
+            return Type.entries.find { type ->
                 type.name.lowercase() == typeName
             } ?: Type.Unknown
         }
