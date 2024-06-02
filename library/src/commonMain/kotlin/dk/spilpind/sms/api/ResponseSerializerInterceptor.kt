@@ -61,7 +61,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
     }
 
     @Suppress("DEPRECATION") // Accepted
-    private val reactionContextClassMap = Reaction.values().associate { reaction ->
+    private val reactionContextClassMap = Reaction.entries.associate { reaction ->
         reaction.reactionKey to when (reaction) {
             Reaction.Informed -> createContextMap { context ->
                 when (context) {
@@ -234,7 +234,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
         mapper: (Context) -> KSerializer<out ReactionData>?
     ): ReactionClassMap {
         return ReactionClassMap.ContextBased(
-            serializerMap = Context.values().mapNotNull { context ->
+            serializerMap = Context.entries.mapNotNull { context ->
                 val serializer = mapper(context) ?: return@mapNotNull null
                 Pair(context, serializer)
             }.toMap()

@@ -131,7 +131,7 @@ sealed interface UserRole {
          * Finds a [ContextRole] based on the provided parameters or throw an [IllegalArgumentException] if not found
          */
         fun findContext(contextIdentifier: String, roleIdentifier: String): ContextRole {
-            val context = RoleContext.values().firstOrNull { context ->
+            val context = RoleContext.entries.firstOrNull { context ->
                 context.context.contextKey == contextIdentifier
             }
 
@@ -155,7 +155,7 @@ sealed interface UserRole {
                 }
                 null -> throw IllegalArgumentException(
                     "Context \"$contextIdentifier\" not found. Available contexts: "
-                            + "${RoleContext.values().map { availableContext -> availableContext.context.contextKey }}"
+                            + "${RoleContext.entries.map { availableContext -> availableContext.context.contextKey }}"
                 )
             }
         }
