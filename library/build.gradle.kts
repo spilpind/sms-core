@@ -2,6 +2,7 @@ import java.net.URI
 
 group = "dk.spilpind"
 version = "1.5.1"
+val baseArtifactId = "sms-core"
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -35,9 +36,12 @@ kotlin {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            groupId = "dk.spilpind"
-            artifactId = "sms-core"
+        publications.withType<MavenPublication> {
+            artifactId = if (name == "kotlinMultiplatform") {
+                baseArtifactId
+            } else {
+                "$baseArtifactId-$name"
+            }
         }
     }
 
