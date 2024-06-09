@@ -34,6 +34,13 @@ kotlin {
 }
 
 publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "dk.spilpind"
+            artifactId = "sms-core"
+        }
+    }
+
     repositories {
         maven {
             name = "GitHubPackages"
