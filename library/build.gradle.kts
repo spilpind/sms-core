@@ -37,10 +37,8 @@ kotlin {
 publishing {
     publications {
         publications.withType<MavenPublication> {
-            artifactId = if (name == "kotlinMultiplatform") {
-                baseArtifactId
-            } else {
-                "$baseArtifactId-$name"
+            if (artifactId.startsWith(project.name, ignoreCase = true)) {
+                artifactId = artifactId.replaceFirst(project.name, baseArtifactId)
             }
         }
     }
