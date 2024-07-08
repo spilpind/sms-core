@@ -1,7 +1,7 @@
 import java.net.URI
 
 group = "dk.spilpind"
-version = "1.5.1"
+version = "1.5.2"
 val baseArtifactId = "sms-core"
 
 plugins {
@@ -21,8 +21,9 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
+    iosArm64() // iOS device
+    iosSimulatorArm64() // iOS simulator (on Apple silicon machine)
+    iosX64() // iOS simulator (on Intel machine)
 
     sourceSets {
         val commonMain by getting {
