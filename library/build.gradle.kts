@@ -21,8 +21,9 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
+    iosArm64() // iOS device
+    iosSimulatorArm64() // iOS simulator (on Apple silicon machine)
+    iosX64() // iOS simulator (on Intel machine)
 
     sourceSets {
         val commonMain by getting {
