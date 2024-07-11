@@ -1,7 +1,7 @@
 import java.net.URI
 
 group = "dk.spilpind"
-version = "1.5.2"
+version = "1.5.3"
 val baseArtifactId = "sms-core"
 
 plugins {
