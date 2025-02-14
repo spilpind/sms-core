@@ -39,8 +39,8 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
     ) : Exception(message)
 
     @Suppress("DEPRECATION") // Accept
-    private val contextActionClassMap = Context.values().associate { context ->
-        context.contextKey to Action.values().mapNotNull { action ->
+    private val contextActionClassMap = Context.entries.associate { context ->
+        context.contextKey to Action.entries.mapNotNull { action ->
             val actionClass: KSerializer<out ContextAction>? = when (context) {
                 Context.System -> null
                 Context.Authentication -> when (action) {

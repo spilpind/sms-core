@@ -32,14 +32,14 @@ object TimeHelper {
     fun LocalDateTime.toInstant(): Instant = toInstant(timeZone)
 
     /**
-     * Parses [isoDateString] to a date time object. This can e.g. parse values from [currentDateTimeString]
+     * Parses [isoDateString] to a date time object. This can e.g. parse a value returned by [LocalDateTime.toString]
      */
     fun parse(isoDateString: String): LocalDateTime {
         return if (isoDateString.length >= 24) {
             // Javascript Date.toISOString() for instance returns this
-            isoDateString.toInstant().toLocalDateTime(timeZone)
+            Instant.parse(isoDateString).toLocalDateTime(timeZone)
         } else {
-            isoDateString.toLocalDateTime()
+            LocalDateTime.parse(isoDateString)
         }
     }
 
