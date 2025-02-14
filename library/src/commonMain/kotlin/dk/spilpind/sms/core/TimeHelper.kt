@@ -37,9 +37,9 @@ object TimeHelper {
     fun parse(isoDateString: String): LocalDateTime {
         return if (isoDateString.length >= 24) {
             // Javascript Date.toISOString() for instance returns this
-            isoDateString.toInstant().toLocalDateTime(timeZone)
+            Instant.parse(isoDateString).toLocalDateTime(timeZone)
         } else {
-            isoDateString.toLocalDateTime()
+            LocalDateTime.parse(isoDateString)
         }
     }
 
