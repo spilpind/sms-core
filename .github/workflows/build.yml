@@ -16,4 +16,4 @@ jobs:
       - name: Build project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew build
+        run: ./gradlew build -PallWarningsAsErrors=true

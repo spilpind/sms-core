@@ -31,6 +31,13 @@ kotlin {
             }
         }
     }
+
+    compilerOptions {
+        val allWarningsAsErrorsArgument = "allWarningsAsErrors"
+        if (project.hasProperty(allWarningsAsErrorsArgument)) {
+            allWarningsAsErrors = (project.property(allWarningsAsErrorsArgument) == "true")
+        }
+    }
 }
 
 publishing {
