@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import java.net.URI
 
 group = "dk.spilpind"
-version = "1.5.3"
+version = "1.5.4"
 val baseArtifactId = "sms-core"
 
 plugins {
