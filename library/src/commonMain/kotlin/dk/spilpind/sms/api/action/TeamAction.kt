@@ -48,13 +48,13 @@ sealed class TeamAction : ContextAction() {
     }
 
     /**
-     * Subscribes to all teams associated with the tournament identified by [tournamentId] available for the current
-     * user. The subscription will be kept alive until the session is destroyed or [Unsubscribe] is called. Changes to
-     * the list will be sent via relevant [TeamReaction]s. A successful response to this would be
-     * [TeamReaction.Subscribed] followed by [TeamReaction.Updated]
+     * Subscribes either to all teams associated with the specific [tournamentId] or the single team associated with
+     * [teamId] must be specified (both cannot be specified). The subscription will be kept alive until the session is
+     * destroyed or [Unsubscribe] is called. Changes to the list will be sent via relevant [TeamReaction]s. A successful
+     * response to this would be [TeamReaction.Subscribed] followed by [TeamReaction.Updated]
      */
     @Serializable
-    data class Subscribe(val tournamentId: Int) : TeamAction() {
+    data class Subscribe(val tournamentId: Int? = null, val teamId: Int? = null) : TeamAction() {
         override val action: Action = Action.Subscribe
     }
 
@@ -63,7 +63,7 @@ sealed class TeamAction : ContextAction() {
      * response to this would be [TeamReaction.Unsubscribed]
      */
     @Serializable
-    data class Unsubscribe(val tournamentId: Int) : TeamAction() {
+    data class Unsubscribe(val tournamentId: Int? = null, val teamId: Int? = null) : TeamAction() {
         override val action: Action = Action.Unsubscribe
     }
 
