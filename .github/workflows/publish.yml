@@ -14,6 +14,15 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify version is not already tagged
+        run: |
+          tag="v${{ inputs.libraryVersion }}"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "Tag $tag already exists — aborting to avoid publishing a duplicate version."
+            exit 1
+          fi
       - name: Publish to github packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
