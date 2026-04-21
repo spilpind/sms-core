@@ -2,6 +2,11 @@ name: Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      libraryVersion:
+        description: "Version to publish (e.g. 1.7.0)"
+        required: true
+        type: string
 
 jobs:
   build:
@@ -12,4 +17,4 @@ jobs:
       - name: Publish to github packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew publish -PlibraryVersion="${{ inputs.libraryVersion }}"
