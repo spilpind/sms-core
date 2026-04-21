@@ -15,7 +15,8 @@ import kotlinx.serialization.encoding.Encoder
 @Serializable
 data class Status(
     val type: Type,
-    val localizedMessage: String?
+    val localizedMessage: String?,
+    val version: String?
 ) {
     @Serializable(with = TypeSerializer::class)
     enum class Type {
