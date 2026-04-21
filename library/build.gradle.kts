@@ -37,6 +37,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             kotlin.srcDir(generateVersionInfo)
+
             dependencies {
                 implementation(libs.kotlin.datetime)
                 implementation(libs.kotlin.serialization)
