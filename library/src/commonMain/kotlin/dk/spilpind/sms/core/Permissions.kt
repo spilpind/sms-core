@@ -97,6 +97,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can remove the specified [tournament]. A locked tournament can never be removed
+     */
+    fun User.Privileged.canRemoveTournament(tournament: Tournament): Boolean {
+        return !tournament.isLocked && canRemoveTournaments()
+    }
+
+    /**
      * Checks if the user (or "everyone" if null) can view the specified [game] when associated with the specified
      * [tournament]
      */
@@ -136,7 +143,9 @@ object Permissions {
      * Checks if the user can add a game with the specified [tournament] and set of [teams]
      */
     fun User.Privileged.canAddGame(tournament: Tournament, teams: List<Team>): Boolean {
-        return if (canAddGames()) {
+        return if (tournament.isLocked) {
+            false
+        } else if (canAddGames()) {
             true
         } else if (tournament.isCurrentStickLeague && teams.size == 1) {
             hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teams.first().teamId)
@@ -176,7 +185,7 @@ object Permissions {
      * Checks if the user can create an invite such that another user can become a referee of the [game]
      */
     fun User.Privileged.canCreateRefereeInviteForGame(game: Game, tournament: Tournament): Boolean {
-        return canJudgeGame(game = game, tournament = tournament)
+        return !tournament.isLocked && canJudgeGame(game = game, tournament = tournament)
     }
 
     /**
@@ -210,7 +219,7 @@ object Permissions {
      * Checks if the user can add teams with the specified [tournament]
      */
     fun User.Privileged.canAddTeam(tournament: Tournament): Boolean {
-        return canAddTeams() || tournament.isCurrentStickLeague
+        return !tournament.isLocked && (canAddTeams() || tournament.isCurrentStickLeague)
     }
 
     /**
@@ -249,7 +258,9 @@ object Permissions {
     }
 
     fun User.Privileged.canJudgeGame(game: Game, tournament: Tournament): Boolean {
-        return if (
+        return if (tournament.isLocked) {
+            false
+        } else if (
             hasSystemRole(UserRole.ContextRole.System.Admin)
             || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
         ) {

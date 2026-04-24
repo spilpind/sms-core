@@ -10,6 +10,7 @@ data class Tournament(
     val tournamentId: Id,
     val name: String,
     val isPublic: Boolean,
+    val isLocked: Boolean,
     val tags: List<String>,
     val startDate: LocalDate?,
     val endDate: LocalDate?
