@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
@@ -59,5 +60,12 @@ sealed class TournamentReaction : ContextReaction() {
      * Represents a single tournament
      */
     @Serializable
-    data class Tournament(val tournamentId: Int, val name: String, val isPublic: Boolean, val tags: List<String>)
+    data class Tournament(
+        val tournamentId: Int,
+        val name: String,
+        val isPublic: Boolean,
+        val tags: List<String>,
+        val startDate: LocalDate?,
+        val endDate: LocalDate?
+    )
 }

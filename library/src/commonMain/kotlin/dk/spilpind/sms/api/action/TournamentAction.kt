@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.core.model.Context
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,7 +16,11 @@ sealed class TournamentAction : ContextAction() {
      * Adds a new tournament. A successful response to this would be [TournamentReaction.Added]
      */
     @Serializable
-    data class Add(val name: String) : TournamentAction() {
+    data class Add(
+        val name: String,
+        val startDate: LocalDate? = null,
+        val endDate: LocalDate? = null
+    ) : TournamentAction() {
         override val action: Action = Action.Add
     }
 
