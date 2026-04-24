@@ -110,7 +110,7 @@ object Permissions {
     fun User.Privileged?.canViewGame(game: Game, tournament: Tournament): Boolean {
         if (this != null) {
             if (hasSystemRole(UserRole.ContextRole.System.Admin)
-                || canJudgeGame(game = game, tournament = tournament)
+                || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
             ) {
                 return true
             }
