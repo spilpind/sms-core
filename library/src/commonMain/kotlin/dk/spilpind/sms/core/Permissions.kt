@@ -90,17 +90,10 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove any tournament
-     */
-    fun User.Privileged.canRemoveTournaments(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-    /**
      * Checks if the user can remove the specified [tournament]. A locked tournament can never be removed
      */
     fun User.Privileged.canRemoveTournament(tournament: Tournament): Boolean {
-        return !tournament.isLocked && canRemoveTournaments()
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
@@ -133,19 +126,12 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can add any kind of game
-     */
-    fun User.Privileged.canAddGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-    /**
      * Checks if the user can add a game with the specified [tournament] and set of [teams]
      */
     fun User.Privileged.canAddGame(tournament: Tournament, teams: List<Team>): Boolean {
         return if (tournament.isLocked) {
             false
-        } else if (canAddGames()) {
+        } else if (hasSystemRole(UserRole.ContextRole.System.Admin)) {
             true
         } else if (tournament.isCurrentStickLeague && teams.size == 1) {
             hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teams.first().teamId)
@@ -155,25 +141,11 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove any game
-     */
-    fun User.Privileged.canRemoveGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-    /**
      * Checks if the user can remove a game in the specified [tournament]. A locked tournament does not allow any
      * game to be removed
      */
     fun User.Privileged.canRemoveGame(tournament: Tournament): Boolean {
-        return !tournament.isLocked && canRemoveGames()
-    }
-
-    /**
-     * Checks if the user can edit any game
-     */
-    fun User.Privileged.canEditGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
@@ -181,7 +153,7 @@ object Permissions {
      * game to be edited
      */
     fun User.Privileged.canEditGame(tournament: Tournament): Boolean {
-        return !tournament.isLocked && canEditGames()
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
@@ -228,25 +200,11 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can add any kind of team
-     */
-    fun User.Privileged.canAddTeams(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-
-    /**
      * Checks if the user can add teams with the specified [tournament]
      */
     fun User.Privileged.canAddTeam(tournament: Tournament): Boolean {
-        return !tournament.isLocked && (canAddTeams() || tournament.isCurrentStickLeague)
-    }
-
-    /**
-     * Checks if the user can remove any team
-     */
-    fun User.Privileged.canRemoveTeams(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+        return !tournament.isLocked
+                && (hasSystemRole(UserRole.ContextRole.System.Admin) || tournament.isCurrentStickLeague)
     }
 
     /**
@@ -254,7 +212,7 @@ object Permissions {
      * team to be removed
      */
     fun User.Privileged.canRemoveTeam(tournament: Tournament): Boolean {
-        return !tournament.isLocked && canRemoveTeams()
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
