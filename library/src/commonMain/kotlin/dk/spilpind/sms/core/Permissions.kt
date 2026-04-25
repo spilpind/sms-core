@@ -201,8 +201,10 @@ object Permissions {
      * Checks if the user can add teams with the specified [tournament]
      */
     fun User.Privileged.canAddTeam(tournament: Tournament): Boolean {
-        return !tournament.isLocked
-                && (hasSystemRole(UserRole.ContextRole.System.Admin) || tournament.isCurrentStickLeague)
+        if (tournament.isLocked) {
+            return false
+        }
+        return hasSystemRole(UserRole.ContextRole.System.Admin) || tournament.isCurrentStickLeague
     }
 
     /**
