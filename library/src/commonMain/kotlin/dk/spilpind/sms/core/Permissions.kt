@@ -90,10 +90,10 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove any tournament
+     * Checks if the user can remove the specified [tournament]
      */
-    fun User.Privileged.canRemoveTournaments(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canRemoveTournament(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
@@ -103,7 +103,7 @@ object Permissions {
     fun User.Privileged?.canViewGame(game: Game, tournament: Tournament): Boolean {
         if (this != null) {
             if (hasSystemRole(UserRole.ContextRole.System.Admin)
-                || canJudgeGame(game = game, tournament = tournament)
+                || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
             ) {
                 return true
             }
@@ -126,17 +126,12 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can add any kind of game
-     */
-    fun User.Privileged.canAddGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-    /**
      * Checks if the user can add a game with the specified [tournament] and set of [teams]
      */
     fun User.Privileged.canAddGame(tournament: Tournament, teams: List<Team>): Boolean {
-        return if (canAddGames()) {
+        return if (tournament.isLocked) {
+            false
+        } else if (hasSystemRole(UserRole.ContextRole.System.Admin)) {
             true
         } else if (tournament.isCurrentStickLeague && teams.size == 1) {
             hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teams.first().teamId)
@@ -146,23 +141,26 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove any game
+     * Checks if the user can remove a game in the specified [tournament]
      */
-    fun User.Privileged.canRemoveGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canRemoveGame(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
-     * Checks if the user can edit any game
+     * Checks if the user can edit a game in the specified [tournament]
      */
-    fun User.Privileged.canEditGames(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canEditGame(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
-     * Checks if the user can create an invite such that another team can join the [game]
+     * Checks if the user can create an invite such that another team can join the [game] in the specified [tournament]
      */
-    fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game): Boolean {
+    fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game, tournament: Tournament): Boolean {
+        if (tournament.isLocked) {
+            return false
+        }
         return hasSystemRole(UserRole.ContextRole.System.Admin) ||
                 game.teamAId?.let { teamId ->
                     hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
@@ -176,14 +174,15 @@ object Permissions {
      * Checks if the user can create an invite such that another user can become a referee of the [game]
      */
     fun User.Privileged.canCreateRefereeInviteForGame(game: Game, tournament: Tournament): Boolean {
-        return canJudgeGame(game = game, tournament = tournament)
+        return !tournament.isLocked && canJudgeGame(game = game, tournament = tournament)
     }
 
     /**
-     * Checks if the user can add the specified [team] to a game on behalf of the team
+     * Checks if the user can add the specified [team] to a game in the specified [tournament] on behalf of the team
      */
-    fun User.Privileged.canJoinGame(team: Team): Boolean {
-        return hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
+    fun User.Privileged.canJoinGame(team: Team, tournament: Tournament): Boolean {
+        return !tournament.isLocked
+                && hasRole(role = UserRole.ContextRole.Team.Captain, contextId = team.teamId)
     }
 
     /**
@@ -199,31 +198,29 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can add any kind of team
-     */
-    fun User.Privileged.canAddTeams(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
-    }
-
-
-    /**
      * Checks if the user can add teams with the specified [tournament]
      */
     fun User.Privileged.canAddTeam(tournament: Tournament): Boolean {
-        return canAddTeams() || tournament.isCurrentStickLeague
+        if (tournament.isLocked) {
+            return false
+        }
+        return hasSystemRole(UserRole.ContextRole.System.Admin) || tournament.isCurrentStickLeague
     }
 
     /**
-     * Checks if the user can remove any team
+     * Checks if the user can remove a team from the specified [tournament]
      */
-    fun User.Privileged.canRemoveTeams(): Boolean {
-        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canRemoveTeam(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
-     * Checks if the user can edit team associated with [teamId]
+     * Checks if the user can edit the team associated with [teamId] in the specified [tournament]
      */
-    fun User.Privileged.canEditTeam(teamId: Team.Id): Boolean {
+    fun User.Privileged.canEditTeam(teamId: Team.Id, tournament: Tournament): Boolean {
+        if (tournament.isLocked) {
+            return false
+        }
         return hasSystemRole(UserRole.ContextRole.System.Admin)
                 || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
     }
@@ -249,7 +246,9 @@ object Permissions {
     }
 
     fun User.Privileged.canJudgeGame(game: Game, tournament: Tournament): Boolean {
-        return if (
+        return if (tournament.isLocked) {
+            false
+        } else if (
             hasSystemRole(UserRole.ContextRole.System.Admin)
             || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
         ) {
