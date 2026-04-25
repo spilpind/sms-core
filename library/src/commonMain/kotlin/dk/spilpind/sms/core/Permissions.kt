@@ -90,7 +90,7 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove the specified [tournament]. A locked tournament can never be removed
+     * Checks if the user can remove the specified [tournament]
      */
     fun User.Privileged.canRemoveTournament(tournament: Tournament): Boolean {
         return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
@@ -141,16 +141,14 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove a game in the specified [tournament]. A locked tournament does not allow any
-     * game to be removed
+     * Checks if the user can remove a game in the specified [tournament]
      */
     fun User.Privileged.canRemoveGame(tournament: Tournament): Boolean {
         return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
-     * Checks if the user can edit a game in the specified [tournament]. A locked tournament does not allow any
-     * game to be edited
+     * Checks if the user can edit a game in the specified [tournament]
      */
     fun User.Privileged.canEditGame(tournament: Tournament): Boolean {
         return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
@@ -208,8 +206,7 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove a team from the specified [tournament]. A locked tournament does not allow any
-     * team to be removed
+     * Checks if the user can remove a team from the specified [tournament]
      */
     fun User.Privileged.canRemoveTeam(tournament: Tournament): Boolean {
         return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
