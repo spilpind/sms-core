@@ -141,10 +141,28 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove a game in the specified [tournament]
+     * Checks if the user can remove the specified [game] when associated with the specified [tournament]
      */
-    fun User.Privileged.canRemoveGame(tournament: Tournament): Boolean {
-        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canRemoveGame(game: Game.Typed, tournament: Tournament): Boolean {
+        if (tournament.isLocked) {
+            return false
+        }
+
+        val stateAllowsRemoval = when (game.state) {
+            Game.State.NOT_STARTED -> true
+            Game.State.STARTED,
+            Game.State.PAUSED,
+            Game.State.FINISHED -> false
+        }
+
+        return stateAllowsRemoval && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can remove the specified [game]
+     */
+    fun User.Privileged.canRemoveGame(game: Game.Detailed): Boolean {
+        return canRemoveGame(game = game, tournament = game.tournament)
     }
 
     /**
