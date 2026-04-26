@@ -265,19 +265,13 @@ object Permissions {
     }
 
     fun User.Privileged.canJudgeGame(game: Game, tournament: Tournament): Boolean {
-        return if (tournament.isLocked) {
-            false
-        } else if (
-            hasSystemRole(UserRole.ContextRole.System.Admin)
-            || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
-        ) {
-            true
-        } else if (tournament.isCurrentStickLeague) {
-            val teamId = game.teamAId ?: return false // This is the team creating the game
-            hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
-        } else {
-            false
+        if (tournament.isLocked) {
+            return false
         }
+
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
+                || isStickLeagueTeamACaptain(game = game, tournament = tournament)
     }
 
     /**
