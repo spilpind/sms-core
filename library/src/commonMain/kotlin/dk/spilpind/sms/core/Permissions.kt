@@ -141,10 +141,29 @@ object Permissions {
     }
 
     /**
-     * Checks if the user can remove a game in the specified [tournament]
+     * Checks if the user can remove the specified [game] when associated with the specified [tournament]
      */
-    fun User.Privileged.canRemoveGame(tournament: Tournament): Boolean {
-        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    fun User.Privileged.canRemoveGame(game: Game.Typed, tournament: Tournament): Boolean {
+        if (tournament.isLocked) {
+            return false
+        }
+
+        when (game.state) {
+            Game.State.NOT_STARTED -> {}
+            Game.State.STARTED,
+            Game.State.PAUSED,
+            Game.State.FINISHED -> return false
+        }
+
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || isStickLeagueTeamACaptain(game = game, tournament = tournament)
+    }
+
+    /**
+     * Checks if the user can remove the specified [game]
+     */
+    fun User.Privileged.canRemoveGame(game: Game.Detailed): Boolean {
+        return canRemoveGame(game = game, tournament = game.tournament)
     }
 
     /**
@@ -246,19 +265,13 @@ object Permissions {
     }
 
     fun User.Privileged.canJudgeGame(game: Game, tournament: Tournament): Boolean {
-        return if (tournament.isLocked) {
-            false
-        } else if (
-            hasSystemRole(UserRole.ContextRole.System.Admin)
-            || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
-        ) {
-            true
-        } else if (tournament.isCurrentStickLeague) {
-            val teamId = game.teamAId ?: return false // This is the team creating the game
-            hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
-        } else {
-            false
+        if (tournament.isLocked) {
+            return false
         }
+
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
+                || isStickLeagueTeamACaptain(game = game, tournament = tournament)
     }
 
     /**
@@ -266,6 +279,19 @@ object Permissions {
      */
     fun User.Privileged.canIgnoreImportantPrompts(): Boolean {
         return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user is a captain of team A of the specified [game] in the specified [tournament] if that
+     * tournament is the current stick league. For a stick league, team A represents the team that created the game
+     */
+    private fun User.Privileged.isStickLeagueTeamACaptain(game: Game, tournament: Tournament): Boolean {
+        if (!tournament.isCurrentStickLeague) {
+            return false
+        }
+
+        val teamAId = game.teamAId ?: return false
+        return hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamAId)
     }
 
     private fun User.Privileged?.canViewStickLeagueGame(game: Game): Boolean {

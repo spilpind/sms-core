@@ -43,6 +43,16 @@ sealed interface Game {
     }
 
     /**
+     * A [Game] that exposes its state as a typed [State] value rather than only the raw [gameState] string
+     */
+    sealed interface Typed : Game {
+        val state: State
+
+        override val gameState: String
+            get() = state.identifier
+    }
+
+    /**
      * Represents the raw game
      */
     data class Raw(
@@ -66,15 +76,13 @@ sealed interface Game {
         override val tournamentId: Tournament.Id,
         override val teamAId: Team.Id?,
         override val teamBId: Team.Id?,
-        val state: State,
+        override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
-    ) : Game {
-        override val gameState: String = state.identifier
-    }
+    ) : Typed
 
     /**
      * Like [Simple] with actual representations of tournament and the teams
@@ -84,16 +92,15 @@ sealed interface Game {
         val tournament: Tournament,
         val teamA: Team?,
         val teamB: Team?,
-        val state: State,
+        override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
-    ) : Game {
+    ) : Typed {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
         override val teamBId = teamB?.teamId
-        override val gameState: String = state.identifier
     }
 }
