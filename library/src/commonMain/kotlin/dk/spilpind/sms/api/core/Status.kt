@@ -59,7 +59,7 @@ data class Status(
         Unknown,
     }
 
-    private object TypeSerializer : KSerializer<Type> {
+    internal object TypeSerializer : KSerializer<Type> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
             serialName = "SmsCore.Status.Type",
             kind = PrimitiveKind.STRING
