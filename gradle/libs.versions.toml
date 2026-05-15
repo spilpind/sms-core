@@ -1,7 +1,7 @@
 [versions]
-kotlin = "2.1.10"
-kotlinDatetime = "0.6.2"
-kotlinSerialization = "1.8.0"
+kotlin = "2.3.21"
+kotlinDatetime = "0.8.0"
+kotlinSerialization = "1.11.0"
 
 [libraries]
 kotlin-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDatetime" }
