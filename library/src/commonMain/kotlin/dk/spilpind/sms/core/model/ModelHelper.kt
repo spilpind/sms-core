@@ -24,6 +24,12 @@ object ModelHelper {
         get() = tags.contains("stick-league-current")
 
     /**
+     * Defines if the tournament is a stick league tournament (current or past) based on the tags
+     */
+    val Tournament.isStickLeague: Boolean
+        get() = tags.contains("stick-league")
+
+    /**
      * Converts a raw event to a simple event
      */
     fun Event.Raw.toDetailedEvent(): Event.Simple {
