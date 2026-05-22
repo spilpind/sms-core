@@ -78,6 +78,7 @@ object ModelHelper {
         tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
+        gameRulesId = gameRulesId,
         state = Game.State.entries.firstOrNull { state -> state.identifier == gameState }
             ?: throw IllegalStateException("Got unknown game state: $gameState"),
         teamAPoints = teamAPoints,
@@ -91,11 +92,17 @@ object ModelHelper {
      * Converts a simple game to a detailed game. It is expected that the provided parameters matches the properties of
      * the simple game
      */
-    fun Game.Simple.toDetailedGame(tournament: Tournament, teamA: Team?, teamB: Team?) = Game.Detailed(
+    fun Game.Simple.toDetailedGame(
+        tournament: Tournament,
+        teamA: Team?,
+        teamB: Team?,
+        rules: GameRules?,
+    ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
         teamA = teamA,
         teamB = teamB,
+        rules = rules,
         state = state,
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
@@ -112,6 +119,7 @@ object ModelHelper {
         tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
+        gameRulesId = gameRulesId,
         state = state,
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
@@ -144,6 +152,11 @@ object ModelHelper {
      * Creates a tournament id from the integer
      */
     fun Int.toTournamentId() = Tournament.Id(this)
+
+    /**
+     * Creates a game rules id from the integer
+     */
+    fun Int.toGameRulesId() = GameRules.Id(this)
 
     /**
      * Creates a user id from the integer

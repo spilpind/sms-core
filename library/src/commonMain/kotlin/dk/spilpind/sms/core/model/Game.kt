@@ -11,6 +11,7 @@ sealed interface Game {
     val tournamentId: Tournament.Id
     val teamAId: Team.Id?
     val teamBId: Team.Id?
+    val gameRulesId: GameRules.Id?
     val gameState: String
     val teamAPoints: Int
     val teamBPoints: Int
@@ -60,6 +61,7 @@ sealed interface Game {
         override val tournamentId: Tournament.Id,
         override val teamAId: Team.Id?,
         override val teamBId: Team.Id?,
+        override val gameRulesId: GameRules.Id?,
         override val gameState: String,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
@@ -76,6 +78,7 @@ sealed interface Game {
         override val tournamentId: Tournament.Id,
         override val teamAId: Team.Id?,
         override val teamBId: Team.Id?,
+        override val gameRulesId: GameRules.Id?,
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
@@ -85,13 +88,14 @@ sealed interface Game {
     ) : Typed
 
     /**
-     * Like [Simple] with actual representations of tournament and the teams
+     * Like [Simple] with actual representations of tournament, the teams and the optionally attached rules
      */
     data class Detailed(
         override val gameId: Id,
         val tournament: Tournament,
         val teamA: Team?,
         val teamB: Team?,
+        val rules: GameRules?,
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
@@ -102,5 +106,6 @@ sealed interface Game {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
         override val teamBId = teamB?.teamId
+        override val gameRulesId = rules?.gameRulesId
     }
 }

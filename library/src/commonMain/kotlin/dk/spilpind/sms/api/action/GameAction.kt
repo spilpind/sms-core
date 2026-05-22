@@ -21,6 +21,7 @@ sealed class GameAction : ContextAction() {
         val tournamentId: Int,
         val teamAId: Int?,
         val teamBId: Int?,
+        val gameRulesId: Int?,
         val description: String,
         val addTeamJoinInvite: Boolean = false
     ) : GameAction() {
