@@ -20,7 +20,7 @@ sealed class TournamentAction : ContextAction() {
         val name: String,
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null,
-        val gameRulesId: Int?
+        val gameRulesId: Int? = null
     ) : TournamentAction() {
         override val action: Action = Action.Add
     }
