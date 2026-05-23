@@ -91,11 +91,11 @@ sealed class GameReaction : ContextReaction() {
         val tournamentId: Int,
         val teamAId: Int?,
         val teamBId: Int?,
-        val gameRulesId: Int?,
         val gameState: String,
         val teamAPoints: Int,
         val teamBPoints: Int,
         val description: String,
+        val gameRulesId: Int?,
         val teamJoinInviteCode: String? = null,
         val refereeInviteCode: String? = null
     )

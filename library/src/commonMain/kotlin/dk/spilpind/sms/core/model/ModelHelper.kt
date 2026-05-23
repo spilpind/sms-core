@@ -78,12 +78,12 @@ object ModelHelper {
         tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
-        gameRulesId = gameRulesId,
         state = Game.State.entries.firstOrNull { state -> state.identifier == gameState }
             ?: throw IllegalStateException("Got unknown game state: $gameState"),
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        gameRulesId = gameRulesId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -102,11 +102,11 @@ object ModelHelper {
         tournament = tournament,
         teamA = teamA,
         teamB = teamB,
-        rules = rules,
         state = state,
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        rules = rules,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -119,11 +119,11 @@ object ModelHelper {
         tournamentId = tournamentId,
         teamAId = teamAId,
         teamBId = teamBId,
-        gameRulesId = gameRulesId,
         state = state,
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        gameRulesId = gameRulesId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )

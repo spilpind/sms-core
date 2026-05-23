@@ -11,11 +11,11 @@ sealed interface Game {
     val tournamentId: Tournament.Id
     val teamAId: Team.Id?
     val teamBId: Team.Id?
-    val gameRulesId: GameRules.Id?
     val gameState: String
     val teamAPoints: Int
     val teamBPoints: Int
     val description: String
+    val gameRulesId: GameRules.Id?
     val teamJoinInviteCode: String?
     val refereeInviteCode: String?
 
@@ -61,11 +61,11 @@ sealed interface Game {
         override val tournamentId: Tournament.Id,
         override val teamAId: Team.Id?,
         override val teamBId: Team.Id?,
-        override val gameRulesId: GameRules.Id?,
         override val gameState: String,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Game
@@ -78,11 +78,11 @@ sealed interface Game {
         override val tournamentId: Tournament.Id,
         override val teamAId: Team.Id?,
         override val teamBId: Team.Id?,
-        override val gameRulesId: GameRules.Id?,
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed
@@ -95,11 +95,11 @@ sealed interface Game {
         val tournament: Tournament,
         val teamA: Team?,
         val teamB: Team?,
-        val rules: GameRules?,
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        val rules: GameRules?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
