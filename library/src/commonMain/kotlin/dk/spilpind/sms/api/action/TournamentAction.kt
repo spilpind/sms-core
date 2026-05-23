@@ -18,6 +18,8 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     data class Add(
         val name: String,
+        val isPublic: Boolean = false,
+        val tags: List<String> = emptyList(),
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null,
         val gameRulesId: Int? = null
@@ -32,6 +34,24 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     data class Remove(val tournamentId: Int) : TournamentAction() {
         override val action: Action = Action.Remove
+    }
+
+    /**
+     * Updates the tournament with id [tournamentId] with the values provided. It is important to consider all values
+     * even though you're not allowed to change them, as for instance a value set to empty or null will be updated to
+     * that value
+     */
+    @Serializable
+    data class Update(
+        val tournamentId: Int,
+        val name: String,
+        val isPublic: Boolean,
+        val tags: List<String>,
+        val startDate: LocalDate?,
+        val endDate: LocalDate?,
+        val gameRulesId: Int?,
+    ) : TournamentAction() {
+        override val action: Action = Action.Update
     }
 
     /**
