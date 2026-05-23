@@ -18,6 +18,8 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     data class Add(
         val name: String,
+        val isPublic: Boolean = false,
+        val tags: List<String> = emptyList(),
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null,
         val gameRulesId: Int? = null
