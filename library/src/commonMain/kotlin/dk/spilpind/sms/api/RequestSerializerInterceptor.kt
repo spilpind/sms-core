@@ -110,7 +110,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Update -> null
                     Action.Accept -> null
                     Action.Subscribe -> GameRulesAction.Subscribe.serializer()
-                    Action.Unsubscribe -> null
+                    Action.Unsubscribe -> GameRulesAction.Unsubscribe.serializer()
                     Action.CreateRequest -> null
                     Action.RevokeRequest -> null
                     Action.AcceptRequest -> null

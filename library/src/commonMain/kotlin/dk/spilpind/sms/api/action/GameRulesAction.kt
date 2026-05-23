@@ -29,11 +29,20 @@ sealed class GameRulesAction : ContextAction() {
 
     /**
      * Subscribes to changes for the game rules identified by [gameRulesId]. The subscription will be kept alive until
-     * the session is destroyed. Changes will be sent via relevant [GameRulesReaction]s. A successful response to this
-     * would be [GameRulesReaction.Subscribed] followed by [GameRulesReaction.Updated]
+     * the session is destroyed or [Unsubscribe] is called. Changes will be sent via relevant [GameRulesReaction]s. A
+     * successful response to this would be [GameRulesReaction.Subscribed] followed by [GameRulesReaction.Updated]
      */
     @Serializable
     data class Subscribe(val gameRulesId: Int) : GameRulesAction() {
         override val action: Action = Action.Subscribe
+    }
+
+    /**
+     * Unsubscribes the socket from updates to the game rules identified by [gameRulesId], previously subscribed by
+     * [Subscribe]. A successful response to this would be [GameRulesReaction.Unsubscribed]
+     */
+    @Serializable
+    data class Unsubscribe(val gameRulesId: Int) : GameRulesAction() {
+        override val action: Action = Action.Unsubscribe
     }
 }

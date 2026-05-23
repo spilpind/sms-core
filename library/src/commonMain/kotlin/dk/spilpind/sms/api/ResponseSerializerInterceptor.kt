@@ -149,7 +149,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.UserRole -> UserRoleReaction.Unsubscribed.serializer()
                     Context.Tournament -> TournamentReaction.Unsubscribed.serializer()
                     Context.Game -> GameReaction.Unsubscribed.serializer()
-                    Context.GameRules -> null
+                    Context.GameRules -> GameRulesReaction.Unsubscribed.serializer()
                     Context.Team -> TeamReaction.Unsubscribed.serializer()
                     Context.Referee -> RefereeReaction.Unsubscribed.serializer()
                 }

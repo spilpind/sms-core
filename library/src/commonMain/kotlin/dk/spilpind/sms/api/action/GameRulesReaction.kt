@@ -29,6 +29,14 @@ sealed class GameRulesReaction : ContextReaction() {
     }
 
     /**
+     * Response to [GameRulesAction.Unsubscribe]
+     */
+    @Serializable
+    class Unsubscribed : GameRulesReaction() {
+        override val reaction: Reaction = Reaction.Unsubscribed
+    }
+
+    /**
      * Response to a change in the subscribed game rules. Carries the current state of the entry
      */
     @Serializable
