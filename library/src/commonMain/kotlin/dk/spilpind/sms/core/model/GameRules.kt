@@ -4,7 +4,7 @@ import kotlin.jvm.JvmInline
 import kotlin.time.Duration
 
 /**
- * Represents a set of game rules that overrides the system defaults (see [GameConstants]) when attached to a game or
+ * Represents a set of game rules that overrides the defaults (see [GameConstants]) when attached to a game or
  * tournament. Nulls indicate that the corresponding restriction is disabled - they are not placeholders that should be
  * resolved from the defaults
  */

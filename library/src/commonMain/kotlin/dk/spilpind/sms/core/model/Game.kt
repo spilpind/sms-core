@@ -15,6 +15,11 @@ sealed interface Game {
     val teamAPoints: Int
     val teamBPoints: Int
     val description: String
+
+    /**
+     * Game rules attached directly to this game. When null, special rules might still apply via the tournament or, as a
+     * last resort, via [GameConstants]
+     */
     val gameRulesId: GameRules.Id?
     val teamJoinInviteCode: String?
     val refereeInviteCode: String?

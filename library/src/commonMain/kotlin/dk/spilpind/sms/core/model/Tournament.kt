@@ -14,6 +14,11 @@ sealed interface Tournament {
     val tags: List<String>
     val startDate: LocalDate?
     val endDate: LocalDate?
+
+    /**
+     * Game rules applied to every game in the tournament that doesn't itself specify a [Game.gameRulesId]. When null,
+     * [GameConstants] is used as a last resort
+     */
     val gameRulesId: GameRules.Id?
 
     /**

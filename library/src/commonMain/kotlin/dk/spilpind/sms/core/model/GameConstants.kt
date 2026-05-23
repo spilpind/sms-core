@@ -4,9 +4,10 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 /**
- * System defaults applied to games that don't have a [GameRules] attached - either directly or via their tournament.
- * Each threshold here mirrors a field on [GameRules]; a null value means the corresponding restriction is disabled by
- * default
+ * Game defaults applied to games that don't have a [GameRules] attached - either directly or via their tournament.
+ * Each threshold here mirrors a field on [GameRules] (a null value means the corresponding restriction is disabled by
+ * default), except for [DEFAULT_FAULT_THRESHOLD], which isn't configurable per game and so has no [GameRules]
+ * counterpart
  */
 object GameConstants {
     val DEFAULT_GAME_TIME_THRESHOLD: Duration? = 20.minutes
