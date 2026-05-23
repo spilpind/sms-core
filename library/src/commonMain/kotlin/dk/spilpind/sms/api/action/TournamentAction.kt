@@ -37,6 +37,24 @@ sealed class TournamentAction : ContextAction() {
     }
 
     /**
+     * Updates the tournament with id [tournamentId] with the values provided. It is important to consider all values
+     * even though you're not allowed to change them, as for instance a value set to empty or null will be updated to
+     * that value
+     */
+    @Serializable
+    data class Update(
+        val tournamentId: Int,
+        val name: String,
+        val isPublic: Boolean,
+        val tags: List<String>,
+        val startDate: LocalDate?,
+        val endDate: LocalDate?,
+        val gameRulesId: Int?,
+    ) : TournamentAction() {
+        override val action: Action = Action.Update
+    }
+
+    /**
      * Subscribes to all tournaments available for the current user. The subscription will be kept alive until the
      * session is destroyed or [Unsubscribe] is called. Changes to the list will be sent via relevant
      * [TournamentReaction]s. A successful response to this would be [TournamentReaction.Subscribed] followed by

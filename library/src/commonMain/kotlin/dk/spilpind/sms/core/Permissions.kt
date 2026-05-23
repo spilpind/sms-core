@@ -97,6 +97,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can edit the specified [tournament]
+     */
+    fun User.Privileged.canEditTournament(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user (or "everyone" if null) can view the specified [game] when associated with the specified
      * [tournament]
      */
