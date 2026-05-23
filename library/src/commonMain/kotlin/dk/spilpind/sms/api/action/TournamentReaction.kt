@@ -67,6 +67,7 @@ sealed class TournamentReaction : ContextReaction() {
         val isLocked: Boolean,
         val tags: List<String>,
         val startDate: LocalDate?,
-        val endDate: LocalDate?
+        val endDate: LocalDate?,
+        val gameRulesId: Int?
     )
 }

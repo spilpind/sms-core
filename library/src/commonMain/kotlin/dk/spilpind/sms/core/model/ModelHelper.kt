@@ -83,6 +83,7 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        gameRulesId = gameRulesId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -91,7 +92,12 @@ object ModelHelper {
      * Converts a simple game to a detailed game. It is expected that the provided parameters matches the properties of
      * the simple game
      */
-    fun Game.Simple.toDetailedGame(tournament: Tournament, teamA: Team?, teamB: Team?) = Game.Detailed(
+    fun Game.Simple.toDetailedGame(
+        tournament: Tournament,
+        teamA: Team?,
+        teamB: Team?,
+        rules: GameRules?,
+    ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
         teamA = teamA,
@@ -100,6 +106,7 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        rules = rules,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -116,6 +123,7 @@ object ModelHelper {
         teamAPoints = teamAPoints,
         teamBPoints = teamBPoints,
         description = description,
+        gameRulesId = gameRulesId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -144,6 +152,11 @@ object ModelHelper {
      * Creates a tournament id from the integer
      */
     fun Int.toTournamentId() = Tournament.Id(this)
+
+    /**
+     * Creates a game rules id from the integer
+     */
+    fun Int.toGameRulesId() = GameRules.Id(this)
 
     /**
      * Creates a user id from the integer

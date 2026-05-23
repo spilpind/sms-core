@@ -15,6 +15,12 @@ sealed interface Game {
     val teamAPoints: Int
     val teamBPoints: Int
     val description: String
+
+    /**
+     * Game rules attached directly to this game. When null, special rules might still apply via the tournament or, as a
+     * last resort, via [GameConstants]
+     */
+    val gameRulesId: GameRules.Id?
     val teamJoinInviteCode: String?
     val refereeInviteCode: String?
 
@@ -64,6 +70,7 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Game
@@ -80,12 +87,13 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed
 
     /**
-     * Like [Simple] with actual representations of tournament and the teams
+     * Like [Simple] with actual representations of tournament, the teams and the optionally attached rules
      */
     data class Detailed(
         override val gameId: Id,
@@ -96,11 +104,13 @@ sealed interface Game {
         override val teamAPoints: Int,
         override val teamBPoints: Int,
         override val description: String,
+        val rules: GameRules?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
         override val teamBId = teamB?.teamId
+        override val gameRulesId = rules?.gameRulesId
     }
 }

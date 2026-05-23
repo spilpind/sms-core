@@ -19,7 +19,8 @@ sealed class TournamentAction : ContextAction() {
     data class Add(
         val name: String,
         val startDate: LocalDate? = null,
-        val endDate: LocalDate? = null
+        val endDate: LocalDate? = null,
+        val gameRulesId: Int?
     ) : TournamentAction() {
         override val action: Action = Action.Add
     }
