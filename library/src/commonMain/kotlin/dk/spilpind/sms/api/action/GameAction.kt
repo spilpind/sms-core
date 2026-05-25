@@ -47,6 +47,7 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
+        val gameRulesId: Int?,
     ) : GameAction() {
         override val action: Action = Action.Update
     }
