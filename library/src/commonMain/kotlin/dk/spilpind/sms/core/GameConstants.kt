@@ -1,4 +1,4 @@
-package dk.spilpind.sms.core.model
+package dk.spilpind.sms.core
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
