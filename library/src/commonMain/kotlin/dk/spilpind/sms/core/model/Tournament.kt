@@ -22,6 +22,26 @@ sealed interface Tournament {
     val gameRulesId: GameRules.Id?
 
     /**
+     * Known tags that can be applied to a tournament via [tags]. Use [ModelHelper.hasTag] to check for presence
+     */
+    enum class Tag(val identifier: String) {
+        StickLeague("stick-league"),
+        StickLeagueCurrent("stick-league-current"),
+        StandingsGameCount("standings-game-count"),
+        StandingsGameTime("standings-game-time"),
+        ChampionshipDanish("championship-danish"),
+    }
+
+    /**
+     * Defines how a tournament's standings are structured. The two types are mutually exclusive. Can be resolved from
+     * tags via [ModelHelper.standingsType]
+     */
+    enum class StandingsType(val tag: Tag) {
+        GameCount(Tag.StandingsGameCount),
+        GameTime(Tag.StandingsGameTime),
+    }
+
+    /**
      * Id of a tournament. Can be used to reference a tournament without having to care about the tournament game data
      */
     @JvmInline

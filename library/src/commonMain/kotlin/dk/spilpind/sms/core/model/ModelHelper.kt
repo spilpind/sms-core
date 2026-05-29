@@ -17,17 +17,35 @@ object ModelHelper {
     )
 
     /**
+     * Whether the tournament has the given [tag]
+     */
+    fun Tournament.hasTag(tag: Tournament.Tag): Boolean = tags.contains(tag.identifier)
+
+    /**
      * Defines if the tournament is the current stick league based on the tags - this can therefore change from season
      * to season
      */
     val Tournament.isCurrentStickLeague: Boolean
-        get() = tags.contains("stick-league-current")
+        get() = hasTag(Tournament.Tag.StickLeagueCurrent)
 
     /**
      * Defines if the tournament is a stick league tournament (current or past) based on the tags
      */
     val Tournament.isStickLeague: Boolean
-        get() = tags.contains("stick-league")
+        get() = hasTag(Tournament.Tag.StickLeague)
+
+    /**
+     * Defines how the tournament's standings are structured based on the tags, or null if no standings tag is present.
+     * The types are mutually exclusive; the first matching tag wins
+     */
+    val Tournament.standingsType: Tournament.StandingsType?
+        get() = Tournament.StandingsType.entries.firstOrNull { type -> hasTag(type.tag) }
+
+    /**
+     * Defines if the tournament is a Danish championship based on the tags
+     */
+    val Tournament.isDanishChampionship: Boolean
+        get() = hasTag(Tournament.Tag.ChampionshipDanish)
 
     /**
      * Converts a raw event to a simple event
