@@ -27,6 +27,17 @@ sealed interface Tournament {
     enum class Tag(val identifier: String) {
         StickLeague("stick-league"),
         StickLeagueCurrent("stick-league-current"),
+        StandingsGameCount("standings-game-count"),
+        StandingsGameTime("standings-game-time"),
+    }
+
+    /**
+     * Defines how a tournament's standings are structured. The two types are mutually exclusive. Resolved from tags via
+     * [ModelHelper.standingsType]
+     */
+    enum class StandingsType(val tag: Tag) {
+        GameCount(Tag.StandingsGameCount),
+        GameTime(Tag.StandingsGameTime),
     }
 
     /**

@@ -35,6 +35,13 @@ object ModelHelper {
         get() = hasTag(Tournament.Tag.StickLeague)
 
     /**
+     * Defines how the tournament's standings are structured based on the tags, or null if no standings tag is present.
+     * The types are mutually exclusive; the first matching tag wins
+     */
+    val Tournament.standingsType: Tournament.StandingsType?
+        get() = Tournament.StandingsType.entries.firstOrNull { type -> hasTag(type.tag) }
+
+    /**
      * Converts a raw event to a simple event
      */
     fun Event.Raw.toDetailedEvent(): Event.Simple {
