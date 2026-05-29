@@ -33,7 +33,7 @@ sealed interface Tournament {
     }
 
     /**
-     * Defines how a tournament's standings are structured. The two types are mutually exclusive. Csn be resolved from
+     * Defines how a tournament's standings are structured. The two types are mutually exclusive. Can be resolved from
      * tags via [ModelHelper.standingsType]
      */
     enum class StandingsType(val tag: Tag) {
