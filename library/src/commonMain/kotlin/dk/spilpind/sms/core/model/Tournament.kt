@@ -22,6 +22,14 @@ sealed interface Tournament {
     val gameRulesId: GameRules.Id?
 
     /**
+     * Known tags that can be applied to a tournament via [tags]. Use [ModelHelper.hasTag] to check for presence
+     */
+    enum class Tag(val identifier: String) {
+        StickLeague("stick-league"),
+        StickLeagueCurrent("stick-league-current"),
+    }
+
+    /**
      * Id of a tournament. Can be used to reference a tournament without having to care about the tournament game data
      */
     @JvmInline
