@@ -3,6 +3,7 @@ package dk.spilpind.sms.api.action
 import dk.spilpind.sms.core.model.Context
 import dk.spilpind.sms.api.common.Reaction
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
 
 /**
  * All possible reactions that can be made in relation to [Context.Game]
@@ -94,6 +95,7 @@ sealed class GameReaction : ContextReaction() {
         val gameState: String,
         val teamAPoints: Int,
         val teamBPoints: Int,
+        val elapsedTime: Duration,
         val description: String,
         val gameRulesId: Int?,
         val teamJoinInviteCode: String? = null,
