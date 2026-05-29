@@ -29,6 +29,7 @@ sealed interface Tournament {
         StickLeagueCurrent("stick-league-current"),
         StandingsGameCount("standings-game-count"),
         StandingsGameTime("standings-game-time"),
+        ChampionshipDanish("championship-danish"),
     }
 
     /**

@@ -42,6 +42,12 @@ object ModelHelper {
         get() = Tournament.StandingsType.entries.firstOrNull { type -> hasTag(type.tag) }
 
     /**
+     * Defines if the tournament is a Danish championship based on the tags
+     */
+    val Tournament.isDanishChampionship: Boolean
+        get() = hasTag(Tournament.Tag.ChampionshipDanish)
+
+    /**
      * Converts a raw event to a simple event
      */
     fun Event.Raw.toDetailedEvent(): Event.Simple {
