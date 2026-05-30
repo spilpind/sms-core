@@ -1,6 +1,7 @@
 package dk.spilpind.sms.core.model
 
 import kotlin.jvm.JvmInline
+import kotlin.time.Duration
 
 /**
  * Represents overall game data. If provided, [teamJoinInviteCode] can be used for accepting a pending request of type
@@ -14,6 +15,7 @@ sealed interface Game {
     val gameState: String
     val teamAPoints: Int
     val teamBPoints: Int
+    val elapsedTime: Duration
     val description: String
 
     /**
@@ -69,6 +71,7 @@ sealed interface Game {
         override val gameState: String,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
+        override val elapsedTime: Duration,
         override val description: String,
         override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
@@ -86,6 +89,7 @@ sealed interface Game {
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
+        override val elapsedTime: Duration,
         override val description: String,
         override val gameRulesId: GameRules.Id?,
         override val teamJoinInviteCode: String?,
@@ -103,6 +107,7 @@ sealed interface Game {
         override val state: State,
         override val teamAPoints: Int,
         override val teamBPoints: Int,
+        override val elapsedTime: Duration,
         override val description: String,
         val rules: GameRules?,
         override val teamJoinInviteCode: String?,
