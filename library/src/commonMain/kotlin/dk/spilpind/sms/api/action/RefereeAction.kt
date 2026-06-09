@@ -31,8 +31,9 @@ sealed class RefereeAction : ContextAction() {
     }
 
     /**
-     * Removes the event identified by [eventId]. This has to be the last event in the game. A successful response to
-     * this would be [RefereeReaction.Updated]
+     * Removes the event identified by [eventId]. The event has to be removable, see
+     * [RefereeReaction.Event.removable], which the backend decides on a per-event basis. A successful response to this
+     * would be [RefereeReaction.Updated]
      */
     @Serializable
     data class Remove(val eventId: Int) : RefereeAction() {

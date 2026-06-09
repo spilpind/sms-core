@@ -61,7 +61,10 @@ sealed class RefereeReaction : ContextReaction() {
     }
 
     /**
-     * Represents a single event. For more info, see [Raw]
+     * Represents a single event. For more info, see [Raw]. [removable] and [updatable] indicate whether the event can
+     * currently be removed (via [RefereeAction.Remove]) or updated (via [RefereeAction.Update]) respectively. Both are
+     * determined by the backend at the time of the reaction and might thus be a snapshot in case the rules are e.g.
+     * time-based - the backend always re-validates the actual request
      */
     @Serializable
     data class Event(
@@ -71,6 +74,8 @@ sealed class RefereeReaction : ContextReaction() {
         val time: Int,
         val refereeId: Int,
         val created: LocalDateTime,
-        val points: Int? = null
+        val points: Int? = null,
+        val removable: Boolean,
+        val updatable: Boolean
     )
 }
