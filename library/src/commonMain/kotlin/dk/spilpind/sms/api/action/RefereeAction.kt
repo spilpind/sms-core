@@ -40,6 +40,24 @@ sealed class RefereeAction : ContextAction() {
     }
 
     /**
+     * Updates the event identified by [eventId] with the values provided. [typeId] should match the core type ids (see
+     * [Event.typeId]) and [time] is the relative seconds within the game the event happened (see [Event.time]). [points]
+     * is only required to be non-null for [Event.Points]. It is important to consider all values even though you're not
+     * allowed to change them, as for instance a value set to null will be updated to that value. Whether an event can be
+     * updated (and what may actually be changed) is decided by the backend, see [RefereeReaction.Event.updatable]. A
+     * successful response to this would be [RefereeReaction.Updated]
+     */
+    @Serializable
+    data class Update(
+        val eventId: Int,
+        val typeId: Int,
+        val time: Int,
+        val points: Int? = null
+    ) : RefereeAction() {
+        override val action: Action = Action.Update
+    }
+
+    /**
      * Subscribes to the game identified by [gameId]. The subscription will be kept alive until the session is destroyed
      * or [Unsubscribe] is called. Changes to the game will be sent via relevant [RefereeReaction]s. A successful
      * response to this would be [RefereeReaction.Subscribed] followed by [RefereeReaction.Updated]

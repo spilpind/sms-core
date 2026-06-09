@@ -131,7 +131,7 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.Inform -> null
                     Action.Add -> RefereeAction.Add.serializer()
                     Action.Remove -> RefereeAction.Remove.serializer()
-                    Action.Update -> null
+                    Action.Update -> RefereeAction.Update.serializer()
                     Action.Accept -> null
                     Action.Subscribe -> RefereeAction.Subscribe.serializer()
                     Action.Unsubscribe -> RefereeAction.Unsubscribe.serializer()
