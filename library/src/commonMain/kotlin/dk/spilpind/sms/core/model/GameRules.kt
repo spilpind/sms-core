@@ -6,7 +6,7 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * Represents a set of game rules. These can either be [Standard] (from the official rule set) or be [Custom] when
- * attached to a specific source. Nulls for specific rules indicate that the corresponding restriction is disabled -
+ * attached to a [Custom.Source]. Nulls for specific rules indicate that the corresponding restriction is disabled -
  * they are not placeholders that should be resolved from the standard rule set
  */
 sealed interface GameRules {
@@ -28,7 +28,7 @@ sealed interface GameRules {
     }
 
     /**
-     * Overriden/adjusted rules
+     * Overriden/adjusted rules associated with a [source] so it's easier to identify where it comes from
      */
     data class Custom(
         val gameRulesId: Id,
@@ -36,6 +36,7 @@ sealed interface GameRules {
         override val gamePointThreshold: Int?,
         override val turnTimeThreshold: Duration?,
         override val turnDeathThreshold: Int,
+        val source: Source,
     ) : GameRules {
 
         /**
@@ -47,6 +48,11 @@ sealed interface GameRules {
             override fun compareTo(other: Id): Int =
                 identifier.compareTo(other.identifier)
 
+        }
+
+        enum class Source {
+            Game,
+            Tournament,
         }
 
         // This isn't possible to override yet, so we just default to the standard
