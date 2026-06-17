@@ -131,13 +131,19 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
-        val rules: GameRules.Custom?,
+        val effectiveRules: GameRules,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
         override val teamBId = teamB?.teamId
-        override val gameRulesId = rules?.gameRulesId
+        override val gameRulesId = when (effectiveRules) {
+            is GameRules.Standard -> null
+            is GameRules.Custom -> when (effectiveRules.source) {
+                GameRules.Custom.Source.Game -> effectiveRules.gameRulesId
+                GameRules.Custom.Source.Tournament -> null // The rules are not attached to this specific game
+            }
+        }
     }
 }
