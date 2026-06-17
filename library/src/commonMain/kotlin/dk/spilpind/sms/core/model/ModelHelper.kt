@@ -132,9 +132,51 @@ object ModelHelper {
     )
 
     /**
-     * Converts a detailed game to a simple game
+     * Converts a typed game to an extended game. It is expected that the provided parameters matches the properties of
+     * the typed game
      */
-    fun Game.Detailed.toSimpleGame() = Game.Simple(
+    fun Game.Typed.toExtendedGame(
+        tournament: Tournament,
+        teamA: Team?,
+        teamB: Team?,
+    ) = Game.Extended(
+        gameId = gameId,
+        tournament = tournament,
+        teamA = teamA,
+        teamB = teamB,
+        state = state,
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        elapsedTime = elapsedTime,
+        description = description,
+        gameRulesId = gameRulesId,
+        teamJoinInviteCode = teamJoinInviteCode,
+        refereeInviteCode = refereeInviteCode
+    )
+
+    /**
+     * Converts an extended game to a detailed game. It is expected that the provided rules matches the properties of
+     * the extended game
+     */
+    fun Game.Extended.toDetailedGame(rules: GameRules?) = Game.Detailed(
+        gameId = gameId,
+        tournament = tournament,
+        teamA = teamA,
+        teamB = teamB,
+        state = state,
+        teamAPoints = teamAPoints,
+        teamBPoints = teamBPoints,
+        elapsedTime = elapsedTime,
+        description = description,
+        rules = rules,
+        teamJoinInviteCode = teamJoinInviteCode,
+        refereeInviteCode = refereeInviteCode
+    )
+
+    /**
+     * Converts a typed game to a simple game. If it's already a simple game it's returned as-is
+     */
+    fun Game.Typed.toSimpleGame() = this as? Game.Simple ?: Game.Simple(
         gameId = gameId,
         tournamentId = tournamentId,
         teamAId = teamAId,

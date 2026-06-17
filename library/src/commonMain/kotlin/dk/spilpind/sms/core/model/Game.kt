@@ -97,7 +97,29 @@ sealed interface Game {
     ) : Typed
 
     /**
-     * Like [Simple] with actual representations of tournament, the teams and the optionally attached rules
+     * Like [Simple] with actual representations of tournament and the teams
+     */
+    data class Extended(
+        override val gameId: Id,
+        val tournament: Tournament,
+        val teamA: Team?,
+        val teamB: Team?,
+        override val state: State,
+        override val teamAPoints: Int,
+        override val teamBPoints: Int,
+        override val elapsedTime: Duration,
+        override val description: String,
+        override val gameRulesId: GameRules.Id?,
+        override val teamJoinInviteCode: String?,
+        override val refereeInviteCode: String?
+    ) : Typed {
+        override val tournamentId = tournament.tournamentId
+        override val teamAId = teamA?.teamId
+        override val teamBId = teamB?.teamId
+    }
+
+    /**
+     * Like [Extended] with an actual representation of the attached rules as well
      */
     data class Detailed(
         override val gameId: Id,
