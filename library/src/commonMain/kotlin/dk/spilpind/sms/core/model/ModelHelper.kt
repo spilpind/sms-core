@@ -132,8 +132,8 @@ object ModelHelper {
     )
 
     /**
-     * Converts a simple game to an extended game. It is expected that the provided parameters matches the properties of
-     * the simple game
+     * Converts a typed game to an extended game. It is expected that the provided parameters matches the properties of
+     * the typed game
      */
     fun Game.Typed.toExtendedGame(
         tournament: Tournament,
@@ -174,9 +174,9 @@ object ModelHelper {
     )
 
     /**
-     * Converts a typed game to a simple game
+     * Converts a typed game to a simple game. If it's already a simple game it's returned as-is
      */
-    fun Game.Typed.toSimpleGame() = Game.Simple(
+    fun Game.Typed.toSimpleGame() = this as? Game.Simple ?: Game.Simple(
         gameId = gameId,
         tournamentId = tournamentId,
         teamAId = teamAId,
