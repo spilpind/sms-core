@@ -17,9 +17,9 @@ sealed interface Tournament {
 
     /**
      * Game rules applied to every game in the tournament that doesn't itself specify a [Game.gameRulesId]. When null,
-     * [GameConstants] is used as a last resort
+     * [GameRules.Standard] is used as a last resort
      */
-    val gameRulesId: GameRules.Id?
+    val gameRulesId: GameRules.Custom.Id?
 
     /**
      * Known tags that can be applied to a tournament via [tags]. Use [ModelHelper.hasTag] to check for presence
@@ -63,7 +63,7 @@ sealed interface Tournament {
         override val tags: List<String>,
         override val startDate: LocalDate?,
         override val endDate: LocalDate?,
-        override val gameRulesId: GameRules.Id?,
+        override val gameRulesId: GameRules.Custom.Id?,
     ) : Tournament
 
     /**
@@ -77,7 +77,7 @@ sealed interface Tournament {
         override val tags: List<String>,
         override val startDate: LocalDate?,
         override val endDate: LocalDate?,
-        val rules: GameRules?,
+        val rules: GameRules.Custom?,
     ) : Tournament {
         override val gameRulesId = rules?.gameRulesId
     }
