@@ -115,7 +115,7 @@ object ModelHelper {
         tournament: Tournament,
         teamA: Team?,
         teamB: Team?,
-        rules: GameRules?,
+        effectiveRules: GameRules.Effective,
     ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
@@ -126,7 +126,7 @@ object ModelHelper {
         teamBPoints = teamBPoints,
         elapsedTime = elapsedTime,
         description = description,
-        rules = rules,
+        effectiveRules = effectiveRules,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -158,7 +158,9 @@ object ModelHelper {
      * Converts an extended game to a detailed game. It is expected that the provided rules matches the properties of
      * the extended game
      */
-    fun Game.Extended.toDetailedGame(rules: GameRules?) = Game.Detailed(
+    fun Game.Extended.toDetailedGame(
+        effectiveRules: GameRules.Effective
+    ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
         teamA = teamA,
@@ -168,7 +170,7 @@ object ModelHelper {
         teamBPoints = teamBPoints,
         elapsedTime = elapsedTime,
         description = description,
-        rules = rules,
+        effectiveRules = effectiveRules,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -219,7 +221,7 @@ object ModelHelper {
     /**
      * Creates a game rules id from the integer
      */
-    fun Int.toGameRulesId() = GameRules.Id(this)
+    fun Int.toGameRulesId() = GameRules.Custom.Id(this)
 
     /**
      * Creates a user id from the integer

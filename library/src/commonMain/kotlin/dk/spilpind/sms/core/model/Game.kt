@@ -20,9 +20,9 @@ sealed interface Game {
 
     /**
      * Game rules attached directly to this game. When null, special rules might still apply via the tournament or, as a
-     * last resort, via [GameConstants]
+     * last resort, via [GameRules.Standard]
      */
-    val gameRulesId: GameRules.Id?
+    val gameRulesId: GameRules.Custom.Id?
     val teamJoinInviteCode: String?
     val refereeInviteCode: String?
 
@@ -73,7 +73,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
-        override val gameRulesId: GameRules.Id?,
+        override val gameRulesId: GameRules.Custom.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Game
@@ -91,7 +91,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
-        override val gameRulesId: GameRules.Id?,
+        override val gameRulesId: GameRules.Custom.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed
@@ -109,7 +109,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
-        override val gameRulesId: GameRules.Id?,
+        override val gameRulesId: GameRules.Custom.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
@@ -131,13 +131,20 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
-        val rules: GameRules?,
+        val effectiveRules: GameRules.Effective,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
         override val tournamentId = tournament.tournamentId
         override val teamAId = teamA?.teamId
         override val teamBId = teamB?.teamId
-        override val gameRulesId = rules?.gameRulesId
+        override val gameRulesId = when (effectiveRules.source) {
+            GameRules.Effective.Source.Game -> when (val rules = effectiveRules.rules) {
+                is GameRules.Custom -> rules.gameRulesId
+                is GameRules.Standard -> null // TODO: Log if this happens
+            }
+            GameRules.Effective.Source.Tournament, // The rules belong to the tournament, not this specific game
+            GameRules.Effective.Source.Standard -> null
+        }
     }
 }
