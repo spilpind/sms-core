@@ -141,7 +141,7 @@ sealed interface Game {
         override val gameRulesId = when (effectiveRules.source) {
             GameRules.Effective.Source.Game -> when (val rules = effectiveRules.rules) {
                 is GameRules.Custom -> rules.gameRulesId
-                is GameRules.Standard -> null
+                is GameRules.Standard -> null // TODO: Log if this happens
             }
             GameRules.Effective.Source.Tournament, // The rules belong to the tournament, not this specific game
             GameRules.Effective.Source.Standard -> null
