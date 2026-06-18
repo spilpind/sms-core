@@ -115,7 +115,7 @@ object ModelHelper {
         tournament: Tournament,
         teamA: Team?,
         teamB: Team?,
-        effectiveRules: GameRules,
+        effectiveRules: GameRules.Effective,
     ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,
@@ -159,7 +159,7 @@ object ModelHelper {
      * the extended game
      */
     fun Game.Extended.toDetailedGame(
-        effectiveRules: GameRules
+        effectiveRules: GameRules.Effective
     ) = Game.Detailed(
         gameId = gameId,
         tournament = tournament,

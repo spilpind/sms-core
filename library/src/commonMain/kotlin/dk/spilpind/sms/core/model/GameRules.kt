@@ -6,8 +6,9 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * Represents a set of game rules. These can either be [Standard] (from the official rule set) or be [Custom] when
- * attached to a [Custom.Source]. Nulls for specific rules indicate that the corresponding restriction is disabled -
- * they are not placeholders that should be resolved from the standard rule set
+ * overridden/adjusted. Where a game's rules originate is captured separately by [Effective.Source]. Nulls for specific
+ * rules indicate that the corresponding restriction is disabled - they are not placeholders that should be resolved
+ * from the standard rule set
  */
 sealed interface GameRules {
     val gameTimeThreshold: Duration?
@@ -28,7 +29,7 @@ sealed interface GameRules {
     }
 
     /**
-     * Overriden/adjusted rules associated with a [source] so it's easier to identify where it comes from
+     * Overriden/adjusted rules
      */
     data class Custom(
         val gameRulesId: Id,
@@ -36,7 +37,6 @@ sealed interface GameRules {
         override val gamePointThreshold: Int?,
         override val turnTimeThreshold: Duration?,
         override val turnDeathThreshold: Int,
-        val source: Source,
     ) : GameRules {
 
         /**
@@ -50,12 +50,22 @@ sealed interface GameRules {
 
         }
 
-        enum class Source {
-            Game,
-            Tournament,
-        }
-
         // This isn't possible to override yet, so we just default to the standard
         override val liftFaultThreshold: Int = Standard.liftFaultThreshold
+    }
+
+    /**
+     * The rules that effectively apply to a game, along with where they originate. [rules] is [Standard] when [source]
+     * is [Source.Standard] and a [Custom] otherwise
+     */
+    data class Effective(
+        val source: Source,
+        val rules: GameRules,
+    ) {
+        enum class Source {
+            Standard, // The official/standard rule set applies (rules == GameRules.Standard)
+            Tournament, // Inherited from the game's tournament
+            Game, // Attached directly to the game
+        }
     }
 }
