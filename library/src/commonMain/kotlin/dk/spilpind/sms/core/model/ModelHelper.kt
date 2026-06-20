@@ -234,6 +234,11 @@ object ModelHelper {
     fun Int.toGameGroupingId() = GameGrouping.Id(this)
 
     /**
+     * Creates a team advancement id from the integer
+     */
+    fun Int.toTeamAdvancementId() = TeamAdvancement.Id(this)
+
+    /**
      * Creates a user id from the integer
      */
     fun Int.toUserId() = User.Id(this)

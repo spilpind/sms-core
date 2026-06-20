@@ -127,6 +127,18 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.RevokeRequest -> null
                     Action.AcceptRequest -> null
                 }
+                Context.TeamAdvancement -> when (action) {
+                    Action.Inform -> null
+                    Action.Add -> TeamAdvancementAction.Add.serializer()
+                    Action.Remove -> TeamAdvancementAction.Remove.serializer()
+                    Action.Update -> TeamAdvancementAction.Update.serializer()
+                    Action.Accept -> null
+                    Action.Subscribe -> TeamAdvancementAction.Subscribe.serializer()
+                    Action.Unsubscribe -> TeamAdvancementAction.Unsubscribe.serializer()
+                    Action.CreateRequest -> null
+                    Action.RevokeRequest -> null
+                    Action.AcceptRequest -> null
+                }
                 Context.Team -> when (action) {
                     Action.Inform -> null
                     Action.Add -> TeamAction.Add.serializer()
