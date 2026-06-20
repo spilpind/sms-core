@@ -224,6 +224,11 @@ object ModelHelper {
     fun Int.toGameRulesId() = GameRules.Custom.Id(this)
 
     /**
+     * Creates a game grouping id from the integer
+     */
+    fun Int.toGameGroupingId() = GameGrouping.Id(this)
+
+    /**
      * Creates a user id from the integer
      */
     fun Int.toUserId() = User.Id(this)

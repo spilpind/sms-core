@@ -18,6 +18,7 @@ enum class Context(val contextKey: String) {
     Tournament("tournament"),
     Game("game"),
     GameRules("gameRules"),
+    GameGrouping("gameGrouping"),
     Team("team"),
     Referee("referee"),
 }
