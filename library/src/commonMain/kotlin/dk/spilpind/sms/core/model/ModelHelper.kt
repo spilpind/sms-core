@@ -103,6 +103,7 @@ object ModelHelper {
         elapsedTime = elapsedTime,
         description = description,
         gameRulesId = gameRulesId,
+        gameGroupingId = gameGroupingId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -127,6 +128,7 @@ object ModelHelper {
         elapsedTime = elapsedTime,
         description = description,
         effectiveRules = effectiveRules,
+        gameGroupingId = gameGroupingId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -150,6 +152,7 @@ object ModelHelper {
         elapsedTime = elapsedTime,
         description = description,
         gameRulesId = gameRulesId,
+        gameGroupingId = gameGroupingId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -171,6 +174,7 @@ object ModelHelper {
         elapsedTime = elapsedTime,
         description = description,
         effectiveRules = effectiveRules,
+        gameGroupingId = gameGroupingId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )
@@ -189,6 +193,7 @@ object ModelHelper {
         elapsedTime = elapsedTime,
         description = description,
         gameRulesId = gameRulesId,
+        gameGroupingId = gameGroupingId,
         teamJoinInviteCode = teamJoinInviteCode,
         refereeInviteCode = refereeInviteCode
     )

@@ -23,6 +23,7 @@ sealed class GameAction : ContextAction() {
         val teamBId: Int?,
         val description: String,
         val gameRulesId: Int? = null,
+        val gameGroupingId: Int? = null,
         val addTeamJoinInvite: Boolean = false
     ) : GameAction() {
         override val action: Action = Action.Add
@@ -48,6 +49,7 @@ sealed class GameAction : ContextAction() {
         val teamBId: Int?,
         val description: String,
         val gameRulesId: Int?,
+        val gameGroupingId: Int? = null,
     ) : GameAction() {
         override val action: Action = Action.Update
     }
