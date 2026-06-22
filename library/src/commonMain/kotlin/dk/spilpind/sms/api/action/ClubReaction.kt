@@ -62,6 +62,7 @@ sealed class ClubReaction : ContextReaction() {
     data class Club(
         val clubId: Int,
         val name: String,
+        val shortName: String,
         val location: String,
         val logoUrl: String
     )

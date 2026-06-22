@@ -17,6 +17,7 @@ sealed class ClubAction : ContextAction() {
     @Serializable
     data class Add(
         val name: String,
+        val shortName: String,
         val location: String,
         val logoUrl: String,
     ) : ClubAction() {
@@ -40,6 +41,7 @@ sealed class ClubAction : ContextAction() {
     data class Update(
         val clubId: Int,
         val name: String,
+        val shortName: String,
         val location: String,
         val logoUrl: String,
     ) : ClubAction() {
