@@ -202,6 +202,27 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can add a game grouping to the specified [tournament]
+     */
+    fun User.Privileged.canAddGameGrouping(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can edit a game grouping in the specified [tournament]
+     */
+    fun User.Privileged.canEditGameGrouping(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can remove a game grouping from the specified [tournament]
+     */
+    fun User.Privileged.canRemoveGameGrouping(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user can create an invite such that another team can join the [game] in the specified [tournament]
      */
     fun User.Privileged.canCreateTeamJoinInviteForGame(game: Game, tournament: Tournament): Boolean {
@@ -270,6 +291,27 @@ object Permissions {
         }
         return hasSystemRole(UserRole.ContextRole.System.Admin)
                 || hasRole(role = UserRole.ContextRole.Team.Captain, contextId = teamId)
+    }
+
+    /**
+     * Checks if the user can add a team advancement to the specified [tournament]
+     */
+    fun User.Privileged.canAddTeamAdvancement(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can edit a team advancement in the specified [tournament]
+     */
+    fun User.Privileged.canEditTeamAdvancement(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can remove a team advancement from the specified [tournament]
+     */
+    fun User.Privileged.canRemoveTeamAdvancement(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
     }
 
     /**
