@@ -53,7 +53,7 @@ sealed class ClubAction : ContextAction() {
      * [ClubReaction.Updated]
      */
     @Serializable
-    data class Subscribe(val clubId: Int? = null) : ClubAction() {
+    data class Subscribe(val clubId: Int?) : ClubAction() {
         override val action: Action = Action.Subscribe
     }
 
@@ -62,7 +62,7 @@ sealed class ClubAction : ContextAction() {
      * response to this would be [ClubReaction.Unsubscribed]
      */
     @Serializable
-    data class Unsubscribe(val clubId: Int? = null) : ClubAction() {
+    data class Unsubscribe(val clubId: Int?) : ClubAction() {
         override val action: Action = Action.Unsubscribe
     }
 }
