@@ -214,6 +214,11 @@ object ModelHelper {
     fun Int.toPendingRequestId() = PendingRequest.Id(this)
 
     /**
+     * Creates a club id from the integer
+     */
+    fun Int.toClubId() = Club.Id(this)
+
+    /**
      * Creates a team id from the integer
      */
     fun Int.toTeamId() = Team.Id(this)
