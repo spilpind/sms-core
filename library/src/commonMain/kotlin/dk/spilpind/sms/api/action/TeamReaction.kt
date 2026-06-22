@@ -88,6 +88,7 @@ sealed class TeamReaction : ContextReaction() {
         val teamId: Int,
         val name: String,
         val shortName: String,
-        val tournamentId: Int
+        val tournamentId: Int,
+        val clubId: Int?
     )
 }

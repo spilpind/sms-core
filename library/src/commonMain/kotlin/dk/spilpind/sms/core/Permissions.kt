@@ -104,6 +104,27 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can add any kind of club
+     */
+    fun User.Privileged.canAddClubs(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can remove a club
+     */
+    fun User.Privileged.canRemoveClub(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
+     * Checks if the user can edit a club
+     */
+    fun User.Privileged.canEditClub(): Boolean {
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user (or "everyone" if null) can view the specified [game] when associated with the specified
      * [tournament]
      */
