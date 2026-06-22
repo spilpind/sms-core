@@ -104,13 +104,6 @@ object Permissions {
     }
 
     /**
-     * Checks if the user (or "everyone" if null) can view clubs. Clubs are public information
-     */
-    fun User.Privileged?.canViewClub(): Boolean {
-        return true
-    }
-
-    /**
      * Checks if the user can add any kind of club
      */
     fun User.Privileged.canAddClubs(): Boolean {
