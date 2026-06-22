@@ -152,7 +152,9 @@ sealed interface Game {
                 is GameRules.Custom -> rules.gameRulesId
                 is GameRules.Standard -> null // TODO: Log if this happens
             }
-            GameRules.Effective.Source.Tournament, // The rules belong to the tournament, not this specific game
+            // The rules belong to the tournament or grouping, not this specific game
+            GameRules.Effective.Source.Tournament,
+            GameRules.Effective.Source.GameGrouping,
             GameRules.Effective.Source.Standard -> null
         }
     }
