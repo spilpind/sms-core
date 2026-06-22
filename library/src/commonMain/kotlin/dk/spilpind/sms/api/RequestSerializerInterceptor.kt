@@ -127,6 +127,18 @@ object RequestSerializerInterceptor : JsonTransformingSerializer<Request>(Reques
                     Action.RevokeRequest -> null
                     Action.AcceptRequest -> null
                 }
+                Context.Club -> when (action) {
+                    Action.Inform -> null
+                    Action.Add -> ClubAction.Add.serializer()
+                    Action.Remove -> ClubAction.Remove.serializer()
+                    Action.Update -> ClubAction.Update.serializer()
+                    Action.Accept -> null
+                    Action.Subscribe -> ClubAction.Subscribe.serializer()
+                    Action.Unsubscribe -> ClubAction.Unsubscribe.serializer()
+                    Action.CreateRequest -> null
+                    Action.RevokeRequest -> null
+                    Action.AcceptRequest -> null
+                }
                 Context.Team -> when (action) {
                     Action.Inform -> null
                     Action.Add -> TeamAction.Add.serializer()
