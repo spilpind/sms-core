@@ -5,9 +5,9 @@ import dk.spilpind.sms.core.model.GameGrouping as GameGroupingModel
 import kotlin.jvm.JvmInline
 
 /**
- * Represents how a team is meant to be transferred within a tournament: the team with [sourcePlacement] in [source]
- * should advance to [destination]. Nothing happens automatically based on this - it only records the intended structure
- * so it can be displayed (e.g. "winner of the quarterfinal advances to the semifinal")
+ * Represents how a team is meant to be advanced within a tournament: the team with [sourcePlacement] in [source] should
+ * advance to [destination]. It records the intended structure so it can be displayed (e.g. "winner of the quarterfinal
+ * advances to the semifinal")
  */
 data class TeamAdvancement(
     val teamAdvancementId: Id,
