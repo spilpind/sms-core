@@ -12,6 +12,11 @@ sealed interface Team {
     val tournamentId: Tournament.Id
 
     /**
+     * The club the team belongs to, if any
+     */
+    val clubId: Club.Id?
+
+    /**
      * Id of a team. Can be used to reference a team without having to care about the remaining team data
      */
     @JvmInline
@@ -29,18 +34,21 @@ sealed interface Team {
         override val teamId: Id,
         override val name: String,
         override val shortName: String,
-        override val tournamentId: Tournament.Id
+        override val tournamentId: Tournament.Id,
+        override val clubId: Club.Id?
     ) : Team
 
     /**
-     * Like [Raw] with an actual representation of the tournament
+     * Like [Raw] with an actual representation of the tournament and club
      */
     data class Detailed(
         override val teamId: Id,
         override val name: String,
         override val shortName: String,
-        val tournament: Tournament
+        val tournament: Tournament,
+        val club: Club?
     ) : Team {
         override val tournamentId: Tournament.Id = tournament.tournamentId
+        override val clubId: Club.Id? = club?.clubId
     }
 }
