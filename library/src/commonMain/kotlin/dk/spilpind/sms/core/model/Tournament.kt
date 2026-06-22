@@ -16,8 +16,8 @@ sealed interface Tournament {
     val endDate: LocalDate?
 
     /**
-     * Game rules applied to every game in the tournament that doesn't itself specify a [Game.gameRulesId]. When null,
-     * [GameRules.Standard] is used as a last resort
+     * Game rules applied to every game in the tournament that doesn't itself specify a [Game.gameRulesId] nor inherit
+     * rules from its [GameGrouping]. When null, [GameRules.Standard] is used as a last resort
      */
     val gameRulesId: GameRules.Custom.Id?
 

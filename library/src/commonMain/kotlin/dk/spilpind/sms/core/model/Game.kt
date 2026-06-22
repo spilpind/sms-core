@@ -19,8 +19,8 @@ sealed interface Game {
     val description: String
 
     /**
-     * Game rules attached directly to this game. When null, special rules might still apply via the tournament or, as a
-     * last resort, via [GameRules.Standard]
+     * Game rules attached directly to this game. When null, special rules might still apply via the game's
+     * [GameGrouping] or its tournament or, as a last resort, via [GameRules.Standard]
      */
     val gameRulesId: GameRules.Custom.Id?
 

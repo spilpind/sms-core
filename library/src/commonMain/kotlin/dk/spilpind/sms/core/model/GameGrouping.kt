@@ -12,6 +12,11 @@ data class GameGrouping(
     val tournamentId: Tournament.Id,
     val name: String,
     val level: Int,
+    /**
+     * Game rules applied to every game in the grouping that doesn't itself specify a [Game.gameRulesId]. When null, the
+     * grouping's tournament rules apply (or [GameRules.Standard] as a last resort)
+     */
+    val gameRulesId: GameRules.Custom.Id?,
 ) {
 
     /**

@@ -13,14 +13,16 @@ sealed class GameGroupingAction : ContextAction() {
 
     /**
      * Adds a new game grouping associated with the tournament identified by [tournamentId]. [level] describes how far
-     * into the tournament the grouping is, where a lower value is more important (e.g. 1 represents the final). A
-     * successful response to this would be [GameGroupingReaction.Added]
+     * into the tournament the grouping is, where a lower value is more important (e.g. 1 represents the final).
+     * [gameRulesId] optionally points to the game rules applied to games in the grouping that don't specify their own.
+     * A successful response to this would be [GameGroupingReaction.Added]
      */
     @Serializable
     data class Add(
         val tournamentId: Int,
         val name: String,
         val level: Int,
+        val gameRulesId: Int? = null,
     ) : GameGroupingAction() {
         override val action: Action = Action.Add
     }
@@ -44,6 +46,7 @@ sealed class GameGroupingAction : ContextAction() {
         val gameGroupingId: Int,
         val name: String,
         val level: Int,
+        val gameRulesId: Int?,
     ) : GameGroupingAction() {
         override val action: Action = Action.Update
     }
