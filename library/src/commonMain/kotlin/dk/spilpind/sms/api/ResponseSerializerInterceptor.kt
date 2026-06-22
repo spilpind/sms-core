@@ -73,8 +73,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> null
                     Context.GameRules -> null
                     Context.GameGrouping -> null
-                    Context.TeamAdvancement -> null
                     Context.Team -> null
+                    Context.TeamAdvancement -> null
                     Context.Referee -> null
                 }
             }
@@ -88,8 +88,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Added.serializer()
                     Context.GameRules -> GameRulesReaction.Added.serializer()
                     Context.GameGrouping -> GameGroupingReaction.Added.serializer()
-                    Context.TeamAdvancement -> TeamAdvancementReaction.Added.serializer()
                     Context.Team -> TeamReaction.Added.serializer()
+                    Context.TeamAdvancement -> TeamAdvancementReaction.Added.serializer()
                     Context.Referee -> null
                 }
             }
@@ -103,8 +103,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Removed.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> GameGroupingReaction.Removed.serializer()
-                    Context.TeamAdvancement -> TeamAdvancementReaction.Removed.serializer()
                     Context.Team -> TeamReaction.Removed.serializer()
+                    Context.TeamAdvancement -> TeamAdvancementReaction.Removed.serializer()
                     Context.Referee -> null
                 }
             }
@@ -118,8 +118,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Updated.serializer()
                     Context.GameRules -> GameRulesReaction.Updated.serializer()
                     Context.GameGrouping -> GameGroupingReaction.Updated.serializer()
-                    Context.TeamAdvancement -> TeamAdvancementReaction.Updated.serializer()
                     Context.Team -> TeamReaction.Updated.serializer()
+                    Context.TeamAdvancement -> TeamAdvancementReaction.Updated.serializer()
                     Context.Referee -> RefereeReaction.Updated.serializer()
                 }
             }
@@ -133,8 +133,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Accepted.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> null
-                    Context.TeamAdvancement -> null
                     Context.Team -> null
+                    Context.TeamAdvancement -> null
                     Context.Referee -> null
                 }
             }
@@ -148,8 +148,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Subscribed.serializer()
                     Context.GameRules -> GameRulesReaction.Subscribed.serializer()
                     Context.GameGrouping -> GameGroupingReaction.Subscribed.serializer()
-                    Context.TeamAdvancement -> TeamAdvancementReaction.Subscribed.serializer()
                     Context.Team -> TeamReaction.Subscribed.serializer()
+                    Context.TeamAdvancement -> TeamAdvancementReaction.Subscribed.serializer()
                     Context.Referee -> RefereeReaction.Subscribed.serializer()
                 }
             }
@@ -163,8 +163,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.Unsubscribed.serializer()
                     Context.GameRules -> GameRulesReaction.Unsubscribed.serializer()
                     Context.GameGrouping -> GameGroupingReaction.Unsubscribed.serializer()
-                    Context.TeamAdvancement -> TeamAdvancementReaction.Unsubscribed.serializer()
                     Context.Team -> TeamReaction.Unsubscribed.serializer()
+                    Context.TeamAdvancement -> TeamAdvancementReaction.Unsubscribed.serializer()
                     Context.Referee -> RefereeReaction.Unsubscribed.serializer()
                 }
             }
@@ -178,8 +178,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.RequestCreated.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> null
-                    Context.TeamAdvancement -> null
                     Context.Team -> TeamReaction.RequestCreated.serializer()
+                    Context.TeamAdvancement -> null
                     Context.Referee -> null
                 }
             }
@@ -193,8 +193,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> null
                     Context.GameRules -> null
                     Context.GameGrouping -> null
-                    Context.TeamAdvancement -> null
                     Context.Team -> TeamReaction.RequestRevoked.serializer()
+                    Context.TeamAdvancement -> null
                     Context.Referee -> null
                 }
             }
@@ -208,8 +208,8 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Game -> GameReaction.RequestAccepted.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> null
-                    Context.TeamAdvancement -> null
                     Context.Team -> TeamReaction.RequestAccepted.serializer()
+                    Context.TeamAdvancement -> null
                     Context.Referee -> null
                 }
             }
