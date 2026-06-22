@@ -1,5 +1,7 @@
 package dk.spilpind.sms.core.model
 
+import dk.spilpind.sms.core.model.Game as GameModel
+import dk.spilpind.sms.core.model.GameGrouping as GameGroupingModel
 import kotlin.jvm.JvmInline
 
 /**
@@ -28,20 +30,19 @@ data class TeamAdvancement(
     }
 
     /**
-     * Reference to either end of a [TeamAdvancement], i.e. what a team is transferred from ([source]) or to
-     * ([destination])
+     * Reference to either end of a [TeamAdvancement], i.e. what a team advances from ([source]) or to ([destination])
      */
     sealed interface Reference {
 
         /**
-         * References a specific game. For a game, [TeamAdvancement.sourcePlacement] is typically 1 (winner) or 2 (loser)
+         * References a specific game. For a game, [TeamAdvancement.sourcePlacement] is 1 (winner) or 2 (loser)
          */
-        data class Game(val gameId: dk.spilpind.sms.core.model.Game.Id) : Reference
+        data class Game(val gameId: GameModel.Id) : Reference
 
         /**
-         * References a specific game grouping. For a grouping, [TeamAdvancement.sourcePlacement] is typically the rank
-         * within the grouping (1..n)
+         * References a specific game grouping. For a grouping, [TeamAdvancement.sourcePlacement] is the rank within the
+         * grouping (e.g. 1 is first place, 3 is third place)
          */
-        data class GameGrouping(val gameGroupingId: dk.spilpind.sms.core.model.GameGrouping.Id) : Reference
+        data class GameGrouping(val gameGroupingId: GameGroupingModel.Id) : Reference
     }
 }
