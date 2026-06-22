@@ -20,6 +20,7 @@ sealed class TeamAction : ContextAction() {
         val name: String,
         val shortName: String,
         val tournamentId: Int,
+        val clubId: Int? = null,
         val addAsCaptain: Boolean = false
     ) : TeamAction() {
         override val action: Action = Action.Add
@@ -43,6 +44,7 @@ sealed class TeamAction : ContextAction() {
         val teamId: Int,
         val name: String,
         val shortName: String,
+        val clubId: Int? = null,
     ) : TeamAction() {
         override val action: Action = Action.Update
     }
