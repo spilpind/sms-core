@@ -65,6 +65,7 @@ sealed interface GameRules {
         enum class Source {
             Standard, // The official/standard rule set applies (rules == GameRules.Standard)
             Tournament, // Inherited from the game's tournament
+            GameGrouping, // Inherited from the game's grouping
             Game, // Attached directly to the game
         }
     }
