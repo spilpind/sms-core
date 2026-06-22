@@ -23,6 +23,11 @@ sealed interface Game {
      * last resort, via [GameRules.Standard]
      */
     val gameRulesId: GameRules.Custom.Id?
+
+    /**
+     * The game grouping this game belongs to, if any (see [GameGrouping])
+     */
+    val gameGroupingId: GameGrouping.Id?
     val teamJoinInviteCode: String?
     val refereeInviteCode: String?
 
@@ -74,6 +79,7 @@ sealed interface Game {
         override val elapsedTime: Duration,
         override val description: String,
         override val gameRulesId: GameRules.Custom.Id?,
+        override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Game
@@ -92,6 +98,7 @@ sealed interface Game {
         override val elapsedTime: Duration,
         override val description: String,
         override val gameRulesId: GameRules.Custom.Id?,
+        override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed
@@ -110,6 +117,7 @@ sealed interface Game {
         override val elapsedTime: Duration,
         override val description: String,
         override val gameRulesId: GameRules.Custom.Id?,
+        override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
@@ -132,6 +140,7 @@ sealed interface Game {
         override val elapsedTime: Duration,
         override val description: String,
         val effectiveRules: GameRules.Effective,
+        override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
         override val refereeInviteCode: String?
     ) : Typed {
