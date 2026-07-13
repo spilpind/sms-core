@@ -5,7 +5,7 @@ import kotlin.time.Duration
 
 /**
  * Represents overall game data. If provided, [teamJoinInviteCode] can be used for accepting a pending request of type
- * [PendingRequest.Type.Game.TeamJoinInvite]
+ * [PendingRequest.Type.Game.TeamJoinInvite]. [abbreviation], if set, is a short label for the game
  */
 sealed interface Game {
     val gameId: Id
@@ -17,6 +17,7 @@ sealed interface Game {
     val teamBPoints: Int
     val elapsedTime: Duration
     val description: String
+    val abbreviation: String?
 
     /**
      * Game rules attached directly to this game. When null, special rules might still apply via the game's
@@ -78,6 +79,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
+        override val abbreviation: String?,
         override val gameRulesId: GameRules.Custom.Id?,
         override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
@@ -97,6 +99,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
+        override val abbreviation: String?,
         override val gameRulesId: GameRules.Custom.Id?,
         override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
@@ -116,6 +119,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
+        override val abbreviation: String?,
         override val gameRulesId: GameRules.Custom.Id?,
         override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
@@ -139,6 +143,7 @@ sealed interface Game {
         override val teamBPoints: Int,
         override val elapsedTime: Duration,
         override val description: String,
+        override val abbreviation: String?,
         val effectiveRules: GameRules.Effective,
         override val gameGroupingId: GameGrouping.Id?,
         override val teamJoinInviteCode: String?,
