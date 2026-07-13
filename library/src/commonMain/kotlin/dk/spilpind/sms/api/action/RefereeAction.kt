@@ -15,9 +15,10 @@ sealed class RefereeAction : ContextAction() {
     /**
      * Adds an event to the game identified by [gameId]. [typeId] should match the core type ids (see [Event.typeId]).
      * [lastEventId] ensures the client has the newest event locally and hasn't come out of sync. [startingInTeam] is
-     * only required to be non-null for [Event.Timing.TimingType.GameStart] and [points] is only required to be non-null
-     * for [Event.Points]. Depending on state of the game (see [RefereeReaction.Updated.gameState]) only certain event
-     * types are allowed to add. A successful response to this would be [RefereeReaction.Updated]
+     * only required to be non-null for [Event.Timing.TimingType.GameStart] and [Event.Timing.TimingType.PenaltyStickStart]
+     * and [points] is only required to be non-null for [Event.Points] and [Event.PenaltyPoint]. Depending on state of
+     * the game (see [RefereeReaction.Updated.gameState]) only certain event types are allowed to add. A successful
+     * response to this would be [RefereeReaction.Updated]
      */
     @Serializable
     data class Add(

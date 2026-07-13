@@ -195,6 +195,35 @@ object GameHelper {
         } ?: false
 
     /**
+     * Indicates if penalty stick is currently in progress based on the list of events. Penalty stick is used to settle
+     * a tie and starts with a [Event.Timing.TimingType.PenaltyStickStart] event and lasts until the game ends. The
+     * state is independent of pauses which are ignored
+     */
+    val List<Event.Simple>.penaltyStickInProgress: Boolean
+        get() = firstNotNullOfOrNull { event ->
+            when (event) {
+                is Event.Death -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> false
+                is Event.Points -> false
+                is Event.PenaltyPoint -> true
+                is Event.Switch -> when (event.switchType) {
+                    Event.Switch.SwitchType.Force -> null // A switch could happen in both phases, so keep looking
+                    Event.Switch.SwitchType.Time -> null
+                    Event.Switch.SwitchType.Death -> null
+                    Event.Switch.SwitchType.Penalty -> true
+                }
+                is Event.Timing -> when (event.timingType) {
+                    Event.Timing.TimingType.GameStart -> false
+                    Event.Timing.TimingType.GameEnd -> false
+                    Event.Timing.TimingType.PenaltyStickStart -> true
+                    Event.Timing.TimingType.PauseStart -> null
+                    Event.Timing.TimingType.PauseEnd -> null
+                }
+            }
+        } ?: false
+
+    /**
      * Returns the total game time in seconds, excluding pauses
      */
     val List<Event.Simple>.gameTime: Int
