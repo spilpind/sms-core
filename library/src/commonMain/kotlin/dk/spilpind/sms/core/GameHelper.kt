@@ -141,6 +141,36 @@ object GameHelper {
         }
 
     /**
+     * Returns the number of penalty stick attempts the in team has had, based on the list of events. Like [deathCount]
+     * this is counted since the last switch or, if there's been no switch yet, since penalty stick started. During
+     * penalty stick this is used the same way [deathCount] is during regular play, e.g. to decide when to switch
+     */
+    val List<Event.Simple>.penaltyAttempts: Int
+        get() {
+            var count = 0
+
+            forEach { event ->
+                count += when (event) {
+                    is Event.Death -> 0
+                    is Event.Fault -> 0
+                    is Event.LiftSuccess -> 0
+                    is Event.Points -> 0
+                    is Event.PenaltyPoint -> 1
+                    is Event.Switch -> return count
+                    is Event.Timing -> when (event.timingType) {
+                        Event.Timing.TimingType.GameStart -> return count
+                        Event.Timing.TimingType.GameEnd -> return count
+                        Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.PauseStart -> 0
+                        Event.Timing.TimingType.PauseEnd -> 0
+                    }
+                }
+            }
+
+            return count
+        }
+
+    /**
      * Indicates if the game is in a state where the in team has had a lift without faults or deaths but the defence
      * hasn't completed yet, based on the list of events. This is useful e.g. to be able to show less buttons in a
      * referee view, as there's less possible actions. The state is independent of pauses which are ignored
