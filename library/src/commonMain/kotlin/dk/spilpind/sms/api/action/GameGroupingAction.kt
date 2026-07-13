@@ -21,7 +21,7 @@ sealed class GameGroupingAction : ContextAction() {
     data class Add(
         val tournamentId: Int,
         val name: String,
-        val abbreviation: String?,
+        val abbreviation: String? = null,
         val level: Int,
         val gameRulesId: Int? = null,
     ) : GameGroupingAction() {
