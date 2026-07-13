@@ -5,12 +5,13 @@ import kotlin.jvm.JvmInline
 /**
  * Represents a named group of games within a tournament, e.g. an actual group ("Group A") or just a label for a phase
  * ("Quarterfinals"). [level] describes how far into the tournament the grouping is, where a lower value is more
- * important - e.g. 1 represents the final
+ * important - e.g. 1 represents the final. [abbreviation], if set, is a short label for the grouping
  */
 data class GameGrouping(
     val gameGroupingId: Id,
     val tournamentId: Tournament.Id,
     val name: String,
+    val abbreviation: String?,
     val level: Int,
     /**
      * Game rules applied to every game in the grouping that doesn't itself specify a [Game.gameRulesId]. When null, the

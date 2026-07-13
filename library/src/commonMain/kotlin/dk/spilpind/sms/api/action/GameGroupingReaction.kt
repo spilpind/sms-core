@@ -65,5 +65,6 @@ sealed class GameGroupingReaction : ContextReaction() {
         val name: String,
         val level: Int,
         val gameRulesId: Int?,
+        val abbreviation: String? = null,
     )
 }
