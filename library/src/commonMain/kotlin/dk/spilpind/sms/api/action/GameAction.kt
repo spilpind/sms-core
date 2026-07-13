@@ -22,6 +22,7 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
+        val abbreviation: String? = null,
         val gameRulesId: Int? = null,
         val gameGroupingId: Int? = null,
         val addTeamJoinInvite: Boolean = false
@@ -48,6 +49,7 @@ sealed class GameAction : ContextAction() {
         val teamAId: Int?,
         val teamBId: Int?,
         val description: String,
+        val abbreviation: String?,
         val gameRulesId: Int?,
         val gameGroupingId: Int? = null,
     ) : GameAction() {

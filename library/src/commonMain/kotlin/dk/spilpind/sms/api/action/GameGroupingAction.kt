@@ -21,6 +21,7 @@ sealed class GameGroupingAction : ContextAction() {
     data class Add(
         val tournamentId: Int,
         val name: String,
+        val abbreviation: String? = null,
         val level: Int,
         val gameRulesId: Int? = null,
     ) : GameGroupingAction() {
@@ -45,6 +46,7 @@ sealed class GameGroupingAction : ContextAction() {
     data class Update(
         val gameGroupingId: Int,
         val name: String,
+        val abbreviation: String?,
         val level: Int,
         val gameRulesId: Int?,
     ) : GameGroupingAction() {
