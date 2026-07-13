@@ -52,6 +52,11 @@ object GameHelper {
                 } else {
                     0
                 }
+                is Event.PenaltyPoint -> if (event.teamId == teamId) {
+                    event.points
+                } else {
+                    0
+                }
                 is Event.Switch -> 0
                 is Event.Timing -> 0
             }
@@ -67,10 +72,12 @@ object GameHelper {
             is Event.Fault -> Game.State.STARTED
             is Event.LiftSuccess -> Game.State.STARTED
             is Event.Points -> Game.State.STARTED
+            is Event.PenaltyPoint -> Game.State.STARTED
             is Event.Switch -> Game.State.STARTED
             is Event.Timing -> when (event.timingType) {
                 Event.Timing.TimingType.GameStart -> Game.State.STARTED
                 Event.Timing.TimingType.GameEnd -> Game.State.FINISHED
+                Event.Timing.TimingType.PenaltyStickStart -> Game.State.STARTED
                 Event.Timing.TimingType.PauseStart -> Game.State.PAUSED
                 Event.Timing.TimingType.PauseEnd -> Game.State.STARTED
             }
@@ -90,10 +97,12 @@ object GameHelper {
                     is Event.Fault -> 1
                     is Event.LiftSuccess -> 0
                     is Event.Points -> return count
+                    is Event.PenaltyPoint -> return count
                     is Event.Switch -> return count
                     is Event.Timing -> when (event.timingType) {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
+                        Event.Timing.TimingType.PenaltyStickStart -> return count
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -116,10 +125,12 @@ object GameHelper {
                     is Event.Fault -> 0
                     is Event.LiftSuccess -> 0
                     is Event.Points -> 0
+                    is Event.PenaltyPoint -> 0
                     is Event.Switch -> return count
                     is Event.Timing -> when (event.timingType) {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
+                        Event.Timing.TimingType.PenaltyStickStart -> return count
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -141,10 +152,12 @@ object GameHelper {
                 is Event.Fault -> null // In theory there could be a fault after successful lift (if the rules allow it)
                 is Event.LiftSuccess -> true
                 is Event.Points -> false
+                is Event.PenaltyPoint -> false
                 is Event.Switch -> false
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
+                    Event.Timing.TimingType.PenaltyStickStart -> false
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -161,12 +174,14 @@ object GameHelper {
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null
+                is Event.PenaltyPoint -> null
                 is Event.Switch -> null
                 is Event.Timing -> {
                     val eventTime = event.time
                     when (event.timingType) {
                         Event.Timing.TimingType.GameStart -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.GameEnd -> eventTime
+                        Event.Timing.TimingType.PenaltyStickStart -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.PauseStart -> eventTime
                         Event.Timing.TimingType.PauseEnd -> eventTime + event.created.secondsUntilNow()
                     }
@@ -190,10 +205,12 @@ object GameHelper {
                 is Event.Fault -> event.time
                 is Event.LiftSuccess -> event.time
                 is Event.Points -> event.time
+                is Event.PenaltyPoint -> event.time
                 is Event.Switch -> event.time
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> event.time
                     Event.Timing.TimingType.GameEnd -> event.time
+                    Event.Timing.TimingType.PenaltyStickStart -> event.time
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -213,6 +230,7 @@ object GameHelper {
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null
+                is Event.PenaltyPoint -> null
                 is Event.Switch -> event.time
                 is Event.Timing -> null
             }
@@ -225,10 +243,12 @@ object GameHelper {
                 is Event.Fault -> null
                 is Event.LiftSuccess -> null
                 is Event.Points -> null
+                is Event.PenaltyPoint -> null
                 is Event.Switch -> event.teamId
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> event.teamId
                     Event.Timing.TimingType.GameEnd -> null
+                    Event.Timing.TimingType.PenaltyStickStart -> event.teamId
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }

@@ -50,9 +50,11 @@ sealed interface Event {
     enum class Type(val typeId: Int) {
         Points(11),
         Death(12),
+        PenaltyPoint(13),
         LiftSuccess(14),
         GameStart(21),
         GameEnd(22),
+        PenaltyStickStart(23),
         PauseStart(25),
         PauseEnd(26),
         FaultClick(31),
@@ -67,6 +69,7 @@ sealed interface Event {
         SwitchForce(41),
         SwitchTime(42),
         SwitchDeaths(43),
+        SwitchPenalty(44),
     }
 
     /**
@@ -116,6 +119,13 @@ sealed interface Event {
         Simple(type = Type.Points, baseInfo = baseInfo)
 
     /**
+     * Represents a penalty stick attempt by [teamId]. [points] is 1 if the attempt succeeded and 0 if it didn't - a
+     * missed attempt is still registered as 0 points. Like [Points] the points count towards the team's total
+     */
+    data class PenaltyPoint(private val baseInfo: BaseInfo, val points: Int) :
+        Simple(type = Type.PenaltyPoint, baseInfo = baseInfo)
+
+    /**
      * Represents a single death given to [teamId]
      */
     data class Death(private val baseInfo: BaseInfo) : Simple(type = Type.Death, baseInfo = baseInfo)
@@ -126,18 +136,20 @@ sealed interface Event {
     data class LiftSuccess(private val baseInfo: BaseInfo) : Simple(type = Type.LiftSuccess, baseInfo = baseInfo)
 
     /**
-     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
-     * which represents the team starting as in team
+     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] and
+     * [TimingType.PenaltyStickStart] are expected to have a [teamId] which represents the team starting as in team
      */
     data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
         Simple(type = timingType.type, baseInfo = baseInfo) {
 
         /**
-         * The various timing types.
+         * The various timing types. [PenaltyStickStart] marks the beginning of penalty stick (used to settle a tie) and
+         * has no corresponding end - like [GameStart] the game and turn time simply keeps counting from there
          */
         enum class TimingType(val type: Type) {
             GameStart(Type.GameStart),
             GameEnd(Type.GameEnd),
+            PenaltyStickStart(Type.PenaltyStickStart),
             PauseStart(Type.PauseStart),
             PauseEnd(Type.PauseEnd),
         }
@@ -175,12 +187,14 @@ sealed interface Event {
         Simple(type = switchType.type, baseInfo = baseInfo) {
 
         /**
-         * The reasons for a switch
+         * The reasons for a switch. [Penalty] is used during penalty stick when a team has finished its attempts and
+         * it's the other team's turn
          */
         enum class SwitchType(val type: Type) {
             Force(Type.SwitchForce),
             Time(Type.SwitchTime),
             Death(Type.SwitchDeaths),
+            Penalty(Type.SwitchPenalty),
         }
     }
 }
