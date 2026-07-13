@@ -24,7 +24,8 @@ sealed class GameAction : ContextAction() {
         val description: String,
         val gameRulesId: Int? = null,
         val gameGroupingId: Int? = null,
-        val addTeamJoinInvite: Boolean = false
+        val addTeamJoinInvite: Boolean = false,
+        val abbreviation: String? = null
     ) : GameAction() {
         override val action: Action = Action.Add
     }
@@ -50,6 +51,7 @@ sealed class GameAction : ContextAction() {
         val description: String,
         val gameRulesId: Int?,
         val gameGroupingId: Int? = null,
+        val abbreviation: String? = null,
     ) : GameAction() {
         override val action: Action = Action.Update
     }
