@@ -51,6 +51,7 @@ sealed class GameRulesReaction : ContextReaction() {
     data class GameRules(
         val gameRulesId: Int,
         val gameTimeThreshold: Duration?,
+        val gameTimeExtension: Duration? = null,
         val gamePointThreshold: Int?,
         val turnTimeThreshold: Duration?,
         val turnDeathThreshold: Int,

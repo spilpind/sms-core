@@ -12,6 +12,12 @@ import kotlin.time.Duration.Companion.minutes
  */
 sealed interface GameRules {
     val gameTimeThreshold: Duration?
+
+    /**
+     * Extra game time played to try to settle a tie before going to penalty stick. This is a one-time extension and
+     * null means it's disabled
+     */
+    val gameTimeExtension: Duration?
     val gamePointThreshold: Int?
     val turnTimeThreshold: Duration?
     val turnDeathThreshold: Int
@@ -22,6 +28,7 @@ sealed interface GameRules {
      */
     data object Standard : GameRules {
         override val gameTimeThreshold: Duration = 20.minutes
+        override val gameTimeExtension: Duration? = null
         override val gamePointThreshold: Int? = null
         override val turnTimeThreshold: Duration = 5.minutes
         override val turnDeathThreshold: Int = 2
@@ -34,6 +41,7 @@ sealed interface GameRules {
     data class Custom(
         val gameRulesId: Id,
         override val gameTimeThreshold: Duration?,
+        override val gameTimeExtension: Duration?,
         override val gamePointThreshold: Int?,
         override val turnTimeThreshold: Duration?,
         override val turnDeathThreshold: Int,

@@ -20,6 +20,7 @@ sealed class GameRulesAction : ContextAction() {
     @Serializable
     data class Add(
         val gameTimeThreshold: Duration?,
+        val gameTimeExtension: Duration? = null,
         val gamePointThreshold: Int?,
         val turnTimeThreshold: Duration?,
         val turnDeathThreshold: Int,
