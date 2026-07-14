@@ -202,10 +202,10 @@ object GameHelper {
     val List<Event.Simple>.penaltyStickInProgress: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Death -> false
-                is Event.Fault -> false
-                is Event.LiftSuccess -> false
-                is Event.Points -> false
+                is Event.Death -> null // Only the phase-defining events decide, so keep looking past the rest
+                is Event.Fault -> null
+                is Event.LiftSuccess -> null
+                is Event.Points -> null
                 is Event.PenaltyPoint -> true
                 is Event.Switch -> when (event.switchType) {
                     Event.Switch.SwitchType.Force -> null // A switch could happen in both phases, so keep looking
@@ -249,10 +249,11 @@ object GameHelper {
         } ?: 0
 
     /**
-     * Calculates the turn time in seconds. This is the time since last switch or start of game, excluding pauses
+     * Calculates the turn time in seconds. This is the time since last switch, start of game or start of penalty stick,
+     * excluding pauses
      */
     val List<Event.Simple>.turnTime: Int
-        get() = gameTime - timeOfLastSwitch
+        get() = gameTime - timeOfTurnStart
 
     /**
      * Time of last event of game, not including pauses
@@ -280,9 +281,12 @@ object GameHelper {
      * Time of last event with respect to last switch (thus of this turn), not including pauses
      */
     val List<Event.Simple>.timeOfLastActionForTurn: Int
-        get() = (timeOfLastActionForGame - timeOfLastSwitch).coerceAtLeast(0)
+        get() = (timeOfLastActionForGame - timeOfTurnStart).coerceAtLeast(0)
 
-    private val List<Event.Simple>.timeOfLastSwitch: Int
+    /**
+     * Time the current turn started, i.e. the last switch, start of game or start of penalty stick, not including pauses
+     */
+    private val List<Event.Simple>.timeOfTurnStart: Int
         get() = firstNotNullOfOrNull { event ->
             when (event) {
                 is Event.Death -> null
@@ -291,7 +295,13 @@ object GameHelper {
                 is Event.Points -> null
                 is Event.PenaltyPoint -> null
                 is Event.Switch -> event.time
-                is Event.Timing -> null
+                is Event.Timing -> when (event.timingType) {
+                    Event.Timing.TimingType.GameStart -> event.time
+                    Event.Timing.TimingType.GameEnd -> null
+                    Event.Timing.TimingType.PenaltyStickStart -> event.time
+                    Event.Timing.TimingType.PauseStart -> null
+                    Event.Timing.TimingType.PauseEnd -> null
+                }
             }
         } ?: 0
 

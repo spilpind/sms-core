@@ -22,9 +22,9 @@ sealed class RefereeReaction : ContextReaction() {
      * and represent time since start of the game and time since last switch (both excluding any pauses in the game).
      * [recentEvents] is the most recent events and ordered such that the newest event is first.
      *
-     * [penaltyStickInProgress] is true when penalty stick is used to settle a tie. While it's true [deaths] represents
-     * the current team's number of penalty attempts (since last switch) rather than actual deaths, and
-     * [shouldSwitchPenalty] rather than [shouldSwitchDeath] indicates when it's the other team's turn
+     * [penaltyStickInProgress] is true when penalty stick is used to settle a tie. While it's true [penaltyAttempts] is
+     * the current team's number of penalty attempts (since last switch) and [shouldSwitchPenalty] rather than
+     * [shouldSwitchDeath] indicates when it's the other team's turn
      */
     @Serializable
     data class Updated(
@@ -36,6 +36,7 @@ sealed class RefereeReaction : ContextReaction() {
         val outTeamPoints: Int,
         val faults: Int,
         val deaths: Int,
+        val penaltyAttempts: Int,
         val gameTime: Int,
         val turnTime: Int,
         val liftSucceeded: Boolean,
