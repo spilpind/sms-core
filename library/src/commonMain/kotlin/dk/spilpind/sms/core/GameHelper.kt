@@ -78,6 +78,7 @@ object GameHelper {
                 Event.Timing.TimingType.GameStart -> Game.State.STARTED
                 Event.Timing.TimingType.GameEnd -> Game.State.FINISHED
                 Event.Timing.TimingType.PenaltyStickStart -> Game.State.STARTED
+                Event.Timing.TimingType.GameTimeExtend -> Game.State.STARTED
                 Event.Timing.TimingType.PauseStart -> Game.State.PAUSED
                 Event.Timing.TimingType.PauseEnd -> Game.State.STARTED
             }
@@ -103,6 +104,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -131,6 +133,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -161,6 +164,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -188,6 +192,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
                     Event.Timing.TimingType.PenaltyStickStart -> false
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -217,6 +222,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
                     Event.Timing.TimingType.PenaltyStickStart -> true
+                    Event.Timing.TimingType.GameTimeExtend -> null // Happens before penalty stick, so keep looking
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -241,6 +247,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.GameEnd -> eventTime
                         Event.Timing.TimingType.PenaltyStickStart -> eventTime + event.created.secondsUntilNow()
+                        Event.Timing.TimingType.GameTimeExtend -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.PauseStart -> eventTime
                         Event.Timing.TimingType.PauseEnd -> eventTime + event.created.secondsUntilNow()
                     }
@@ -271,6 +278,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.time
                     Event.Timing.TimingType.GameEnd -> event.time
                     Event.Timing.TimingType.PenaltyStickStart -> event.time
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -299,6 +307,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.time
                     Event.Timing.TimingType.GameEnd -> null
                     Event.Timing.TimingType.PenaltyStickStart -> event.time
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -318,6 +327,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.teamId
                     Event.Timing.TimingType.GameEnd -> null
                     Event.Timing.TimingType.PenaltyStickStart -> null
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
