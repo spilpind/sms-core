@@ -50,13 +50,13 @@ sealed interface Event {
     enum class Type(val typeId: Int) {
         Points(11),
         Death(12),
-        PenaltyPoint(13),
         LiftSuccess(14),
+        PenaltyPoint(15),
         GameStart(21),
         GameEnd(22),
-        PenaltyStickStart(23),
         PauseStart(25),
         PauseEnd(26),
+        PenaltyStickStart(27),
         FaultClick(31),
         FaultBackLift(32),
         FaultRoll(33),
@@ -149,9 +149,9 @@ sealed interface Event {
         enum class TimingType(val type: Type) {
             GameStart(Type.GameStart),
             GameEnd(Type.GameEnd),
-            PenaltyStickStart(Type.PenaltyStickStart),
             PauseStart(Type.PauseStart),
             PauseEnd(Type.PauseEnd),
+            PenaltyStickStart(Type.PenaltyStickStart),
         }
     }
 
