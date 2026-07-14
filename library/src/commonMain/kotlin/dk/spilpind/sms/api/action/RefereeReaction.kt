@@ -23,8 +23,8 @@ sealed class RefereeReaction : ContextReaction() {
      * [recentEvents] is the most recent events and ordered such that the newest event is first.
      *
      * [penaltyStickInProgress] is true when penalty stick is used to settle a tie. While it's true [penaltyAttempts] is
-     * the current team's number of penalty attempts (since last switch) and [shouldSwitchPenalty] rather than
-     * [shouldSwitchDeath] indicates when it's the other team's turn
+     * the current team's number of penalty attempts (since last switch) and [shouldSwitchPenalty] indicates when it's
+     * the other team's turn
      */
     @Serializable
     data class Updated(
