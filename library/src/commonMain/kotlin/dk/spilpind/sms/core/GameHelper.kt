@@ -230,6 +230,15 @@ object GameHelper {
         } ?: false
 
     /**
+     * Indicates if the game time has been extended, based on the list of events. This is a one-time extension played to
+     * try to settle a tie before going to penalty stick
+     */
+    val List<Event.Simple>.isTimeExtended: Boolean
+        get() = any { event ->
+            event is Event.Timing && event.timingType == Event.Timing.TimingType.GameTimeExtend
+        }
+
+    /**
      * Returns the total game time in seconds, excluding pauses
      */
     val List<Event.Simple>.gameTime: Int
