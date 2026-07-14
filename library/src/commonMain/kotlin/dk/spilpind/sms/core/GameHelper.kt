@@ -307,7 +307,7 @@ object GameHelper {
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> event.teamId
                     Event.Timing.TimingType.GameEnd -> null
-                    Event.Timing.TimingType.PenaltyStickStart -> event.teamId
+                    Event.Timing.TimingType.PenaltyStickStart -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }

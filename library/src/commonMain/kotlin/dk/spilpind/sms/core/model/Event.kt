@@ -136,8 +136,8 @@ sealed interface Event {
     data class LiftSuccess(private val baseInfo: BaseInfo) : Simple(type = Type.LiftSuccess, baseInfo = baseInfo)
 
     /**
-     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] and
-     * [TimingType.PenaltyStickStart] are expected to have a [teamId] which represents the team starting as in team
+     * Represents a timing event indicated by [timingType]. Only [TimingType.GameStart] is expected to have a [teamId]
+     * which represents the team starting as in team
      */
     data class Timing(private val baseInfo: BaseInfo, val timingType: TimingType) :
         Simple(type = timingType.type, baseInfo = baseInfo) {
