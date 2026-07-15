@@ -24,7 +24,8 @@ sealed class RefereeReaction : ContextReaction() {
      *
      * [penaltyStickInProgress] is true when penalty stick is used to settle a tie. While it's true [penaltyAttempts] is
      * the current team's number of penalty attempts (since last switch) and [shouldSwitchPenalty] indicates when it's
-     * the other team's turn.
+     * the other team's turn. [shouldStartPenaltyStick] indicates when the game is tied at the time limit and penalty
+     * stick should be started rather than ending the game.
      *
      * [timeExtended] is true once the game time has been extended (a one-time extension played to try to settle a tie
      * before penalty stick) and [shouldExtendTime] indicates when extending the time is currently an option
@@ -51,6 +52,7 @@ sealed class RefereeReaction : ContextReaction() {
         val shouldFaultDeath: Boolean,
         val shouldEndGame: Boolean,
         val shouldExtendTime: Boolean,
+        val shouldStartPenaltyStick: Boolean,
         val recentEvents: Collection<Event>
     ) : RefereeReaction() {
         override val reaction: Reaction = Reaction.Updated
