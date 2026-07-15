@@ -73,6 +73,8 @@ object ModelHelper {
             Event.Type.GameEnd -> Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.GameEnd)
             Event.Type.PenaltyStickStart ->
                 Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.PenaltyStickStart)
+            Event.Type.GameTimeExtend ->
+                Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.GameTimeExtend)
             Event.Type.PauseStart -> Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.PauseStart)
             Event.Type.PauseEnd -> Event.Timing(baseInfo = baseInfo, timingType = Event.Timing.TimingType.PauseEnd)
             Event.Type.FaultClick -> Event.Fault(baseInfo = baseInfo, faultType = Event.Fault.FaultType.Click)

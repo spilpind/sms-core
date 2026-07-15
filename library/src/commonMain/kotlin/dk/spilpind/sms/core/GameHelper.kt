@@ -78,6 +78,7 @@ object GameHelper {
                 Event.Timing.TimingType.GameStart -> Game.State.STARTED
                 Event.Timing.TimingType.GameEnd -> Game.State.FINISHED
                 Event.Timing.TimingType.PenaltyStickStart -> Game.State.STARTED
+                Event.Timing.TimingType.GameTimeExtend -> Game.State.STARTED
                 Event.Timing.TimingType.PauseStart -> Game.State.PAUSED
                 Event.Timing.TimingType.PauseEnd -> Game.State.STARTED
             }
@@ -103,6 +104,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -131,6 +133,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -161,6 +164,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> return count
                         Event.Timing.TimingType.GameEnd -> return count
                         Event.Timing.TimingType.PenaltyStickStart -> return count
+                        Event.Timing.TimingType.GameTimeExtend -> 0
                         Event.Timing.TimingType.PauseStart -> 0
                         Event.Timing.TimingType.PauseEnd -> 0
                     }
@@ -188,6 +192,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
                     Event.Timing.TimingType.PenaltyStickStart -> false
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -202,26 +207,53 @@ object GameHelper {
     val List<Event.Simple>.penaltyStickInProgress: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Death -> null // Only the phase-defining events decide, so keep looking past the rest
-                is Event.Fault -> null
-                is Event.LiftSuccess -> null
-                is Event.Points -> null
+                // Anything we wouldn't see during penalty stick means it hasn't started (or has ended), so we can stop
+                // looking right away instead of scanning all the way back. Only pauses are ignored
+                is Event.Death -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> false
+                is Event.Points -> false
                 is Event.PenaltyPoint -> true
                 is Event.Switch -> when (event.switchType) {
-                    Event.Switch.SwitchType.Force -> null // A switch could happen in both phases, so keep looking
-                    Event.Switch.SwitchType.Time -> null
-                    Event.Switch.SwitchType.Death -> null
+                    Event.Switch.SwitchType.Force -> null // Force could be used during penalty stick too, so ignore it
+                    Event.Switch.SwitchType.Time -> false
+                    Event.Switch.SwitchType.Death -> false
                     Event.Switch.SwitchType.Penalty -> true
                 }
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
                     Event.Timing.TimingType.PenaltyStickStart -> true
+                    Event.Timing.TimingType.GameTimeExtend -> false
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
             }
         } ?: false
+
+    /**
+     * Indicates if the game time has been extended, based on the list of events. This is a one-time extension played to
+     * try to settle a tie before going to penalty stick
+     */
+    val List<Event.Simple>.isTimeExtended: Boolean
+        get() = any { event ->
+            when (event) {
+                is Event.Death -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> false
+                is Event.Points -> false
+                is Event.PenaltyPoint -> false
+                is Event.Switch -> false
+                is Event.Timing -> when (event.timingType) {
+                    Event.Timing.TimingType.GameStart -> false
+                    Event.Timing.TimingType.GameEnd -> false
+                    Event.Timing.TimingType.PenaltyStickStart -> false
+                    Event.Timing.TimingType.GameTimeExtend -> true
+                    Event.Timing.TimingType.PauseStart -> false
+                    Event.Timing.TimingType.PauseEnd -> false
+                }
+            }
+        }
 
     /**
      * Returns the total game time in seconds, excluding pauses
@@ -241,6 +273,7 @@ object GameHelper {
                         Event.Timing.TimingType.GameStart -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.GameEnd -> eventTime
                         Event.Timing.TimingType.PenaltyStickStart -> eventTime + event.created.secondsUntilNow()
+                        Event.Timing.TimingType.GameTimeExtend -> eventTime + event.created.secondsUntilNow()
                         Event.Timing.TimingType.PauseStart -> eventTime
                         Event.Timing.TimingType.PauseEnd -> eventTime + event.created.secondsUntilNow()
                     }
@@ -271,6 +304,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.time
                     Event.Timing.TimingType.GameEnd -> event.time
                     Event.Timing.TimingType.PenaltyStickStart -> event.time
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -299,6 +333,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.time
                     Event.Timing.TimingType.GameEnd -> null
                     Event.Timing.TimingType.PenaltyStickStart -> event.time
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
@@ -318,6 +353,7 @@ object GameHelper {
                     Event.Timing.TimingType.GameStart -> event.teamId
                     Event.Timing.TimingType.GameEnd -> null
                     Event.Timing.TimingType.PenaltyStickStart -> null
+                    Event.Timing.TimingType.GameTimeExtend -> null
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }

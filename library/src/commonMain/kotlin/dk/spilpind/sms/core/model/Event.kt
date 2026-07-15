@@ -57,6 +57,7 @@ sealed interface Event {
         PauseStart(25),
         PauseEnd(26),
         PenaltyStickStart(27),
+        GameTimeExtend(28),
         FaultClick(31),
         FaultBackLift(32),
         FaultRoll(33),
@@ -144,7 +145,9 @@ sealed interface Event {
 
         /**
          * The various timing types. [PenaltyStickStart] marks the beginning of penalty stick (used to settle a tie) and
-         * has no corresponding end - like [GameStart] the game and turn time simply keeps counting from there
+         * has no corresponding end - like [GameStart] the game and turn time simply keeps counting from there.
+         * [GameTimeExtend] marks a one-time extension of the game time (used to try to settle a tie before penalty
+         * stick) - the current turn just continues as if nothing happened and the game and turn time keeps counting
          */
         enum class TimingType(val type: Type) {
             GameStart(Type.GameStart),
@@ -152,6 +155,7 @@ sealed interface Event {
             PauseStart(Type.PauseStart),
             PauseEnd(Type.PauseEnd),
             PenaltyStickStart(Type.PenaltyStickStart),
+            GameTimeExtend(Type.GameTimeExtend),
         }
     }
 
