@@ -207,22 +207,24 @@ object GameHelper {
     val List<Event.Simple>.penaltyStickInProgress: Boolean
         get() = firstNotNullOfOrNull { event ->
             when (event) {
-                is Event.Death -> null // Only the phase-defining events decide, so keep looking past the rest
-                is Event.Fault -> null
-                is Event.LiftSuccess -> null
-                is Event.Points -> null
+                // Anything we wouldn't see during penalty stick means it hasn't started (or has ended), so we can stop
+                // looking right away instead of scanning all the way back. Only pauses are ignored
+                is Event.Death -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> false
+                is Event.Points -> false
                 is Event.PenaltyPoint -> true
                 is Event.Switch -> when (event.switchType) {
-                    Event.Switch.SwitchType.Force -> null // A switch could happen in both phases, so keep looking
-                    Event.Switch.SwitchType.Time -> null
-                    Event.Switch.SwitchType.Death -> null
+                    Event.Switch.SwitchType.Force -> false
+                    Event.Switch.SwitchType.Time -> false
+                    Event.Switch.SwitchType.Death -> false
                     Event.Switch.SwitchType.Penalty -> true
                 }
                 is Event.Timing -> when (event.timingType) {
                     Event.Timing.TimingType.GameStart -> false
                     Event.Timing.TimingType.GameEnd -> false
                     Event.Timing.TimingType.PenaltyStickStart -> true
-                    Event.Timing.TimingType.GameTimeExtend -> null // Happens before penalty stick, so keep looking
+                    Event.Timing.TimingType.GameTimeExtend -> false
                     Event.Timing.TimingType.PauseStart -> null
                     Event.Timing.TimingType.PauseEnd -> null
                 }
