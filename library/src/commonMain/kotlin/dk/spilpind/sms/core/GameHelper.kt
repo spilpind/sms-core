@@ -237,7 +237,22 @@ object GameHelper {
      */
     val List<Event.Simple>.isTimeExtended: Boolean
         get() = any { event ->
-            event is Event.Timing && event.timingType == Event.Timing.TimingType.GameTimeExtend
+            when (event) {
+                is Event.Death -> false
+                is Event.Fault -> false
+                is Event.LiftSuccess -> false
+                is Event.Points -> false
+                is Event.PenaltyPoint -> false
+                is Event.Switch -> false
+                is Event.Timing -> when (event.timingType) {
+                    Event.Timing.TimingType.GameStart -> false
+                    Event.Timing.TimingType.GameEnd -> false
+                    Event.Timing.TimingType.PenaltyStickStart -> false
+                    Event.Timing.TimingType.GameTimeExtend -> true
+                    Event.Timing.TimingType.PauseStart -> false
+                    Event.Timing.TimingType.PauseEnd -> false
+                }
+            }
         }
 
     /**
