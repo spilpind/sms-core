@@ -215,7 +215,7 @@ object GameHelper {
                 is Event.Points -> false
                 is Event.PenaltyPoint -> true
                 is Event.Switch -> when (event.switchType) {
-                    Event.Switch.SwitchType.Force -> false
+                    Event.Switch.SwitchType.Force -> null // Force could be used during penalty stick too, so ignore it
                     Event.Switch.SwitchType.Time -> false
                     Event.Switch.SwitchType.Death -> false
                     Event.Switch.SwitchType.Penalty -> true
