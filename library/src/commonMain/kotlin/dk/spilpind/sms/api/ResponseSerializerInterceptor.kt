@@ -181,7 +181,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Authentication -> null
                     Context.User -> null
                     Context.UserRole -> null
-                    Context.Tournament -> null
+                    Context.Tournament -> TournamentReaction.RequestCreated.serializer()
                     Context.Game -> GameReaction.RequestCreated.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> null
@@ -213,7 +213,7 @@ object ResponseSerializerInterceptor : JsonTransformingSerializer<Response>(Resp
                     Context.Authentication -> null
                     Context.User -> null
                     Context.UserRole -> null
-                    Context.Tournament -> null
+                    Context.Tournament -> TournamentReaction.RequestAccepted.serializer()
                     Context.Game -> GameReaction.RequestAccepted.serializer()
                     Context.GameRules -> null
                     Context.GameGrouping -> null

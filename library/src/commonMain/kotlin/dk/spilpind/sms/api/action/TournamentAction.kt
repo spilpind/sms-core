@@ -2,6 +2,7 @@ package dk.spilpind.sms.api.action
 
 import dk.spilpind.sms.api.common.Action
 import dk.spilpind.sms.core.model.Context
+import dk.spilpind.sms.core.model.PendingRequest
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
@@ -72,5 +73,26 @@ sealed class TournamentAction : ContextAction() {
     @Serializable
     class Unsubscribe : TournamentAction() {
         override val action: Action = Action.Unsubscribe
+    }
+
+    /**
+     * Creates a pending request related to a tournament (see [PendingRequest.Type.Tournament]) identified by
+     * [tournamentId]. [request] has to match value of [PendingRequest.Type.Tournament.request]. If the request already
+     * exists, it will be overwritten (a new code will be generated and its expiration time will be reset). A successful
+     * response to this would be [TournamentReaction.RequestCreated]
+     */
+    @Serializable
+    data class CreateRequest(val request: String, val tournamentId: Int) : TournamentAction() {
+        override val action: Action = Action.CreateRequest
+    }
+
+    /**
+     * Accepts a pending request related to a tournament (see [PendingRequest.Type.Tournament]), where [request] has to
+     * match value of [PendingRequest.Type.Tournament.request]. A successful response to this would be
+     * [TournamentReaction.RequestAccepted]
+     */
+    @Serializable
+    data class AcceptRequest(val request: String, val code: String) : TournamentAction() {
+        override val action: Action = Action.AcceptRequest
     }
 }

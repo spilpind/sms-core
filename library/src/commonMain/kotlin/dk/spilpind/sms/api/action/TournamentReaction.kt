@@ -57,6 +57,24 @@ sealed class TournamentReaction : ContextReaction() {
     }
 
     /**
+     * Response to [TournamentAction.CreateRequest]. [code] will represent the newly generated code that should be used
+     * for accepting the request
+     */
+    @Serializable
+    data class RequestCreated(val code: String) : TournamentReaction() {
+        override val reaction: Reaction = Reaction.RequestCreated
+    }
+
+    /**
+     * Response to [TournamentAction.AcceptRequest]. [tournament] will represent the tournament which the pending request
+     * was related to
+     */
+    @Serializable
+    data class RequestAccepted(val tournament: Tournament) : TournamentReaction() {
+        override val reaction: Reaction = Reaction.RequestAccepted
+    }
+
+    /**
      * Represents a single tournament
      */
     @Serializable
