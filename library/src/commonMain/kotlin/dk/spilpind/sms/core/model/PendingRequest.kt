@@ -58,6 +58,20 @@ sealed interface PendingRequest {
         }
 
         /**
+         * Defines all types of pending requests that exist for a tournament
+         */
+        sealed class Tournament(request: Requests) : Type(context = PendingRequestContext.Tournament, request = request) {
+            enum class Requests(override val identifier: String) : RawRequest {
+                RefereeInvite("refereeInvite")
+            }
+
+            /**
+             * An invite for a user to become a referee of the entire tournament
+             */
+            object RefereeInvite : Tournament(request = Requests.RefereeInvite)
+        }
+
+        /**
          * Defines all types of pending requests that exist for a team
          */
         sealed class Team(request: Requests) : Type(context = PendingRequestContext.Team, request = request) {
@@ -106,6 +120,7 @@ sealed interface PendingRequest {
     companion object {
         internal enum class PendingRequestContext(val context: Context) {
             Game(Context.Game),
+            Tournament(Context.Tournament),
             Team(Context.Team)
         }
 
@@ -145,6 +160,15 @@ sealed interface PendingRequest {
                     Type.Game.Requests.TeamJoinInvite -> Type.Game.TeamJoinInvite
                     Type.Game.Requests.RefereeInvite -> Type.Game.RefereeInvite
                     null -> throwNotFound<Type.Game.Requests>(
+                        context = context,
+                        requestIdentifier = requestIdentifier
+                    )
+                }
+                PendingRequestContext.Tournament -> when (
+                    findRequestOrNull<Type.Tournament.Requests>(identifier = requestIdentifier)
+                ) {
+                    Type.Tournament.Requests.RefereeInvite -> Type.Tournament.RefereeInvite
+                    null -> throwNotFound<Type.Tournament.Requests>(
                         context = context,
                         requestIdentifier = requestIdentifier
                     )
