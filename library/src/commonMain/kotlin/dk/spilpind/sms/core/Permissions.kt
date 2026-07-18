@@ -68,8 +68,9 @@ object Permissions {
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
             UserRole.ContextRole.Game.Referee -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Game.Referee, contextId = contextId))
+            // A regular user can only become a tournament referee by accepting an invite (see the accept-request flow),
+            // so directly adding the role is restricted to admins
             UserRole.ContextRole.Tournament.Referee -> hasSystemRole(UserRole.ContextRole.System.Admin)
-                    || (contextId != null && hasRole(UserRole.ContextRole.Tournament.Referee, contextId = contextId))
             UserRole.ContextRole.Team.Captain -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
             UserRole.ContextRole.Team.Member -> hasSystemRole(UserRole.ContextRole.System.Admin)
