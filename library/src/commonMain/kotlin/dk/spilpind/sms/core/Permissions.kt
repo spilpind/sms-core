@@ -82,8 +82,16 @@ object Permissions {
      * Checks if the user (or "everyone" if null) can view the specified [tournament]
      */
     fun User.Privileged?.canViewTournament(tournament: Tournament): Boolean {
-        return tournament.isPublic || (this != null && (hasSystemRole(UserRole.ContextRole.System.Admin)
-                || hasRole(UserRole.ContextRole.Tournament.Referee, contextId = tournament.tournamentId)))
+        if (tournament.isPublic) {
+            return true
+        }
+
+        if (this == null) {
+            return false
+        }
+
+        return hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(UserRole.ContextRole.Tournament.Referee, contextId = tournament.tournamentId)
     }
 
     /**
