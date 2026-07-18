@@ -68,6 +68,8 @@ object Permissions {
             UserRole.ContextRole.System.Admin -> hasSystemRole(UserRole.ContextRole.System.SuperAdmin)
             UserRole.ContextRole.Game.Referee -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Game.Referee, contextId = contextId))
+            UserRole.ContextRole.Tournament.Referee -> hasSystemRole(UserRole.ContextRole.System.Admin)
+                    || (contextId != null && hasRole(UserRole.ContextRole.Tournament.Referee, contextId = contextId))
             UserRole.ContextRole.Team.Captain -> hasSystemRole(UserRole.ContextRole.System.Admin)
                     || (contextId != null && hasRole(UserRole.ContextRole.Team.Captain, contextId = contextId))
             UserRole.ContextRole.Team.Member -> hasSystemRole(UserRole.ContextRole.System.Admin)
@@ -79,7 +81,8 @@ object Permissions {
      * Checks if the user (or "everyone" if null) can view the specified [tournament]
      */
     fun User.Privileged?.canViewTournament(tournament: Tournament): Boolean {
-        return tournament.isPublic || (this != null && hasSystemRole(UserRole.ContextRole.System.Admin))
+        return tournament.isPublic || (this != null && (hasSystemRole(UserRole.ContextRole.System.Admin)
+                || hasRole(UserRole.ContextRole.Tournament.Referee, contextId = tournament.tournamentId)))
     }
 
     /**
@@ -132,6 +135,7 @@ object Permissions {
         if (this != null) {
             if (hasSystemRole(UserRole.ContextRole.System.Admin)
                 || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
+                || hasRole(UserRole.ContextRole.Tournament.Referee, contextId = game.tournamentId)
             ) {
                 return true
             }
@@ -246,6 +250,13 @@ object Permissions {
     }
 
     /**
+     * Checks if the user can create an invite such that another user can become a referee of the entire [tournament]
+     */
+    fun User.Privileged.canCreateRefereeInviteForTournament(tournament: Tournament): Boolean {
+        return !tournament.isLocked && hasSystemRole(UserRole.ContextRole.System.Admin)
+    }
+
+    /**
      * Checks if the user can add the specified [team] to a game in the specified [tournament] on behalf of the team
      */
     fun User.Privileged.canJoinGame(team: Team, tournament: Tournament): Boolean {
@@ -341,6 +352,7 @@ object Permissions {
 
         return hasSystemRole(UserRole.ContextRole.System.Admin)
                 || hasRole(UserRole.ContextRole.Game.Referee, contextId = game.gameId)
+                || hasRole(UserRole.ContextRole.Tournament.Referee, contextId = game.tournamentId)
                 || isStickLeagueTeamACaptain(game = game, tournament = tournament)
     }
 
