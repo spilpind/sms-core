@@ -14,6 +14,10 @@ enum class Language(val languageKey: String) {
 
         /**
          * The query parameter the client sets to [languageKey] when it connects to the api
+         *
+         * It is deliberately not called "locale": a locale is normally a language plus a region and the formatting
+         * rules that come with it (e.g. da_DK), whereas this is only the language, so calling it a locale would invite
+         * clients to send something like en-GB and expect dates and numbers to follow
          */
         const val QUERY_KEY = "language"
 
